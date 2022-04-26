@@ -12,7 +12,7 @@
 		4F0662EE2793BC4900CCF12B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F0662EC2793BC4900CCF12B /* Main.storyboard */; };
 		4F0662F02793BC4B00CCF12B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F0662EF2793BC4B00CCF12B /* Assets.xcassets */; };
 		4F0662F32793BC4B00CCF12B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F0662F12793BC4B00CCF12B /* LaunchScreen.storyboard */; };
-		4F8A5E1D281808D200A06F13 /* TwoSum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8A5E1C281808D100A06F13 /* TwoSum.swift */; };
+		4F8A5E202818095700A06F13 /* TwoSum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8A5E1F2818095700A06F13 /* TwoSum.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		4F31C5BF27E6D78E00D1A8CB /* RoughWork.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = RoughWork.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4F31C5C027E6E88800D1A8CB /* LinkList.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = LinkList.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4F31C5C127E722EA00D1A8CB /* Trees.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Trees.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		4F8A5E1C281808D100A06F13 /* TwoSum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoSum.swift; sourceTree = "<group>"; };
+		4F8A5E1F2818095700A06F13 /* TwoSum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoSum.swift; sourceTree = "<group>"; };
 		4FAA998327E72772000B5064 /* Queue.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Queue.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4FAA998427E81E48000B5064 /* Matrix.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Matrix.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4FAE6EDD27F0326400E39BDB /* MemoryLeak.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MemoryLeak.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -48,7 +48,7 @@
 		4F0662DA2793BC4900CCF12B = {
 			isa = PBXGroup;
 			children = (
-				4F8A5E1B281808A500A06F13 /* 1.TwoSum */,
+				4F8A5E1E2818095700A06F13 /* 1.TwoSum */,
 				4F0662E52793BC4900CCF12B /* DSA_iOS */,
 				4F0662E42793BC4900CCF12B /* Products */,
 			);
@@ -91,12 +91,13 @@
 			path = Question1;
 			sourceTree = "<group>";
 		};
-		4F8A5E1B281808A500A06F13 /* 1.TwoSum */ = {
+		4F8A5E1E2818095700A06F13 /* 1.TwoSum */ = {
 			isa = PBXGroup;
 			children = (
-				4F8A5E1C281808D100A06F13 /* TwoSum.swift */,
+				4F8A5E1F2818095700A06F13 /* TwoSum.swift */,
 			);
-			path = 1.TwoSum;
+			name = 1.TwoSum;
+			path = ../1.TwoSum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,7 +173,7 @@
 			files = (
 				4F0662EB2793BC4900CCF12B /* ViewController.swift in Sources */,
 				4F0662E72793BC4900CCF12B /* AppDelegate.swift in Sources */,
-				4F8A5E1D281808D200A06F13 /* TwoSum.swift in Sources */,
+				4F8A5E202818095700A06F13 /* TwoSum.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
