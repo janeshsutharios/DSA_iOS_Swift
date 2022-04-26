@@ -12,7 +12,6 @@
 		4F0662EE2793BC4900CCF12B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F0662EC2793BC4900CCF12B /* Main.storyboard */; };
 		4F0662F02793BC4B00CCF12B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F0662EF2793BC4B00CCF12B /* Assets.xcassets */; };
 		4F0662F32793BC4B00CCF12B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F0662F12793BC4B00CCF12B /* LaunchScreen.storyboard */; };
-		4F0662FC2793BCA700CCF12B /* Question1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0662FB2793BCA700CCF12B /* Question1.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +22,14 @@
 		4F0662EF2793BC4B00CCF12B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F0662F22793BC4B00CCF12B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F0662F42793BC4B00CCF12B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4F0662FB2793BCA700CCF12B /* Question1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question1.swift; sourceTree = "<group>"; };
+		4F0662FD2793BF7000CCF12B /* Stacks.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Stacks.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4F31C5BF27E6D78E00D1A8CB /* RoughWork.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = RoughWork.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4F31C5C027E6E88800D1A8CB /* LinkList.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = LinkList.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4F31C5C127E722EA00D1A8CB /* Trees.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Trees.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4FAA998327E72772000B5064 /* Queue.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Queue.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4FAA998427E81E48000B5064 /* Matrix.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Matrix.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4FAE6EDD27F0326400E39BDB /* MemoryLeak.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MemoryLeak.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4FB4829827F4AEE8007318BA /* ReverseArray.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ReverseArray.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +76,14 @@
 		4F0662FA2793BC7500CCF12B /* Question1 */ = {
 			isa = PBXGroup;
 			children = (
-				4F0662FB2793BCA700CCF12B /* Question1.swift */,
+				4F0662FD2793BF7000CCF12B /* Stacks.playground */,
+				4F31C5BF27E6D78E00D1A8CB /* RoughWork.playground */,
+				4F31C5C027E6E88800D1A8CB /* LinkList.playground */,
+				4F31C5C127E722EA00D1A8CB /* Trees.playground */,
+				4FAA998327E72772000B5064 /* Queue.playground */,
+				4FAA998427E81E48000B5064 /* Matrix.playground */,
+				4FAE6EDD27F0326400E39BDB /* MemoryLeak.playground */,
+				4FB4829827F4AEE8007318BA /* ReverseArray.playground */,
 			);
 			path = Question1;
 			sourceTree = "<group>";
@@ -147,7 +160,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F0662EB2793BC4900CCF12B /* ViewController.swift in Sources */,
-				4F0662FC2793BCA700CCF12B /* Question1.swift in Sources */,
 				4F0662E72793BC4900CCF12B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
