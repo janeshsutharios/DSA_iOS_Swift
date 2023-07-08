@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 var greeting = "Hello, playground"
 
@@ -168,4 +168,75 @@ linkList.insertAtIndex(value: 10, position: 1)
 linkList.insertAtIndex(value: 20, position: 2)
 linkList.insertAtIndex(value: 30, position: 3)
 linkList.displayItems()
+
+let nodeData1 = Node(value: 1)
+let nodeData2 = Node(value: 2)
+let nodeData3 = Node(value: 3)
+nodeData1.next = nodeData2
+nodeData2.next = nodeData3
+nodeData1
+
+
+
+public var ex1 = SingleLinkList<Int>()
+ex1.addElementsAtFirstIndex(value: 1)
+ex1.addElementsAtFirstIndex(value: 2)
+ex1.addElementsAtFirstIndex(value: 3)
+print(ex1.description)
+
+
+var ex2 = SingleLinkList<Int>()
+ex2.addAtEnd(value: 1)
+ex2.addAtEnd(value: 2)
+ex2.addAtEnd(value: 3)
+print(ex2.description)
+
+
+print(ex2.nodeAt(atIndex: 0)?.value)
+print(ex2.nodeAt(atIndex: 1)?.value)
+print(ex2.nodeAt(atIndex: 2)?.value)
+print(ex2.nodeAt(atIndex: 3)?.value)
+ex2.insertNodeAtIndex(indexValue: 1, itemToInsert: 10)
+print(ex2.description)
+
+
+ex2.removeFromLast()
+print(ex2.description)
+
+
+
+//ex2.removeFromLast()
+//print(ex2.description)
+//
+//ex2.removeFromLast()
+//print(ex2.description)
+//
+//
+//ex2.removeFromLast()
+//print(ex2.description)
+
+let index = 1
+let node = ex2.nodeAt(atIndex: index - 1)!
+let removedValue = ex2.removeAfterNode(node: node)
+print("After removing at index \(index): \(ex2)")
+print("Removed value: " + String(describing: removedValue))
+
+
+// Example of Adding elements to link list
+
+var linkList = SingleLinkList<Int>()
+for loopObject in 0..<9 {
+    linkList.addAtEnd(value: loopObject)
+}
+
+
+print(linkList[linkList.startIndex])
+print(linkList[linkList.endIndex])
+print(linkList.prefix(1))
+print(linkList.suffix(1))
+
+
+let sum = linkList.reduce(0, +)
+print(sum)
+
 
