@@ -1599,3 +1599,24 @@ var inputMaxProductSubArray = [1,2,-3,0,-4,-5]
 var outputMaxProductSubArray = maxProductSubArray(nums)
 print("The maximum product subarray is: ", outputMaxProductSubArray)// 4
     
+
+// TC: O(n)
+// SC: O(n)
+func subarraySumK(_ arr: [Int], _ k: Int) ->Int {
+    var result = 0, sum = 0
+    var dict: [Int:Int] = [:]
+    dict[0] = 1
+    for num in arr {
+        sum += num
+        if let val = dict[sum - k] {
+            result += val
+        }
+        dict[sum, default: 0] += 1// Storing the previous sum value which can be added to result.
+    }
+    return result
+}
+
+let subArr = [1,0,2,3]
+let kSum = 3
+let opKsum = subarraySumK(subArr, kSum)
+print(" subArr with k sum is-->", opKsum)// 2 (1,2 & 3)

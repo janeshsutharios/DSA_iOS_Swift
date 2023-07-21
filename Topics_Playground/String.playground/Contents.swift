@@ -27,6 +27,7 @@ let opRemovedLastParath = removeOuterParentheses(parnthString)
 
 // Question: reverse word of the string..
 let str = "My String"
+let charss = str[str.index(str.startIndex, offsetBy: 3)]
 //print(String(str[str.index(str.startIndex, offsetBy: 3)]))    // "S"
 
 // TC: O(N)
@@ -127,7 +128,7 @@ func longestCommonPrefix(_ strs: [String]) -> String {
 }
 let commonPrefixStr = ["fl","flower","flight"]
 let opCommonStr = longestCommonPrefix(commonPrefixStr)
-print("opCommonStr-- ", opCommonStr)// "fl"
+//print("opCommonStr-- ", opCommonStr)// "fl"
 
 // Question: Check if string is rotated.
 // TC: O(N)
@@ -213,4 +214,246 @@ func isIsomorphic(_ s: String, _ t: String) -> Bool {
 let iso1 = "egg"
 let iso2 = "add"
 let isISO = isIsomorphic(iso1, iso2)
-print("isISO--- ", isISO) // true
+//print("isISO--- ", isISO) // true
+
+// Question Sort Characters by frequency:
+
+// TC: O(N)
+// SC: O(N)
+func frequencySort(_ s: String) -> String {
+    var dict:[Character:String] = [:]
+    for c in s {
+        dict[c, default:""] += String(c)
+    }
+    //        var sortedDictionary = dict.sorted { (aDic, bDic) -> Bool in
+    //            return aDic.value.count > bDic.value.count
+    //        }
+    // Here we can also use some sorting technique, like merge sort
+    var sortedDictionary = dict.sorted {
+        $0.1.count > $1.1.count
+    }
+    var ans = ""
+    for (_, value) in sortedDictionary {
+        ans += value
+    }
+    return ans
+}
+//Other Solution using high order functions.
+/*
+func frequencySort(_ s: String) -> String {
+    let counts = s.reduce(into: [:]) {$0[$1, default: 0] += 1}
+    let sortedCounts = counts.sorted(by: { $0.value > $1.value })
+    return sortedCounts.reduce(into: "") {$0.append(
+        String(repeating: $1.0, count: $1.1))
+    }
+}
+func frequencySort(_ s: String) -> String {
+    return Dictionary(s.map { ($0, 1)}, uniquingKeysWith: +)
+        .sorted(by: { $0.value > $1.value })
+        .reduce("") { $0 + String(repeating: $1.key, count: $1.value) }
+}
+ func frequencySort(_ s: String) -> String {
+     var dic = [Character: String]()
+     var ans = ""
+     
+     s.map{ dic[$0, default: ""] += String($0) }
+     dic.sorted{ $0.1.count > $1.1.count }.map{ ans += $0.1 }
+     
+     return ans
+ }
+*/
+ 
+let strObj = "tree"
+let opSortedStr = frequencySort(strObj)
+//print(" opSortedStr-- ", opSortedStr)// eert
+
+// Question:  Maximum Nesting Depth of the Parentheses
+// TC: O(N)
+// SC: O(1)
+func maxDepth(_ s: String) -> Int {
+    var res = 0
+    var cur = 0
+    
+    for c in s {
+        if c == "(" {
+            cur += 1
+            res = max(res, cur)
+        }
+        if c == ")" {
+            cur -= 1
+        }
+    }
+    return res
+}
+let ipParanth = "(1+(5*8)+((9)/2))+100"
+let opMaxDepth = maxDepth(ipParanth)
+//print("max depth--", opMaxDepth)// 3
+
+// Roman to interger..
+// Optimum way
+// TC: O(N)
+// SC: O(1)
+func romanToInt(_ s: String) -> Int {
+    var ans = 0, num = 0
+    
+    for i in stride(from: s.count - 1, to: -1, by: -1) {
+        switch String(s[s.index(s.startIndex, offsetBy: i)]) {
+            case "I": num = 1
+            case "V": num = 5
+            case "X": num = 10
+            case "L": num = 50
+            case "C": num = 100
+            case "D": num = 500
+            case "M": num = 1000
+            default: num = 1
+        }
+        if ans > 4 * num {
+            ans -= num
+        } else {
+            ans += num
+        }
+    }
+    return ans
+}
+
+// TC: O(N)
+// SC: O(N)
+func romanToInt2(_ s: String) -> Int {
+      var prev = 0, out = 0
+       let dict: [Character:Int] = ["I":1,"V":5,"X":10,"L":50,"C":100,"D":500,"M":1000]
+
+     for i in s {
+         let val = dict[i] ?? 0
+         let calculation = (val <= prev) ? prev : -prev
+         out += calculation
+         prev = val
+     }
+     out += prev
+     return out
+}
+
+let strRoman = "IV"
+let opRoamn = romanToInt(strRoman)
+//print("roman-- ", opRoamn)// 4
+
+// Question: A to i
+/**
+ Handle:--
+ ..123  -> 123
+ ..-123  -> -123
+ ab123a  -> 0
+ ..-+123  -> 0
+ ..+-123  -> 0
+ 123abc-  -> 123
+
+ -99999999999999999  -> -2147483648
+ 00999999999999999  -> 2147483647
+ 2147483648  -> 2147483647
+ -2147483648 -> -2147483648
+ */
+
+// TC: O(N)
+// SC: O(1)
+func myAtoi(_ s: String) -> Int {
+    var result = 0// Outpuut
+    var sign = 1 // 1 means positive -1 means negative(further multiply)
+    var isStarted = false // To skip invalid character.
+    for char in s {
+        if char == " " {
+            if isStarted {
+                break
+            }
+        } else if (char == "-" || char == "+") {
+            if isStarted {
+                break
+            }
+            isStarted = true
+            if char == "-" {
+                sign = -1
+            }
+        } else if char >= "0" && char <= "9" {
+            isStarted = true
+            if let val = char.wholeNumberValue {
+                result = result*10+val
+            }
+            if result > Int32.max {
+                return sign == 1 ? Int(Int32.max) : Int(Int32.min)
+            }
+        } else {
+            break
+        }
+    }
+    return result*sign
+}
+
+let atoiString = "  43   "//"        42       "// "   -42"//"4193 with words"
+let atoiOutput = myAtoi(atoiString)
+//print("output is--  ", atoiOutput)// 43
+
+
+// Question: count with k diffrent charcters.
+// TC: O(nXn)
+// SC: O(1) Only 26 size array is used, which can be considered constant space.
+
+func most_k_chars(_ s: String, _ k: Int) -> Int {
+    if s.isEmpty { return 0 }
+    var map:[Character:Int] = [:]
+    var num = 0, left = 0
+    
+    for char in s.indices {
+        map[s[char], default:0] += 1
+        
+        while map.count > k {
+            let leftIndex = s[s.index(s.startIndex, offsetBy: left)]
+            map[leftIndex, default:0] -= 1
+            if map[leftIndex] == 0 {
+                map[leftIndex] = nil
+            }
+            left+=1
+        }
+        
+        if let i = s.firstIndex(of: s[char]) {
+            let indexEl: Int = s.distance(from: s.startIndex, to: i)
+            num += indexEl - left + 1
+        }
+    }
+    return num
+}
+
+func exact_k_chars(_ s: String, _ k: Int) -> Int {
+    return most_k_chars(s, k) - most_k_chars(s, k - 1)
+}
+
+var s1 = "abcdefghij"
+var k1 = 5
+//print("Total substrings with exactly ", k1 , " distinct characters : " ,exact_k_chars(s1, k1))// 6
+
+// Question find longest palindrom.
+
+func longestPalindrome(_ s: String) -> String {
+    let n = s.count
+    var res = ""
+    var dp = [[Bool]](repeating: [Bool](repeating: false, count: n), count: n)
+
+    
+    for i in stride(from: s.count - 1, to: -1, by: -1) {
+        for j in i..<n {
+            let iIndexObj = s[s.index(s.startIndex, offsetBy: i)]
+            let jIndexObj = s[s.index(s.startIndex, offsetBy: j)]
+
+            dp[i][j] = iIndexObj == jIndexObj && (j - i < 3 || dp[i + 1][j - 1])
+            
+            if (dp[i][j] && (res == "" || j - i + 1 > res.count)) {
+                let range = s.index(s.startIndex, offsetBy: i)...s.index(s.startIndex, offsetBy: j)
+                res = String(s[range]) //s.substring(i, j + 1)
+            }
+        }
+    }
+    return res
+}
+
+let inputStrPalin = "babad"
+let opPalin = longestPalindrome(inputStrPalin)
+print("palin---", opPalin)
+
+
