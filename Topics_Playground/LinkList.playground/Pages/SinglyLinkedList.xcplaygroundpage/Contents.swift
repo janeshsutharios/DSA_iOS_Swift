@@ -49,18 +49,18 @@ public final class SingleLinkedList<T> {
     public var nodesCount: Int {
         return count
         // Or we can also use below manual method
-//        guard var node = head else {
-//            return 0
-//        }
-//
-//        var count = 1
-//        while let next = node.next {
-//            node = next
-//            count += 1
-//        }
-//        return count
+        //        guard var node = head else {
+        //            return 0
+        //        }
+        //
+        //        var count = 1
+        //        while let next = node.next {
+        //            node = next
+        //            count += 1
+        //        }
+        //        return count
     }
-     // accessIndexFrom subscript
+    // accessIndexFrom subscript
     public subscript(index: Int) -> T {
         return self.node(at: index).item
     }
@@ -111,7 +111,6 @@ public final class SingleLinkedList<T> {
         current?.next = node
         count += 1
     }
-    
     
     /// Append a copy of a LinkedList to the end of the list.
     ///
@@ -194,128 +193,3 @@ print("getAtIndex", llist.get(5)) // 1->2->3
 print("Number of nodes", llist.nodesCount)
 print("---------------------------------------")
 
-
-// ListNode
-public class ListNode {
-    public var val: Int
-    public var next: ListNode?
-    public init() { self.val = 0; self.next = nil; }
-    public init(_ val: Int) { self.val = val; self.next = nil; }
-    public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
-}
-
-extension ListNode: CustomStringConvertible {
-    
-    public var description: String {
-        guard let next = next else {
-            return "\(val)"
-        }
-        return "\(val) -> " + String(describing: next) + " "
-    }
-}
-
-// Link List basic calls ends
-
-private var reminderVal = 0
-func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-    if l1 == nil && l2 == nil && reminderVal == 0 { return nil }
-    let sum = (l1?.val ?? 0) + (l2?.val ?? 0) + reminderVal
-    reminderVal = sum / 10 // ex 10/10 = 1 so add it two next iteration.
-    return .init(sum % 10, addTwoNumbers(l1?.next, l2?.next))
-}
-
-let firstNode = ListNode(1, ListNode(2, ListNode(3)))
-let secondNode = ListNode(4, ListNode(5, ListNode(6)))
-
-func addTwoNumbers2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-    var l1 = l1
-    var l2 = l2
-    var prev = ListNode()
-    var carry = 0
-    let head = prev
-    
-    while l1 != nil || l2 != nil || carry != 0 {
-        let cur = ListNode()
-        let sum = (l2 == nil ? 0 : l2!.val) + (l1 == nil ? 0 : l1!.val) + carry
-        cur.val = sum % 10
-        carry = sum / 10
-        prev.next = cur
-        prev = cur
-        l1 = l1 == nil ? l1: l1?.next
-        l2 = l2 == nil ? l2: l2?.next
-    }
-    return head.next
-}
-
-let addedNumber = addTwoNumbers2(firstNode, secondNode)
-print("Added output --- ", addedNumber!.description)
-// print("=---------- ", l1?.val, l2?.val, carry, sum, sum % 10)
-
-func reverseList1(_ head: ListNode?) -> ListNode? {
-    
-    var prev = head, node = head?.next
-    prev?.next = nil
-    
-    while node != nil {
-        let next = node!.next
-        node!.next = prev
-        prev = node
-        node = next
-    }
-    
-    return prev
-}
-
-func reverseList2(_ head: ListNode?) -> ListNode? {
-    if (head == nil) || (head?.next == nil) {
-      return head
-    }
-    let temp = reverseList2(head?.next)
-    head?.next?.next = head
-    head?.next = nil
-    return temp
-}
-
-print("1  -----", firstNode.description, "||")
-let opDetail1 = reverseList2(firstNode)
-//let opDetail2 = reverseList2(opDetail1)
-print("2 ------", opDetail1!.description, "||")
-//print("3 ------", opDetail2!.description, "||")
-
-// Question: Delete Middle node
-
-func deleteMiddle(_ head: ListNode?) -> ListNode? {
-     if head?.next == nil {
-         return nil
-     }
-     var slowPointer = head // 1X time mover
-     var fastPointer = head// 2X mover
-     var prevNode: ListNode?// This is middle - 1 Node
-     while fastPointer?.next != nil {
-         fastPointer = fastPointer?.next?.next
-         prevNode = slowPointer
-         slowPointer = slowPointer?.next
-     }
-     prevNode?.next = slowPointer?.next// middle Node - 1 next's is middle + 1 node
-     return head
- }
-
-var aLinkList = ListNode(1, ListNode(2, ListNode(3)))
-aLinkList = deleteMiddle(aLinkList)!
-print("After Deleting Link list will look like--", aLinkList) //  1 -> 3
-
-
-class MyHashSet {
-     private var data = [Bool?](repeating: false, count: 1000001)
-     init() {}
-     func add(_ key: Int) { data[key] = true }
-     func remove(_ key: Int) { data[key] = nil }
-     func contains(_ key: Int) -> Bool { data[key] ?? false }
-}
-// Bitwise Solution: --
-class MyHashSet2 {
-    private var bits =  [Int](repeating: 0, count: 1000001) // 15_626 = 1_000_000 / 64 + 1
-    func add(_ key: Int) { bits[key>>6] |= 1<<(key&63) }
-    func remove(_ key: Int) { bits[key>>6] &= ~(1<<(key&63)) }
-    func contains(_ key: Int) -> Bool { bits[key>>6] & 1<<(key&63) != 0 }
-}
