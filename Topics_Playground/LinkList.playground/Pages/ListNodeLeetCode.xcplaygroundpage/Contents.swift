@@ -101,12 +101,12 @@ func reverseList2(_ head: ListNode?) -> ListNode? {
     return newHead
 }
 
-//print("Before Reverse  -----", firstNode.description, "||")
-let opDetail1 = reverseList1(firstNode)
-//let opDetail2 = reverseList2(opDetail1)
-//print("After Reverse ------", opDetail1!.description, "||")
+let linkListType = ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5)))))
+//print("Before Reverse  -----", linkListType.description, "||")
+//let opDetail1 = reverseList1(linkListType)
+let opDetail2 = reverseList2(linkListType)
+//print("After Reverse ------", opDetail2!.description, "||")
 //print("3 ------", opDetail2!.description, "||")
-
 // Question: Delete Middle node
 func deleteMiddle(_ head: ListNode?) -> ListNode? {
     if head?.next == nil {
@@ -169,6 +169,7 @@ func createloop(_ head: ListNode?) {
 }
 
 // Question: Create Loop from & to
+// FIXME: BUG 
 func createLinkListLoop(head: ListNode?, fromValue: Int, toValue: Int) {
     var cnta = 0
     var p1 = head
@@ -211,10 +212,10 @@ func countlength(n: ListNode)->Int {
 }
 
 var linkListForCycle =  ListNode(1, ListNode(2, ListNode(3,ListNode(4, ListNode(5)))))
-createLinkListLoop(head: linkListForCycle, fromValue: 2, toValue: 4)
+// Pending:createLinkListLoop(head: linkListForCycle, fromValue: 2, toValue: 4)
 
 let loopLength = detectloopLength(head: linkListForCycle)
-print("The length of the linked list loop is ",loopLength)
+//print("The length of the linked list loop is ",loopLength)
 
 
 // Question: Detect if link list has a cycle in it?
@@ -274,7 +275,7 @@ Output: [1,3,5,2,4]*/
 
 let oddEvenLinkedList = ListNode(1, ListNode(2, ListNode(3,ListNode(4, ListNode(5)))))
 let oddEvenSort = oddEvenList(oddEvenLinkedList)!
-print("After oddEvenSort LinkList is--- ", oddEvenSort)// 1->3->5->2->4
+//print("After oddEvenSort LinkList is--- ", oddEvenSort)// 1->3->5->2->4
 
 
 // Question: -  Sort Linked list #Approach--MergeSort.
@@ -315,7 +316,7 @@ func sortList(_ head: ListNode?) -> ListNode? {
 
 let unsortedLinkList = ListNode(5, ListNode(11, ListNode(10,ListNode(1, ListNode(5)))))
 let afterSort = sortList(unsortedLinkList)!
-print("After sort LinkList cycle is--- ", afterSort)// 1->5->5->10->11
+//print("After sort LinkList cycle is--- ", afterSort)// 1->5->5->10->11
 
 // Question check is the linked list is palidrome.
 func isPalindrome(_ head: ListNode?) -> Bool {
@@ -347,7 +348,7 @@ func findMiddle(_ head: ListNode?) -> ListNode? {
 var palindromeLinkedList = ListNode(5, ListNode(1, ListNode(10,ListNode(1, ListNode(5)))))
 
 let isPalindrom = isPalindrome(palindromeLinkedList)
-print("LinkList isPalindrom --- ", isPalindrom) // true
+//print("LinkList isPalindrom --- ", isPalindrom) // true
 
 
 // Question: Add one to linked list:
@@ -405,7 +406,7 @@ func addOne(_ head: ListNode?) -> ListNode? {
 
 var linkListForAddOne =  ListNode(9, ListNode(9, ListNode(9)))
 let addedOneList = addOne(linkListForAddOne)
-print("addedOne to the linkedList  --", addedOneList!)// 1->0->0->0
+//print("addedOne to the linkedList  --", addedOneList!)// 1->0->0->0
 
 // Question # Get IntersectionNode
 func getIntersectionNode(_ headA: ListNode?, _ headB: ListNode?) -> ListNode? {
@@ -429,7 +430,7 @@ let intersecOne = ListNode(1, ListNode(2, interSect))
 let intersecTwo = ListNode(2, interSect)
 // Example: Intersection @3 Node
 let foundIntersectionNode = getIntersectionNode(intersecOne, intersecTwo)
-print("Found Intersection Node--->", foundIntersectionNode!) // 3->4
+//print("Found Intersection Node--->", foundIntersectionNode!) // 3->4
 
 // TC: O(n)
 // SC: O(n)
@@ -460,4 +461,4 @@ func sortList012(_ head: ListNode?) {
 
 let zeroOneTwoLinkedList = ListNode(1, ListNode(2, ListNode(0,ListNode(2, ListNode(0)))))
 sortList012(zeroOneTwoLinkedList)
-print("sorted by 0,1,2", zeroOneTwoLinkedList)
+//print("sorted by 0,1,2", zeroOneTwoLinkedList)

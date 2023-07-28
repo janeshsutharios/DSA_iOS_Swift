@@ -452,8 +452,57 @@ func longestPalindrome(_ s: String) -> String {
     return res
 }
 
+    func longestPalindrome2(_ s: String) -> String {
+        let len = s.count
+        if len <= 1 { return s }
+        var lhs = 0, rhs = 0, dp = Array(repeating: Array(repeating: false, count: len), count: len)
+        for i in 1..<len {
+            let iIndexObj = s[s.index(s.startIndex, offsetBy: i)]
+            for j in 0..<i {
+                let jIndexObj = s[s.index(s.startIndex, offsetBy: j)]
+
+                if iIndexObj == jIndexObj && dp[j+1][i-1] || i - j <= 2 {
+                    dp[j][i] = true
+                    if i - j > rhs - lhs {
+                        lhs = j
+                        rhs = i
+                    }
+                }
+            }
+        }
+        let range = s.index(s.startIndex, offsetBy: lhs)...s.index(s.startIndex, offsetBy: rhs)
+        return String(s[range])
+    }
+
+
 let inputStrPalin = "babad"
-let opPalin = longestPalindrome(inputStrPalin)
+let opPalin = longestPalindrome2(inputStrPalin)
 print("palin---", opPalin)
 
 
+// Question: Input: s = "codeleet", indices = [4,5,6,7,0,2,1,3]
+
+func restoreString1(_ s: String, _ indices: [Int]) -> String {
+    var result = Array(s)
+    var i = 0
+    for word in s {
+        result[indices[i]] = word
+        i += 1
+    }
+    return String(result)
+}
+
+func restoreString2(_ s: String, _ indices: [Int]) -> String {
+    var result: String = s
+    var i = 0
+    for word in s {
+        let index = s.index(s.startIndex, offsetBy: indices[i])
+        result.replaceSubrange(index...index, with: String(word))
+        i += 1
+    }
+    return result
+}
+
+let restoreStr = "codeleet"
+let restoreVale = restoreString2(restoreStr, [4,5,6,7,0,2,1,3])
+print("output--->", restoreVale)

@@ -14,6 +14,16 @@ public class DoublyLinkedListNode<T> {
     }
 }
 
+extension DoublyLinkedListNode: CustomStringConvertible {
+    
+    public var description: String {
+        guard let next = next else {
+            return "\(item)"
+        }
+        return "\(item) <- -> " + String(describing: next) + ""
+    }
+}
+
 public final class DoublyLinkedList<T> {
     
     /// The head of the DoublyLinkedList List
@@ -175,8 +185,8 @@ public final class DoublyLinkedList<T> {
         }
         next?.previous = prev
         
-        node.previous = nil
-        node.next = nil
+        node.previous = nil// just for removing from memory
+        node.next = nil// just for removing from memory
         return node.item
     }
     
@@ -222,34 +232,25 @@ extension DoublyLinkedList: CustomStringConvertible {
 // MARK: - Reverse Doubly linked list
 extension DoublyLinkedList {
     public func reverse() {
-        var node = head
-        while let currentNode = node {
-            node = currentNode.next
-            swap(&currentNode.next, &currentNode.previous)
-            head = currentNode
-        }
-        // Or
 //        var node = head
 //        while let currentNode = node {
 //            node = currentNode.next
-//            let nxt = currentNode.next
-//            let pvs = currentNode.previous
-//            currentNode.next = pvs
-//            currentNode.previous = nxt
+//            swap(&currentNode.next, &currentNode.previous)
 //            head = currentNode
 //        }
+        // Or
+        var node = head
+        while let currentNode = node {
+            node = currentNode.next
+            let nxt = currentNode.next
+            let pvs = currentNode.previous
+            currentNode.next = pvs
+            currentNode.previous = nxt
+            head = currentNode
+        }
     }
+    
     func reverseListRecursive(_ head: DoublyLinkedListNode<T>?) -> DoublyLinkedListNode<T>? {
-        /*
-         if (head == nil) || (head?.next == nil) {
-           return head
-         }
-         let temp = reverseList2(head?.next)
-         head?.next?.next = head
-         head?.next = nil
-         return temp
-         */
-        
         /*
          var prev = head, node = head?.next
          prev?.next = nil
@@ -260,14 +261,14 @@ extension DoublyLinkedList {
              prev = node
              node = next
          }
-         
          return prev
          */
-        if (head == nil) || (head?.next == nil) {
+        if head == nil || head?.next == nil {
           return head
         }
         let temp = reverseListRecursive(head?.next)
         head?.next?.next = head
+        head?.previous = head?.next
         head?.next = nil
         return temp
     }
@@ -414,12 +415,12 @@ list.insert("Janesh Suthar", at: 1)
 list[0]     // "Car"
 list[1]     // "Janesh Suthar"
 list[2]     // "DSA is EASY"
-print(list)
+//print(list)
 
-//list.reverse()   // [DSA is EASY, Janesh Suthar, Janesh Suthar]
+list.reverse()   // [DSA is EASY, Janesh Suthar, Janesh Suthar]
 print("Before reverse linked list------------>>> ", list)
-list.reverseListRecursive(list.head)// Pending implemantation
-print("After  reverse linked list------------>>> ", list)
+let newList = list.reverseListRecursive(list.head)// Pending implemantation
+print("After  reverse linked list------------>>> ", newList ?? nil)
 
 list.node(at: 0)?.item = "Toyota" // changing values in doubly link list
 list.node(at: 1)?.item = "Maruti"
@@ -478,12 +479,12 @@ listArrayLiteral2.removeLast()  // "You"
 // Conformance to the Collection protocol
 let collection: DoublyLinkedList<Int> = [1, 2, 3, 4, 5]
 let collection2: DoublyLinkedList<Int> = [1, 2, 3, 4, 5]
-print(" is same ?", collection.first == collection2.first)
+//print(" is same ?", collection.first == collection2.first)
 let index2 = collection.index(collection.startIndex, offsetBy: 2)
 let item = collection[index2] // 3
 
 collection.reverse()
-print("printing collection--> ", collection)
+//print("printing collection--> ", collection)
 // Find sum from doubly Link List Iterating in a for loop, since the Sequence protocol allows this.
 var sum = 0
 for element in collection {
@@ -494,6 +495,66 @@ sum //15
 // Get Sum of Doubly Link List though 'reduce', another method defined in an extension of Sequence. Collections are Sequences.
 let sumOfElements = collection.reduce(0) {$0 + $1!} // 15
 
+//
+
+func deleteOccuranceInLinkedList(_ k: Int, _ list: DoublyLinkedListNode<Int>?) -> DoublyLinkedListNode<Int>? {
+    
+    var tempCopy = list
+    
+    while tempCopy != nil {
+        var prevNode = tempCopy?.previous
+        var nxtNode = tempCopy?.next
+
+        if tempCopy?.item == k {
+            prevNode?.next = nxtNode
+            nxtNode?.previous = prevNode
+        }
+        tempCopy = tempCopy?.next
+    }
+    return tempCopy
+}
 
 
+func removeAll(_ k: Int, _ head: DoublyLinkedListNode<Int>?) -> DoublyLinkedListNode<Int>? {
+    var updatedHead = head
+    while var newHead = head, newHead.item == k {
+        newHead = newHead.next!
+        updatedHead = newHead
+    }
+    var prev = updatedHead
+    var current = updatedHead?.next
+    while let currentNode = current {
+        if currentNode.next == nil {
+            //tail
+        }
+        guard currentNode.item != k else {
+            prev?.next = currentNode.next
+            current = prev?.next
+            continue
+        }
+        prev = current
+        current = current?.next
+    }
+   // tail = prev
+    return prev
+}
 
+
+var occuranceLinkedList = DoublyLinkedList<Int>()
+occuranceLinkedList  = [1,2,3,2,1,4,5]
+deleteOccuranceInLinkedList(2, occuranceLinkedList.head)
+print(" after deleting k linked list is", occuranceLinkedList)
+
+
+occuranceLinkedList.reverse()
+print("After reversing", occuranceLinkedList)
+
+let reversedRecursive = occuranceLinkedList.reverseListRecursive(occuranceLinkedList.head)
+print("After recursive reverse--- ", reversedRecursive!)
+
+//occuranceLinkedList.remove(node: occuranceLinkedList.node(at: 2)!) //
+//print(" after deleting node at index linked list is", occuranceLinkedList)
+
+//let xxx = removeAll(2, occuranceLinkedList.head)
+//print(xxx.debugDescription)
+//print(occuranceLinkedList)
