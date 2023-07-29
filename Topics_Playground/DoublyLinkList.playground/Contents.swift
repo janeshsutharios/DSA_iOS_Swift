@@ -543,14 +543,14 @@ func removeAll(_ k: Int, _ head: DoublyLinkedListNode<Int>?) -> DoublyLinkedList
 var occuranceLinkedList = DoublyLinkedList<Int>()
 occuranceLinkedList  = [1,2,3,2,1,4,5]
 deleteOccuranceInLinkedList(2, occuranceLinkedList.head)
-print(" after deleting k linked list is", occuranceLinkedList)
+//print(" after deleting k linked list is", occuranceLinkedList)
 
 
 occuranceLinkedList.reverse()
-print("After reversing", occuranceLinkedList)
+//print("After reversing", occuranceLinkedList)
 
 let reversedRecursive = occuranceLinkedList.reverseListRecursive(occuranceLinkedList.head)
-print("After recursive reverse--- ", reversedRecursive!)
+//print("After recursive reverse--- ", reversedRecursive!)
 
 //occuranceLinkedList.remove(node: occuranceLinkedList.node(at: 2)!) //
 //print(" after deleting node at index linked list is", occuranceLinkedList)
@@ -558,3 +558,59 @@ print("After recursive reverse--- ", reversedRecursive!)
 //let xxx = removeAll(2, occuranceLinkedList.head)
 //print(xxx.debugDescription)
 //print(occuranceLinkedList)
+
+// Question: Find pairs with given sum in doubly linked list
+
+func pairSumEqualK( _ head: DoublyLinkedListNode<Int>?, _ k: Int) {
+
+    var firstPointer = head, secondPointer = head
+    while secondPointer?.next != nil {
+        secondPointer = secondPointer?.next
+    }
+    
+    while firstPointer !== secondPointer && secondPointer?.next !== firstPointer {
+        // pair found
+        if firstPointer!.item + secondPointer!.item == k {
+            print("pointers--- > ",firstPointer!.item, secondPointer!.item)
+            // move first in forward direction
+            firstPointer = firstPointer?.next
+            // move second in backward direction
+            secondPointer = secondPointer?.previous
+            
+        } else {
+            if  firstPointer!.item + secondPointer!.item < k {
+                firstPointer = firstPointer?.next
+            } else {
+                secondPointer = secondPointer?.previous
+            }
+        }
+    }
+}
+
+//var pairLinkedList = DoublyLinkedList<Int>()
+//pairLinkedList = [1,2,3,4,9]
+//
+//pairSumEqualK(pairLinkedList.head, 5)
+
+
+// Question: Remove duplicates from the linked list.
+
+func removeDupsFromSortedDLL( _ head: DoublyLinkedListNode<Int>?) -> DoublyLinkedListNode<Int>? {
+    
+    var node = head
+    while let next = node?.next {
+        if  node!.item == next.item {
+            let nxtItem = next.next
+            node!.next = nxtItem
+            nxtItem?.previous = node
+        } else {
+            node = next
+        }
+    }
+    return head
+}
+
+var sortedDLL =  DoublyLinkedList<Int>()
+sortedDLL = [1,2,2,2,3,3,4,9]
+let sortedDLLOutput = removeDupsFromSortedDLL(sortedDLL.head)
+print("sorted DLL is--- ",sortedDLLOutput)

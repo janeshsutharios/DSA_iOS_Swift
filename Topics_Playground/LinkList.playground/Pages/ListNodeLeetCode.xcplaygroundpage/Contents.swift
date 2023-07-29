@@ -462,3 +462,265 @@ func sortList012(_ head: ListNode?) {
 let zeroOneTwoLinkedList = ListNode(1, ListNode(2, ListNode(0,ListNode(2, ListNode(0)))))
 sortList012(zeroOneTwoLinkedList)
 //print("sorted by 0,1,2", zeroOneTwoLinkedList)
+// question reverse
+func reverseKGroup(_ head: ListNode?, _ k: Int) -> ListNode? {
+    var curr = head
+    var headyCopy = head
+    var count = 0
+    while curr != nil && count != k {// Find K+1 Node
+        curr = curr?.next
+        count+=1
+    }
+    if count == k {// if k+1 node is found
+        curr = reverseKGroup(curr,k)// reverse list with k+1 node as head
+        // headCopy - head-pointer to direct part,
+        // curr - head-pointer to reversed part
+        while count > 0 {// reverse current k-group:
+            var tmp = headyCopy?.next // tmp - next head in direct part
+            headyCopy?.next = curr// preappending "direct" headCopy to the reversed list
+            curr = headyCopy // move head of reversed part to a new node
+            headyCopy = tmp // move "direct" headCopy to the next node in direct part
+            count-=1
+        }
+        headyCopy = curr
+    }
+    return headyCopy
+}
+
+let kGroupLinkedListInput = ListNode(1, ListNode(2, ListNode(3,ListNode(4, ListNode(5)))))
+let kGroupLinkedListOutput = reverseKGroup(kGroupLinkedListInput, 2)
+//print("Output of kth nummber reversed linked list is ---", kGroupLinkedListOutput!)
+
+// Question Rotate LinkedList.
+func rotateRight(_ head: ListNode?, _ k: Int) -> ListNode? {
+    // Base case
+    guard head?.next != nil, k > 0 else { return head }
+    
+    // Find length and tail
+    var tail = head, length = 1
+    while tail?.next != nil {
+        tail = tail?.next
+        length += 1
+    }
+    
+    // Reduce k
+    var k = k % length// because if 5%5 encounters it gives 0(Not to rotate.)
+    if k == 0 { return head }
+    
+    // Find the pivot
+    var curr = head
+    for _ in 0..<length - k - 1 {
+        curr = curr?.next// the tail node is the (len-k)-th node (1st node is head)
+    }
+    // Reorder the list
+    let newHead = curr?.next
+    curr?.next = nil
+    tail?.next = head
+    //        print("head ----->", head)
+    //        print("curr ----->", curr)
+    //        print("tail ----->", tail)
+    //        print("newHead -->", newHead)
+    
+    return newHead
+}
+
+let rotateLinkListInput = ListNode(1, ListNode(2, ListNode(3,ListNode(4, ListNode(5)))))
+let rotateLinkListOutput = rotateRight(rotateLinkListInput, 2)
+//print("Output of rotateLinkListOutput is ---", rotateLinkListOutput!)
+
+// Question--> Copy linked list
+// Definition for a Node.
+public class ListNodeWithRandom {
+    public var val: Int
+    public var next: ListNodeWithRandom?
+    public var random: ListNodeWithRandom?
+    public init(_ val: Int) {
+        self.val = val
+        self.next = nil
+        self.random = nil
+    }
+}
+
+
+func copyRandomList(_ head: ListNodeWithRandom?) -> ListNodeWithRandom? {
+    var iter = head, next = head
+    // First round: make copy of each node, and link them together side-by-side in a single list.
+    while iter != nil {
+        next = iter?.next
+        var copyList = ListNodeWithRandom(iter!.val)
+        iter?.next = copyList// poiting to New copy Node
+        copyList.next = next
+        iter = next
+    }
+    // Second round: assign random pointers for the copy nodes.
+    iter = head
+    while iter != nil {
+        if iter?.random != nil {
+            iter?.next?.random = iter?.random?.next
+        }
+        iter = iter?.next?.next
+    }
+    iter = head
+    var pseudoHead = ListNodeWithRandom(0)
+    var newCopy1 = pseudoHead, newCopy2 = pseudoHead
+    // Third round: restore the original list, and extract the copy list.
+    while iter != nil {
+        next = iter?.next?.next
+        
+        // extract the copy
+        newCopy1 = iter!.next!
+        newCopy2.next = newCopy1
+        newCopy2 = newCopy1
+        
+        // restore the original list
+        iter?.next = next
+        
+        iter = next
+    }
+    
+    return pseudoHead.next
+}
+
+//Node* dummy = new Node(0);
+//   itr = head;
+//   temp = dummy;
+//   Node* fast;
+//   while(itr != NULL) {
+//       fast = itr->next->next;
+//       temp->next = itr->next;
+//       itr->next = fast;
+//       temp = temp->next;
+//       itr = fast;
+//   }
+
+// Question flatten linkedList
+
+/* Linked list Node with two pointers  */
+
+public class ListNodeWithDown {
+    public var data: Int
+    public var right: ListNodeWithDown?
+    public var down: ListNodeWithDown?
+    public init(_ val: Int) {
+        self.data = val
+        self.right = nil
+        self.down = nil
+    }
+}
+var headOfLL: ListNodeWithDown? // head of list
+
+// An utility function to merge two sorted linked lists
+func mergeLinkedList(_ a: ListNodeWithDown?, _ b: ListNodeWithDown?) -> ListNodeWithDown? {
+    // if first linked list is empty then second
+    // is the answer
+    if a == nil {
+        return b
+    }
+    // if second linked list is empty then first
+    // is the result
+    if b == nil {
+        return a
+    }
+    
+    // compare the data members of the two linked lists
+    // and put the larger one in the result
+    var result:ListNodeWithDown?
+    
+    if a!.data < b!.data {
+        result = a
+        result?.down = mergeLinkedList(a?.down, b)
+    }
+    
+    else {
+        result = b;
+        result?.down = mergeLinkedList(a, b?.down)
+    }
+    
+    result?.right = nil
+    return result
+}
+
+func flatten(_ root: ListNodeWithDown?) -> ListNodeWithDown? {
+    // Base Cases
+    if root == nil || root?.right == nil {
+        return root
+    }
+    
+    // recur for list on right
+    root?.right = flatten(root?.right)
+    
+    // now merge
+    var newRoot = mergeLinkedList(root, root?.right)
+    
+    // return the root
+    // it will be in turn merged with its left
+    return newRoot
+}
+
+/*
+ * Utility function to insert a node at beginning of the linked list
+ */
+func push(_ headRef: ListNodeWithDown?, _ data: Int) -> ListNodeWithDown? {
+    /*
+     * 1 & 2: Allocate the Node & Put in the data
+     */
+    var new_node = ListNodeWithDown(data)
+    
+    /* 3. Make next of new Node as head */
+    new_node.down = headRef
+    
+    /* 4. Move the head to point to new Node */
+    var headCopy = headRef
+    headCopy = new_node
+    
+    /* 5. return to link it back */
+    return headCopy
+}
+
+func printList() {
+    var temp = headOfLL
+    while temp != nil {
+        print(temp!.data)
+        temp = temp?.down
+    }
+    
+}
+/*
+ * Let us create the following linked list 5 -> 10 -> 19 -> 28 | | | | V V V V 7
+ * 20 22 35 | | | V V V 8 50 40 | | V V 30 45
+ */
+
+/*
+ 5 -> 10 -> 19 -> 28
+ |    |     |     |
+ V    V     V     V
+ 7    20    22    35
+ |          |     |
+ V          V     V
+ 8          50    40
+ |                |
+ V                V
+ 30               45
+ */
+
+headOfLL = push(headOfLL, 30);
+headOfLL = push(headOfLL, 8);
+headOfLL = push(headOfLL, 7);
+headOfLL = push(headOfLL, 5);
+
+headOfLL?.right = push(headOfLL?.right, 20);
+headOfLL?.right = push(headOfLL?.right, 10);
+
+headOfLL?.right?.right = push(headOfLL?.right?.right, 50);
+headOfLL?.right?.right = push(headOfLL?.right?.right, 22);
+headOfLL?.right?.right = push(headOfLL?.right?.right, 19);
+
+headOfLL?.right?.right?.right = push(headOfLL?.right?.right?.right, 45);
+headOfLL?.right?.right?.right = push(headOfLL?.right?.right?.right, 40);
+headOfLL?.right?.right?.right = push(headOfLL?.right?.right?.right, 35);
+headOfLL?.right?.right?.right = push(headOfLL?.right?.right?.right, 20);
+
+// flatten the list
+headOfLL = flatten(headOfLL);
+
+//printList() // Output get printed here..
