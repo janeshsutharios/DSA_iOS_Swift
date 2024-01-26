@@ -1507,7 +1507,7 @@ func numberOfInversions(_ arr: [Int]) -> Int {
 
 let conversionArrayInput = [5, 4, 3, 2, 1]
 let conversionArrayOutput = numberOfInversions(conversionArrayInput)
-print(" The number of inversions is: ", conversionArrayOutput) // 10
+//print(" The number of inversions is: ", conversionArrayOutput) // 10
 
 
 // Question Count reverse pairs..
@@ -1577,7 +1577,7 @@ func team(_ skill: inout [Int]) -> Int {
 
 var inputCountReversePair = [4, 1, 2, 3, 1]
 let outputCountReversePair = team(&inputCountReversePair)
-print("->  The number of reverse pair is: ", outputCountReversePair)// 3
+//print("->  The number of reverse pair is: ", outputCountReversePair)// 3
 
 // Question. maxProductSubArray
 
@@ -1597,7 +1597,7 @@ func maxProductSubArray(_ arr: [Int]) ->Int {
 }
 var inputMaxProductSubArray = [1,2,-3,0,-4,-5]
 var outputMaxProductSubArray = maxProductSubArray(nums)
-print("The maximum product subarray is: ", outputMaxProductSubArray)// 4
+//print("The maximum product subarray is: ", outputMaxProductSubArray)// 4
     
 
 // TC: O(n)
@@ -1619,4 +1619,109 @@ func subarraySumK(_ arr: [Int], _ k: Int) ->Int {
 let subArr = [1,0,2,3]
 let kSum = 3
 let opKsum = subarraySumK(subArr, kSum)
-print(" subArr with k sum is-->", opKsum)// 2 (1,2 & 3)
+//print(" subArr with k sum is-->", opKsum)// 2 (1,2 & 3)
+
+func lengthOfLongestSubstring(_ s: String) -> Int {
+    var longest = 0, startIndex = 0
+    var charMap: [Character: Int] = [:]
+    for (index, char) in s.enumerated() {
+        if let foundIndex = charMap[char] {
+            startIndex = max(foundIndex + 1, startIndex)
+        }
+        longest = max(longest, index - startIndex + 1)
+        charMap[char] = index
+    }
+    return longest
+}
+
+let longestSubStrInput = "abcabxy"
+let outputOfLongest = lengthOfLongestSubstring(longestSubStrInput)
+//print(" output of longest substring without repeating chars", outputOfLongest) // OP->5
+
+// Question: lastNonZeroIndex
+
+//Input: nums = [0,1,0,3,12]
+//Output: [1,3,12,0,0]
+// TC: O(n)
+// SC O(1)
+func moveZeroes(_ nums: inout [Int]) {
+    var lastNonZeroIndex = 0
+    for i in 0..<nums.count where nums[i] != 0 {
+         nums.swapAt(i, lastNonZeroIndex)
+        lastNonZeroIndex += 1
+    }
+}
+var withZerosArrInput = [1,1,0,3,12]
+moveZeroes(&withZerosArrInput)
+//print("moveZeroes----- ", withZerosArrInput) // [1, 1, 3, 12, 0]
+
+// Question : sumOfMultiples
+func sumOfMultiples(_ n: Int) -> Int {
+  func sumOfDivisible(_ value: Int)-> Int {
+   var low = value
+   var high = n / value * value
+   var count = high  / value
+   let op = (low + high) * count / 2
+   // print("this op is=== ", low, high, count, op)
+    return op
+ }
+return sumOfDivisible(3) + sumOfDivisible(5) + sumOfDivisible(7) -
+    (sumOfDivisible(15) + sumOfDivisible(35) + sumOfDivisible(21)) +
+    sumOfDivisible(105)
+}
+var opOfMultiply = sumOfMultiples(15)
+//print("opOfMultiply is--->", opOfMultiply) // 81
+
+// Question # Rotate Array in swift
+func rotate(_ nums: inout [Int], _ k: Int) {
+    let arrCount = nums.count
+    let k = k%arrCount // Modulo ensures the range within the length and avoids unnecessary rotation.
+    reverse(&nums, 0, arrCount-1)
+    reverse(&nums, 0, k-1)
+    reverse(&nums, k, arrCount-1)
+}
+
+func reverse(_ nums: inout [Int], _ start: Int, _ end: Int) {
+    var start = start, end = end
+    while start < end {
+        nums.swapAt(start, end)
+        start+=1
+        end-=1
+    }
+}
+
+var arrRotateInput = [1,2,3,4,5]
+rotate(&arrRotateInput, 2)
+//print("output is-- ", arrRotateInput)//[4, 5, 1, 2, 3]
+
+//Question : Remove element occurance
+//Input: nums = [0,1,2,2,3,0,4,2], val = 2
+//Output: 5, nums = [0,1,4,0,3,_,_,_]
+// TC: O(n)
+// SC: O(1)
+func removeElement(_ nums: inout [Int], _ val: Int) -> Int {
+    var count = 0
+    for i in 0..<nums.count where nums[i] != val {
+        nums[count] = nums[i]
+        count+=1
+    }
+    return count
+}
+var arrOcc = [0,1,2,2,3,0,4,2]
+removeElement(&arrOcc, 2)
+//print("Output after removal --", arrOcc)//[0, 1, 3, 0, 4, 0, 4, 2]
+
+// Question: Integer to Roman.
+func intToRoman(_ num: Int) -> String {
+    
+    var m = ["", "M", "MM", "MMM"]
+    var c = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"]
+    var x = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
+    var i = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+    
+    return m[num/1000] + c[(num%1000)/100] + x[(num%100)/10] + i[num%10]
+}
+
+var inputForRoman = 100
+var opRoman = intToRoman(inputForRoman)
+print("Output for Roman----> ", opRoman)

@@ -461,7 +461,7 @@ func sortList012(_ head: ListNode?) {
 
 let zeroOneTwoLinkedList = ListNode(1, ListNode(2, ListNode(0,ListNode(2, ListNode(0)))))
 sortList012(zeroOneTwoLinkedList)
-//print("sorted by 0,1,2", zeroOneTwoLinkedList)
+//print("sorted by 0,1,2", zeroOneTwoLinkedList)// 0 0 1 2 1
 // question reverse
 func reverseKGroup(_ head: ListNode?, _ k: Int) -> ListNode? {
     var curr = head
@@ -489,7 +489,7 @@ func reverseKGroup(_ head: ListNode?, _ k: Int) -> ListNode? {
 
 let kGroupLinkedListInput = ListNode(1, ListNode(2, ListNode(3,ListNode(4, ListNode(5)))))
 let kGroupLinkedListOutput = reverseKGroup(kGroupLinkedListInput, 2)
-//print("Output of kth nummber reversed linked list is ---", kGroupLinkedListOutput!)
+//print("Output of kth nummber reversed linked list is ---", kGroupLinkedListOutput!)// 2 1 4 3 5
 
 // Question Rotate LinkedList.
 func rotateRight(_ head: ListNode?, _ k: Int) -> ListNode? {
@@ -526,9 +526,9 @@ func rotateRight(_ head: ListNode?, _ k: Int) -> ListNode? {
 
 let rotateLinkListInput = ListNode(1, ListNode(2, ListNode(3,ListNode(4, ListNode(5)))))
 let rotateLinkListOutput = rotateRight(rotateLinkListInput, 2)
-//print("Output of rotateLinkListOutput is ---", rotateLinkListOutput!)
+//print("Output of rotateLinkListOutput is ---", rotateLinkListOutput!)// 4 5 1 2 3
 
-// Question--> Copy linked list
+// Question--> Deep of Copy linked list
 // Definition for a Node.
 public class ListNodeWithRandom {
     public var val: Int
@@ -580,18 +580,6 @@ func copyRandomList(_ head: ListNodeWithRandom?) -> ListNodeWithRandom? {
     
     return pseudoHead.next
 }
-
-//Node* dummy = new Node(0);
-//   itr = head;
-//   temp = dummy;
-//   Node* fast;
-//   while(itr != NULL) {
-//       fast = itr->next->next;
-//       temp->next = itr->next;
-//       itr->next = fast;
-//       temp = temp->next;
-//       itr = fast;
-//   }
 
 // Question flatten linkedList
 
@@ -680,7 +668,7 @@ func push(_ headRef: ListNodeWithDown?, _ data: Int) -> ListNodeWithDown? {
 func printList() {
     var temp = headOfLL
     while temp != nil {
-        print(temp!.data)
+        print(temp!.data, terminator: ",")
         temp = temp?.down
     }
     
@@ -723,4 +711,48 @@ headOfLL?.right?.right?.right = push(headOfLL?.right?.right?.right, 20);
 // flatten the list
 headOfLL = flatten(headOfLL);
 
-//printList() // Output get printed here..
+//printList() // 5,7,8,10,19,20,20,22,30,35,40,45,50,
+
+
+
+
+// Question Merge Two sorted List..
+/* Recursive solution..
+func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+    if l1 == nil || l2 == nil {
+        return l1 == nil ? l2 : l1// return any non empty list
+    }
+    if l1!.val <= l2!.val {// if first linklist node value is lesser assign it to next
+        l1?.next = mergeTwoLists(l1?.next, l2)
+        return l1
+    } else {
+        l2?.next = mergeTwoLists(l1, l2?.next)
+        return l2
+    }
+}*/
+
+// Iterative Solution..
+func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+    var list1 = list1
+    var list2 = list2
+    let preHead = ListNode()
+    var tail = preHead
+    while list1 != nil && list2 != nil {
+        if list1!.val < list2!.val {
+            tail.next = list1
+            list1 = list1?.next
+        } else {
+            tail.next = list2
+            list2 = list2?.next
+        }
+        tail = tail.next!
+    }
+    tail.next = list1 == nil ? list2 : list1
+    return preHead.next
+}
+
+let sortedArr1 = ListNode(1, ListNode(4, ListNode(9)))
+let sortedArr2 = ListNode(2, ListNode(5, ListNode(7)))
+
+let mergedList = mergeTwoLists(sortedArr1, sortedArr2)
+print("mergedList--->", mergedList)// 1 -> 2 -> 4 -> 5 -> 7 -> 9

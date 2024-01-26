@@ -251,18 +251,6 @@ extension DoublyLinkedList {
     }
     
     func reverseListRecursive(_ head: DoublyLinkedListNode<T>?) -> DoublyLinkedListNode<T>? {
-        /*
-         var prev = head, node = head?.next
-         prev?.next = nil
-         
-         while node != nil {
-             let next = node!.next
-             node!.next = prev
-             prev = node
-             node = next
-         }
-         return prev
-         */
         if head == nil || head?.next == nil {
           return head
         }
@@ -495,7 +483,7 @@ sum //15
 // Get Sum of Doubly Link List though 'reduce', another method defined in an extension of Sequence. Collections are Sequences.
 let sumOfElements = collection.reduce(0) {$0 + $1!} // 15
 
-//
+//Question:  Delete all occurrences of a given key in a doubly linked list
 
 func deleteOccuranceInLinkedList(_ k: Int, _ list: DoublyLinkedListNode<Int>?) -> DoublyLinkedListNode<Int>? {
     
@@ -571,7 +559,7 @@ func pairSumEqualK( _ head: DoublyLinkedListNode<Int>?, _ k: Int) {
     while firstPointer !== secondPointer && secondPointer?.next !== firstPointer {
         // pair found
         if firstPointer!.item + secondPointer!.item == k {
-            print("pointers--- > ",firstPointer!.item, secondPointer!.item)
+            //print("pointers--- > ",firstPointer!.item, secondPointer!.item)// Output 1,4, 2,3
             // move first in forward direction
             firstPointer = firstPointer?.next
             // move second in backward direction
@@ -613,4 +601,4 @@ func removeDupsFromSortedDLL( _ head: DoublyLinkedListNode<Int>?) -> DoublyLinke
 var sortedDLL =  DoublyLinkedList<Int>()
 sortedDLL = [1,2,2,2,3,3,4,9]
 let sortedDLLOutput = removeDupsFromSortedDLL(sortedDLL.head)
-print("sorted DLL is--- ",sortedDLLOutput)
+//print("sorted DLL is--- ",sortedDLLOutput) // (1 <- -> 2 <- -> 3 <- -> 4 <- -> 9)

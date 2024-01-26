@@ -386,8 +386,53 @@ func myAtoi(_ s: String) -> Int {
     return result*sign
 }
 
+// Approach: Recursive.
+func myAtoiUsingRecursion(_ s: String) -> Int {
+    var output = 0
+    var startIndex = 0
+    var sign:Int = 1
+    var isStarted = false
+    return myAtoiRec(s, &startIndex, &output, s.count, &sign, &isStarted)
+}
+func myAtoiRec(_ s: String,
+               _ strIndex: inout Int,
+               _ result: inout Int,
+               _ strCount: Int,
+               _ sign: inout Int,
+               _ isStarted: inout Bool) -> Int {
+    
+    if strIndex == strCount { return result*sign }
+    let curChar = s[s.index(s.startIndex, offsetBy: strIndex)]
+    if curChar == " " {
+        if isStarted { return result*sign }
+    } else if (curChar == "-" || curChar == "+") {
+        if isStarted { return result*sign }
+        isStarted = true
+        if curChar == "-" {
+            sign = -1
+        }
+    } else if curChar >= "0" && curChar <= "9" {
+        isStarted = true
+        if let val = curChar.wholeNumberValue {
+            result = result*10+val
+        }
+        if result > Int32.max {
+            return sign == 1 ? Int(Int32.max) : Int(Int32.min)
+        }
+    } else {
+        return result*sign
+    }
+    strIndex+=1
+    return myAtoiRec(s, &strIndex, &result, strCount, &sign, &isStarted)
+}
+
 let atoiString = "  43   "//"        42       "// "   -42"//"4193 with words"
-let atoiOutput = myAtoi(atoiString)
+let atoiOutput1 = myAtoi(atoiString)
+
+let atoiInputString = "   -42"//"   -42"//"3.14"//"-A  1234567890"//"        42       "// "   -42"//"4193 with words"
+let atoiOutput2 = myAtoiUsingRecursion(atoiInputString)
+print("output is--", atoiOutput2)// 43
+
 //print("output is--  ", atoiOutput)// 43
 
 
@@ -505,4 +550,60 @@ func restoreString2(_ s: String, _ indices: [Int]) -> String {
 
 let restoreStr = "codeleet"
 let restoreVale = restoreString2(restoreStr, [4,5,6,7,0,2,1,3])
-print("output--->", restoreVale)
+//print("output--->", restoreVale)
+
+
+func strStr(_ haystack: String, _ needle: String) -> Int {
+    let ipStrCount = haystack.count, ipTargetCount = needle.count
+    if ipTargetCount == 0 || haystack == needle { return 0 }
+    guard ipStrCount >= ipTargetCount else { return -1 }
+    
+    var idxH = haystack.startIndex
+    
+    for i in 0...(ipStrCount - ipTargetCount) {
+        let idx = haystack.index(idxH, offsetBy: ipTargetCount)
+        if haystack[idxH..<idx] == needle { return i }
+        idxH = haystack.index(idxH, offsetBy: 1)
+    }
+    return -1
+}
+
+
+let inputStr = "sadbutsad"
+let inputToFind = "sad"
+let opIndex = strStr(inputStr, inputToFind)
+//print("opIndex--->", opIndex)
+
+
+    
+    func reverseVowels(_ s: String) -> String {
+        let setVowel: Set<Character> = ["a","A","e","E","i","I","o","O","u","U"]
+        var strCopy = s
+        var starChar: Character = "*"
+        var (l,r) = (strCopy.startIndex, strCopy.index(before: strCopy.endIndex))
+        while l < r {
+            switch (setVowel.contains(strCopy[l]), setVowel.contains(strCopy[r]))  {
+                case (true, true):
+                    starChar = strCopy[l]
+                    strCopy.replaceSubrange(l...l, with: String(strCopy[r]))
+                    strCopy.replaceSubrange(r...r, with: String(starChar))
+                    l = strCopy.index(after: l)
+                    r = strCopy.index(before: r)
+                case (true, false):
+                    r = strCopy.index(before: r)
+                case (false, true):
+                    l = strCopy.index(after: l)
+                default:
+                    l = strCopy.index(after: l)
+                    r = strCopy.index(before: r)
+            }
+        }
+        return String(strCopy)
+    }
+
+
+
+let inputStrWithVowel = "leetcode"
+let opReverseVowel = reverseVowels(inputStrWithVowel)
+print("opReverseVowel--->", opReverseVowel)
+
