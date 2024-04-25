@@ -584,7 +584,7 @@ let largestSumElements = longestSubarrayWithGivenSumKTwoLoops(&arrayex, k: desir
 // TC:O(n)
 // SC:O(1)
 func findMissingNumber1(arr: [Int]) ->Int {
-    let len = arr.count + 1
+    let len = arr.count 
     var summationOfFirstN = len*(len+1)/2
     for value in arr {
         summationOfFirstN -= value
