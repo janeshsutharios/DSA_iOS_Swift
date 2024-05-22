@@ -478,6 +478,34 @@ generateAllBinaryStrings(lengthOfBinary, &binArry, 0)
  Binary arr---    [1, 0]
  Binary arr---    [1, 1]
  */
+
+// Method #2 Generate all binary string
+
+func generateAllBinaryStringsWithLoop(_ n: Int) {
+    // Create an array to store the binary representation
+    var binArry = [Int](repeating: 0, count: n)
+    
+    // Iterate through all numbers from 0 to 2^n - 1
+    for i in 0..<Int(pow(2.0, Double(n))) {
+        var temp = i
+        
+        // Iterate through each bit position using a for loop
+        for j in 0..<n {
+            // Get the remainder when divided by 2 (the current bit)
+            binArry[j] = temp % 2
+            // Divide by 2 to move to the next bit
+            temp /= 2
+        }
+        
+        // Process the current binary array (you can replace this with your own logic)
+        print("Binary array-------------------------------->", binArry)
+    }
+}
+// Example usage with a binary array of length 2
+var lengthOfBinary2 = 2
+generateAllBinaryStringsWithLoop(lengthOfBinary2)
+
+
 // Question: Generate parathesis.
 
 func generateParenthesis(_ n: Int) -> [String] {
