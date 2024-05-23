@@ -942,8 +942,443 @@ let opKsum = subarraySumK(subArr, kSum)
 
 // MARK: - Array Hard
 
+//#Q 1 Pascal traingle
+// https://leetcode.com/problems/pascals-triangle/description/
+// TC : o(n^2) double loop
+// SC o(n^2) 2D array.
+func generatePascalsTriangle(_ numRows: Int) -> [[Int]] {
+    var pascalObject = [[Int]](repeating: [Int](), count: numRows)
+    
+    for i in 0..<numRows {
+        pascalObject[i] = [Int](repeating: 0, count: i+1)
+        
+        for j in 0..<i+1 {
+            if j == 0 || j == i {
+                pascalObject[i][j] = 1
+            } else {
+                pascalObject[i][j] = pascalObject[i-1][j-1] + pascalObject[i-1][j]
+            }
+        }
+    }
+    return pascalObject
+}
+let numberOfRows = 5
+//print("Pascal triangle --->", generatePascalsTriangle(numberOfRows))
 
-// Question Found occurance of elements
+//Q #2 Majority Element (n/3 times)
+//https://leetcode.com/problems/majority-element-ii/description/
+func majorityElementNBy3(_ nums: [Int]) -> [Int] {
+    if nums.isEmpty { return [] }
+    var frequencyDictionary: Dictionary<Int,Int> = [:], result: [Int] = []
+    for num in nums {
+        frequencyDictionary[num, default: 0] += 1
+    }
+    for (key,val) in frequencyDictionary where val > (nums.count/3) {
+        result.append(key)
+    }
+    return result
+}
+let majority3Input = [11, 33, 33, 11, 33, 11]
+let majority3Output = majorityElementNBy3(majority3Input)
+// print("The majority elements are: ", majority3Output) // 11, 33
+
+// Q #3 ThreeSum problem.
+//https://leetcode.com/problems/3sum/description/
+func threeSum(_ nums: [Int]) -> [[Int]] {
+    let sorted = nums.sorted()
+    var result = [[Int]]()
+    for index in 0 ..< sorted.count - 2 {
+        let first = sorted[index]
+        if index > 0, sorted[index - 1] == first {
+            // Iterating through the same number. Already handled.
+            continue
+        }
+        
+        // Now we know the first number, iterating up from the beginning, down from the end
+        // to find all cases of (second + third) == - first
+        var lowerIndex = index + 1
+        var upperIndex = sorted.count - 1
+        
+        /// Iterate lower bound up to change the value of `second`.
+        /// Increases the sum
+        func nextLower() {
+            let current = sorted[lowerIndex]
+            repeat {
+                lowerIndex += 1
+            } while lowerIndex < upperIndex && sorted[lowerIndex] == current
+        }
+        
+        /// Iterate upper bound down to change the value of `third`.
+        /// Decreases the sum
+        func nextUpper() {
+            let current = sorted[upperIndex]
+            repeat {
+                upperIndex -= 1
+            } while lowerIndex < upperIndex && sorted[upperIndex] == current
+        }
+        
+        while lowerIndex < upperIndex {
+            let second = sorted[lowerIndex]
+            let third = sorted[upperIndex]
+            
+            switch (first + second + third) {
+            case 0:
+                result.append([first, second, third])
+                nextLower()
+                nextUpper()
+            case ..<0:
+                // We need to increase the sum
+                nextLower()
+            case 1...:
+                // We need to decrease the sum
+                nextUpper()
+            default: fatalError()
+            }
+        }
+    }
+    return result
+}
+
+// Q #4:Sum which equals to zero
+// Two pointers a & b are fixed and we have two moving  pointers c and d. where c starts from b + 1 and d is start from last index
+//https://leetcode.com/problems/4sum/description/
+func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+    let len = nums.count
+    guard len >= 4 else { return [] }// minimum 4 items required for 4 sum
+    
+    var result = [[Int]]()
+    let sort = nums.sorted()
+    
+    for a in 0..<(len - 1) where a == 0 || sort[a] != sort[a-1] { // if sort[a] == sort[a-1] discard the loop // a is fix pointer
+        for b in (a + 1)..<len where b == a + 1 || sort[b] != sort[b-1] {// if sort[b] == sort[b-1] discard the loop // b is fix pointer
+            var c = b + 1, d = len - 1// c pointer is b+1 which is movable
+            while c < d {// As array is sorted check if c pointer doesn't jump
+                let val = (a: sort[a], b: sort[b], c: sort[c], d: sort[d])
+                let sum = (val.a + val.b + val.c + val.d)
+                if sum == target { result.append([val.a,val.b,val.c,val.d]) }// add result to the array as we found the desired sum
+                if sum < target {
+                    while sort[c] == val.c, c < d { c += 1 }// increment c pointer as we get lesser sum
+                } else {
+                    while sort[d] == val.d, d > b { d -= 1 }// decrement d pointer which is the last
+                }
+            }
+        }
+    }
+    return result
+}
+
+let fourSumInputArray = [1,0,-1,0,-2,2]
+let fourSumOutputArray = fourSum(fourSumInputArray, 0)
+//print("Output array-->", fourSumOutputArray) //[[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
+
+// Q #5 Length of the longest subarray with zero Sum
+//https://takeuforward.org/data-structure/length-of-the-longest-subarray-with-zero-sum/
+func maxLen(_ A: [Int], _ n: Int) -> Int {
+    // Dictionary to store the cumulative sum and its index
+    var mpp = [Int: Int]()
+    
+    // Variable to store the maximum length of subarray with sum zero
+    var maxi = 0
+    // Variable to store the cumulative sum
+    var sum = 0
+    
+    // Loop through the array
+    for i in 0..<n {
+        // Update the cumulative sum
+        sum += A[i]
+        
+        // If the cumulative sum is zero, update maxi to the current index + 1
+        if sum == 0 {
+            maxi = i + 1
+        } else {
+            // If the cumulative sum has been seen before
+            if let prevIndex = mpp[sum] {
+                // Calculate the length of the subarray and update maxi if this length is larger
+                maxi = max(maxi, i - prevIndex)
+            } else {
+                // Store the cumulative sum with its index in the dictionary
+                mpp[sum] = i
+            }
+        }
+    }
+    
+    // Return the maximum length of subarray with sum zero
+    return maxi
+}
+let array1 = [1, -1, 3, 2, -2, -3, 3]
+let length = array1.count
+print(maxLen(array1, length))  // Output: The maximum length of a subarray with sum zero
+
+//Q #6 Count the number of subarrays with given xor K
+
+func subarraysWithXorK(_ arr: [Int], _ k: Int) ->Int {
+    let arrCount = arr.count //size of the given array.
+    var xr = 0
+    var mpp:[Int: Int] = [:]
+    mpp[0] = 1 //setting the value of 0.
+    var cnt = 0
+    
+    for i in 0..<arrCount {
+        // prefix XOR till index i:
+        xr = xr ^ arr[i]
+        
+        //By formula: x = xr^k:
+        let x = xr ^ k
+        
+        // add the occurrence of xr^k
+        // to the count:
+        cnt += mpp[x, default: 0]
+
+        // Insert the prefix xor till index i
+        // into the map:
+        mpp[xr] = mpp[xr, default: 0] + 1
+    }
+    return cnt
+}
+
+let xorArray = [5, 6, 7, 8, 9]
+let kValue = 5
+//print("subarraysWithXorK ---  ", subarraysWithXorK(xorArray, kValue))// 2
+
+//Q #8 Merge Overlapping Subintervals
+//https://leetcode.com/problems/merge-intervals/description/
+//TC: O(N*logN) + O(N), where N = the size of the given array.
+//Reason: Sorting the given array takes  O(N*logN) time complexity. Now, after that, we are just using a single loop that runs for N times. So, the time complexity will be O(N).
+//SC: O(N), as we are using an answer list to store the merged intervals. Except for the answer array, we are not using any extra space.
+func mergeOverlappingIntervals(_ intervals: [[Int]]) -> [[Int]] {
+    
+    guard !intervals.isEmpty else { return [] }
+    var intervals = intervals.sorted(by: { $0[0] < $1[0] })// We are sorting the array hence we get sorted intervals
+    
+    var ans = [[Int]]() // Answer stored
+    var start = intervals[0][0] // First object
+    var end = intervals[0][0] // First object
+    
+    for interval in intervals {
+        if end < interval[0] {
+            ans.append([start, end])
+            start = interval[0]
+            end = interval[1]
+        } else {
+            end = max(end, interval[1])// Increment end till we get max
+        }
+    }
+    
+    ans.append([start, end])
+    return ans
+}
+
+let arrMergeIntervals = [[1, 3], [8, 10], [2, 6], [15, 18]]
+var ansMergeInterals = mergeOverlappingIntervals(arrMergeIntervals)
+// print("The merged intervals are:", ansMergeInterals) // [[1, 6], [8, 10], [15, 18]]
+
+//Q #9 Merge two Sorted Arrays Without Extra Space
+// https://leetcode.com/problems/merge-sorted-array/description/
+/**
+ Time Complexity: O((n+m)*log(n+m)), where n and m are the sizes of the given arrays.
+ Reason: The gap is ranging from n+m to 1 and every time the gap gets divided by 2. So, the time complexity of the outer loop will be O(log(n+m)). Now, for each value of the gap, the inner loop can at most run for (n+m) times. So, the time complexity of the inner loop will be O(n+m). So, the overall time complexity will be O((n+m)*log(n+m)).
+
+ Space Complexity: O(1) as we are not using any extra space.
+ */
+func mergeTowSortedArrays(_ arr1: inout [Int], _ arr2: inout [Int], _ n: Int, _ m: Int) {
+    
+    var len = n + m
+    var gap = len / 2
+    
+    while gap > 0 {
+        var left = 0
+        var right = left + gap
+        
+        while right < len {
+            if left < n && right >= n {
+                swapIfGreater(&arr1, &arr2, left, right - n)
+            } else if left >= n {
+                var newArr2 = arr2
+                swapIfGreater(&arr2, &newArr2, left - n, right - n)
+            } else {
+                var newArr1 = arr1
+                swapIfGreater(&arr1, &newArr1, left, right)
+            }
+            left += 1
+            right+=1
+        }
+        
+        if gap == 1 { break }
+        
+        gap = (gap / 2) + (gap % 2)
+
+    }
+    
+    func swapIfGreater(_ arr1: inout [Int], _ arr2: inout [Int], _ ind1: Int, _ ind2: Int) {
+        if arr1[ind1] > arr2[ind2] {
+            (arr1[ind1], arr2[ind2]) = (arr2[ind2], arr1[ind1])
+        }
+    }
+}
+
+var arr1 = [1, 4, 8, 10]
+var arr2 = [2, 3, 9]
+var n = 4, m = 3
+
+mergeTowSortedArrays(&arr1, &arr2, n, m)
+
+//print("The merged arrays are:--", arr1, arr2)// [1, 2, 3, 4] [8, 9, 10]
+
+//Q #10 Find the repeating and missing numbers
+//https://takeuforward.org/data-structure/find-the-repeating-and-missing-numbers/
+func findMissingRepeatingNumbers(_ a: [Int]) -> [Int] {
+    let n = a.count // size of the array
+    
+    // Find Sn and S2n:
+    var SN = (n * (n + 1)) / 2
+    var S2N = (n * (n + 1) * (2 * n + 1)) / 6
+    
+    // Calculate S and S2:
+    var S = 0, S2 = 0
+    for i in 0..<n {
+        S += a[i]
+        S2 += a[i] * a[i]
+    }
+    
+    //S-Sn = X-Y:
+    var val1 = S - SN
+    
+    // S2-S2n = X^2-Y^2:
+    var val2 = S2 - S2N
+    
+    //Find X+Y = (X^2-Y^2)/(X-Y):
+    val2 = val2 / val1
+    
+    //Find X and Y: X = ((X+Y)+(X-Y))/2 and Y = X-(X-Y),
+    // Here, X-Y = val1 and X+Y = val2:
+    let x = (val1 + val2) / 2
+    let y = x - val1
+    
+    return [x, y]
+}
+
+var mixArrayForMissingRepeating = [3, 1, 2, 5, 4, 6, 7, 5]
+var missingAndRepeating = findMissingRepeatingNumbers(mixArrayForMissingRepeating)
+//print("Misssing & repeating numbers are-->", missingAndRepeating) // [5, 8]
+
+// Q #12 Count Inversion
+//https://takeuforward.org/data-structure/count-inversions-in-an-array/
+/**
+ Time Complexity: O(N*logN), where N = size of the given array.
+ Reason: We are not changing the merge sort algorithm except by adding a variable to it. So, the time complexity is as same as the merge sort.
+
+ Space Complexity: O(N),
+ */
+func numberOfInversions(_ arr: [Int]) -> Int {
+    var cnt = 0
+    for i in 0..<arr.count {
+        for j in i..<arr.count {
+            if arr[i] > arr[j] {
+                cnt+=1
+            }
+        }
+    }
+    return cnt
+}
+
+let conversionArrayInput = [5, 4, 3, 2, 1]
+let conversionArrayOutput = numberOfInversions(conversionArrayInput)
+//print(" The number of inversions is: ", conversionArrayOutput) // 10
+
+//Q #13 Count reverse pairs..
+//https://leetcode.com/problems/reverse-pairs/description/
+
+func merge(_ arr: inout [Int], _ low: Int,_ mid: Int,_ high: Int) {
+    var temp: [Int] = [] // temporary array
+    var left = low // starting index of left half of arr
+    var right = mid + 1 // starting index of right half of arr
+    
+    // storing elements in the temporary array in a sorted manner
+    while (left <= mid && right <= high) {
+        if (arr[left] <= arr[right]) {
+            temp.append(arr[left])
+            left+=1
+        } else {
+            temp.append(arr[right])
+            right+=1
+        }
+    }
+    
+    // if elements on the left half are still left
+    while (left <= mid) {
+        temp.append(arr[left])
+        left+=1
+    }
+    
+    // if elements on the right half are still left
+    while (right <= high) {
+        temp.append(arr[right])
+        right+=1
+    }
+    
+    // transferring all elements from temporary to arr
+    for i in low...high {
+        arr[i] = temp[i - low]
+    }
+}
+
+func mergeSort(_ arr: inout [Int],_ low: Int,_ high: Int) -> Int{
+    var cnt = 0
+    if (low >= high) {
+        return cnt
+    }
+    let mid = ((low + high) / 2)
+    cnt += mergeSort(&arr, low, mid) // left half
+    cnt += mergeSort(&arr, mid + 1, high) // right half
+    cnt += countPairs(arr, low, mid, high) // Modification
+    merge(&arr, low, mid, high) // merging sorted halves
+    return cnt
+}
+
+func countPairs(_ arr: [Int],_ low: Int,_ mid: Int, _ high: Int) ->Int {
+    var right = mid + 1
+    var cnt = 0
+    for i in low...mid {
+        while (right <= high && arr[i] > 2 * arr[right]) {
+            right+=1
+            
+        }
+        cnt += (right - (mid + 1))
+    }
+    return cnt
+}
+
+func team(_ skill: inout [Int]) -> Int {
+    return mergeSort(&skill, 0, skill.count - 1)
+}
+
+var inputCountReversePair = [4, 1, 2, 3, 1]
+let outputCountReversePair = team(&inputCountReversePair)
+//print("->  The number of reverse pair is: ", outputCountReversePair)// 3
+
+//Q #14. maxProductSubArray
+//https://leetcode.com/problems/maximum-product-subarray/
+func maxProductSubArray(_ arr: [Int]) ->Int {
+    var prod1 = arr[0]
+    var prod2 = arr[0]
+    var result = arr[0]
+    
+    for i in 1..<arr.count {
+        var temp = max(arr[i],max(prod1*arr[i], prod2*arr[i]))
+        prod2 = min(arr[i], min(prod1*arr[i], prod2*arr[i]))
+        prod1 = temp
+        result = max(result, prod1)
+    }
+    
+    return result
+}
+var inputMaxProductSubArray = [1,2,-3,0,-4,-5]
+var outputMaxProductSubArray = maxProductSubArray(nums)
+//print("The maximum product subarray is: ", outputMaxProductSubArray)// 4
+
+// MARK: - TUF Problems ends...
+
+// Question Fiund occurance of elements
 // TC: O(n)
 // SC: O(n)
 func findOccurance(_ arr: [Int]) -> [Int:Int] {
@@ -958,7 +1393,6 @@ func findOccurance(_ arr: [Int]) -> [Int:Int] {
     }
     return hashObject
 }
-
 //var anArray = [5,4,5,5,6,9,5,6]
 //let hashObj = findOccurance(anArray)
 //print("Hash obj---", hashObj) // [4: 1, 6: 2, 9: 1, 5: 4]
@@ -988,10 +1422,7 @@ var anArray = [5,4,5,5,6,9,5,6]
 let diffrence = findDiffranceBetweenHighLowOccurance(anArray)
 //print("diffrence", diffrence) // 2
 
-
-
 // Question rotate array by K elements
-
 func reverseArray(_ arr: inout [Int], startIndex:  Int, endIndex:  Int) {
     var startIndex = startIndex
     var endIndex = endIndex
@@ -1065,8 +1496,6 @@ func searchMatrix2(matrix: [[Int]],  target: Int) ->Bool {
         return false
     }
 }
-
-
 let matrix: [[Int]] =
     [[23, 25, 35, 37],
     [40, 41, 42, 43],
@@ -1095,11 +1524,9 @@ func replaceElements(_ arr: [Int]) -> [Int] {
     return nums
 }
 
-
-var leaderArr1 = [10, 22, 12, 3, 0, 6]
-let leaderArrayOutput1 = replaceElements( leaderArr1)
-//print("leaderArrayOutput1 array-->", leaderArrayOutput1)
-
+var arr22 = [10, 22, 12, 3, 0, 6]
+let eleOp = replaceElements( arr22)
+//print("eleOp array-->", eleOp)
 
 // Question: Find longest consecutive in an array
 func  longestConsecutiveArray(_ nums: [Int]) -> [Int] {
@@ -1127,47 +1554,6 @@ var consecutiveArr1 = [6,8,7,100,200]
 var ansConsecutiveArr1 = longestConsecutiveArray(consecutiveArr1)
 //print("The longest consecutive sequence is ", ansConsecutiveArr1)//[6, 7, 8]
 
-// Question Pascal triangle .
-
-// Time : o(n^2) double loop
-   // Space o(n^2) 2D array.
-func generate(_ numRows: Int) -> [[Int]] {
-    var pascalObject = [[Int]](repeating: [Int](), count: numRows)
-    
-    for i in 0..<numRows {
-        pascalObject[i] = [Int](repeating: 0, count: i+1)
-        
-        for j in 0..<i+1 {
-            if j == 0 || j == i {
-                pascalObject[i][j] = 1
-            } else {
-                pascalObject[i][j] = pascalObject[i-1][j-1] + pascalObject[i-1][j]
-            }
-        }
-    }
-    
-    return pascalObject
-}
-
-let numberOfRows = 5
-//print("Pascal triangle --->", generate(numberOfRows))
-// Question: -- Majority elements > N/3 times
-
-func majorityElementNBy3(_ nums: [Int]) -> [Int] {
-    if nums.isEmpty { return [] }
-    var frequencyDictionary: Dictionary<Int,Int> = [:], result: [Int] = []
-    for num in nums {
-        frequencyDictionary[num, default: 0] += 1
-    }
-    for (key,val) in frequencyDictionary where val > (nums.count/3) {
-        result.append(key)
-    }
-    return result
-}
-
-let majority3Input = [11, 33, 33, 11, 33, 11]
-let majority3Output = majorityElementNBy3(majority3Input)
-// print("The majority elements are: ", majority3Output) // 11, 33
 
 // Question. 3 Sum : Find triplets that add up to a zero
 // TC: O(N^3)
@@ -1233,42 +1619,7 @@ let opSumTripplet = threeSumTrippletAddUpZero(sumTrippletInput)
 // print("Output==> ", opSumTripplet) // [[-1, 0, 1], [-1, -1, 2]]
 
 
-// Question 4:Sum which equals to zero
-
-
-// Two pointers a & b are fixed and we have two moving  pointers c and d. where c starts from b + 1 and d is start from last index
-
-func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
-    let len = nums.count
-    guard len >= 4 else { return [] }// minimum 4 items required for 4 sum
-    
-    var result = [[Int]]()
-    let sort = nums.sorted()
-    
-    for a in 0..<(len - 1) where a == 0 || sort[a] != sort[a-1] { // if sort[a] == sort[a-1] discard the loop // a is fix pointer
-        for b in (a + 1)..<len where b == a + 1 || sort[b] != sort[b-1] {// if sort[b] == sort[b-1] discard the loop // b is fix pointer
-            var c = b + 1, d = len - 1// c pointer is b+1 which is movable
-            while c < d {// As array is sorted check if c pointer doesn't jump
-                let val = (a: sort[a], b: sort[b], c: sort[c], d: sort[d])
-                let sum = (val.a + val.b + val.c + val.d)
-                if sum == target { result.append([val.a,val.b,val.c,val.d]) }// add result to the array as we found the desired sum
-                if sum < target {
-                    while sort[c] == val.c, c < d { c += 1 }// increment c pointer as we get lesser sum
-                } else {
-                    while sort[d] == val.d, d > b { d -= 1 }// decrement d pointer which is the last
-                }
-            }
-        }
-    }
-    return result
-}
-
-let fourSumInputArray = [1,0,-1,0,-2,2]
-let fourSumOutputArray = fourSum(fourSumInputArray, 0)
-//print("Output array-->", fourSumOutputArray) //[[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
-
 // Question: Length of the longest subarray with zero Sum
-
 // TC: O(N)
 // SC: O(N)
 func longestArrayWithNSum(arr: [Int]) -> Int {
@@ -1296,271 +1647,6 @@ let inputLongestSubArray = [10, -3, 3, -1, 6, -5]
 let outputLongestSubArray = longestArrayWithNSum(arr: inputLongestSubArray)
 //print("outputLongestSubArray-->", outputLongestSubArray) // 5 which is 10, -3, 3, -1, 6
 
-// Question SumWithXor
-func subarraysWithXorK(_ arr: [Int], _ k: Int) ->Int {
-    let arrCount = arr.count //size of the given array.
-    var xr = 0
-    var mpp:[Int: Int] = [:]
-    mpp[0] = 1 //setting the value of 0.
-    var cnt = 0
-    
-    for i in 0..<arrCount {
-        // prefix XOR till index i:
-        xr = xr ^ arr[i]
-        
-        //By formula: x = xr^k:
-        let x = xr ^ k
-        
-        // add the occurrence of xr^k
-        // to the count:
-        cnt += mpp[x, default: 0]
-
-        // Insert the prefix xor till index i
-        // into the map:
-        mpp[xr] = mpp[xr, default: 0] + 1
-    }
-    return cnt
-}
-
-let xorArray = [5, 6, 7, 8, 9]
-let kValue = 5
-//print("subarraysWithXorK ---  ", subarraysWithXorK(xorArray, kValue))// 2
-
-
-// Question: Merge Overlapping Sub-intervals
-//Time Complexity: O(N*logN) + O(N), where N = the size of the given array.
-//Reason: Sorting the given array takes  O(N*logN) time complexity. Now, after that, we are just using a single loop that runs for N times. So, the time complexity will be O(N).
-//
-//Space Complexity: O(N), as we are using an answer list to store the merged intervals. Except for the answer array, we are not using any extra space.
-func mergeOverlappingIntervals(_ intervals: [[Int]]) -> [[Int]] {
-    
-    guard !intervals.isEmpty else { return [] }
-    var intervals = intervals.sorted(by: { $0[0] < $1[0] })// We are sorting the array hence we get sorted intervals
-    
-    var ans = [[Int]]() // Answer stored
-    var start = intervals[0][0] // First object
-    var end = intervals[0][0] // First object
-    
-    for interval in intervals {
-        if end < interval[0] {
-            ans.append([start, end])
-            start = interval[0]
-            end = interval[1]
-        } else {
-            end = max(end, interval[1])// Increment end till we get max
-        }
-    }
-    
-    ans.append([start, end])
-    return ans
-}
-
-let arrMergeIntervals = [[1, 3], [8, 10], [2, 6], [15, 18]]
-var ansMergeInterals = mergeOverlappingIntervals(arrMergeIntervals)
-// print("The merged intervals are:", ansMergeInterals) // [[1, 6], [8, 10], [15, 18]]
-
-// QuestionMerge two Sorted Arrays Without Extra Space
-/**
- Time Complexity: O((n+m)*log(n+m)), where n and m are the sizes of the given arrays.
- Reason: The gap is ranging from n+m to 1 and every time the gap gets divided by 2. So, the time complexity of the outer loop will be O(log(n+m)). Now, for each value of the gap, the inner loop can at most run for (n+m) times. So, the time complexity of the inner loop will be O(n+m). So, the overall time complexity will be O((n+m)*log(n+m)).
-
- Space Complexity: O(1) as we are not using any extra space.
- */
-func mergeTowSortedArrays(_ arr1: inout [Int], _ arr2: inout [Int], _ n: Int, _ m: Int) {
-    
-    var len = n + m
-    var gap = len / 2
-    
-    while gap > 0 {
-        var left = 0
-        var right = left + gap
-        
-        while right < len {
-            if left < n && right >= n {
-                swapIfGreater(&arr1, &arr2, left, right - n)
-            } else if left >= n {
-                var newArr2 = arr2
-                swapIfGreater(&arr2, &newArr2, left - n, right - n)
-            } else {
-                var newArr1 = arr1
-                swapIfGreater(&arr1, &newArr1, left, right)
-            }
-            left += 1
-            right+=1
-        }
-        
-        if gap == 1 { break }
-        
-        gap = (gap / 2) + (gap % 2)
-
-    }
-    
-    func swapIfGreater(_ arr1: inout [Int], _ arr2: inout [Int], _ ind1: Int, _ ind2: Int) {
-        if arr1[ind1] > arr2[ind2] {
-            (arr1[ind1], arr2[ind2]) = (arr2[ind2], arr1[ind1])
-        }
-    }
-}
-
-var arr1 = [1, 4, 8, 10]
-var arr2 = [2, 3, 9]
-var n = 4, m = 3
-
-mergeTowSortedArrays(&arr1, &arr2, n, m)
-
-//print("The merged arrays are:--", arr1, arr2)// [1, 2, 3, 4] [8, 9, 10]
-
-
-
-// Question Find missing and repeating number
-func findMissingRepeatingNumbers(_ a: [Int]) -> [Int] {
-    let n = a.count // size of the array
-    
-    // Find Sn and S2n:
-    var SN = (n * (n + 1)) / 2
-    var S2N = (n * (n + 1) * (2 * n + 1)) / 6
-    
-    // Calculate S and S2:
-    var S = 0, S2 = 0
-    for i in 0..<n {
-        S += a[i]
-        S2 += a[i] * a[i]
-    }
-    
-    //S-Sn = X-Y:
-    var val1 = S - SN
-    
-    // S2-S2n = X^2-Y^2:
-    var val2 = S2 - S2N
-    
-    //Find X+Y = (X^2-Y^2)/(X-Y):
-    val2 = val2 / val1
-    
-    //Find X and Y: X = ((X+Y)+(X-Y))/2 and Y = X-(X-Y),
-    // Here, X-Y = val1 and X+Y = val2:
-    let x = (val1 + val2) / 2
-    let y = x - val1
-    
-    return [x, y]
-}
-
-var mixArrayForMissingRepeating = [3, 1, 2, 5, 4, 6, 7, 5]
-var missingAndRepeating = findMissingRepeatingNumbers(mixArrayForMissingRepeating)
-//print("Misssing & repeating numbers are-->", missingAndRepeating) // [5, 8]
-
-
-// Question: Count inversion
-/**
- Time Complexity: O(N*logN), where N = size of the given array.
- Reason: We are not changing the merge sort algorithm except by adding a variable to it. So, the time complexity is as same as the merge sort.
-
- Space Complexity: O(N),
- */
-func numberOfInversions(_ arr: [Int]) -> Int {
-    var cnt = 0
-    for i in 0..<arr.count {
-        for j in i..<arr.count {
-            if arr[i] > arr[j] {
-                cnt+=1
-            }
-        }
-    }
-    return cnt
-}
-
-let conversionArrayInput = [5, 4, 3, 2, 1]
-let conversionArrayOutput = numberOfInversions(conversionArrayInput)
-//print(" The number of inversions is: ", conversionArrayOutput) // 10
-
-
-// Question Count reverse pairs..
-func merge(_ arr: inout [Int], _ low: Int,_ mid: Int,_ high: Int) {
-    var temp: [Int] = [] // temporary array
-    var left = low // starting index of left half of arr
-    var right = mid + 1 // starting index of right half of arr
-    
-    // storing elements in the temporary array in a sorted manner
-    while (left <= mid && right <= high) {
-        if (arr[left] <= arr[right]) {
-            temp.append(arr[left])
-            left+=1
-        } else {
-            temp.append(arr[right])
-            right+=1
-        }
-    }
-    
-    // if elements on the left half are still left
-    while (left <= mid) {
-        temp.append(arr[left])
-        left+=1
-    }
-    
-    // if elements on the right half are still left
-    while (right <= high) {
-        temp.append(arr[right])
-        right+=1
-    }
-    
-    // transferring all elements from temporary to arr
-    for i in low...high {
-        arr[i] = temp[i - low]
-    }
-}
-
-func countPairs(_ arr: [Int],_ low: Int,_ mid: Int, _ high: Int) ->Int{
-    var right = mid + 1
-    var cnt = 0
-    for i in low...mid {
-        while (right <= high && arr[i] > 2 * arr[right]) {
-            right+=1
-            
-        }
-        cnt += (right - (mid + 1))
-    }
-    return cnt
-}
-
-func mergeSort(_ arr: inout [Int],_ low: Int,_ high: Int) -> Int{
-    var cnt = 0
-    if (low >= high) {
-        return cnt
-    }
-    let mid = ((low + high) / 2)
-    cnt += mergeSort(&arr, low, mid) // left half
-    cnt += mergeSort(&arr, mid + 1, high) // right half
-    cnt += countPairs(arr, low, mid, high) // Modification
-    merge(&arr, low, mid, high) // merging sorted halves
-    return cnt
-}
-
-func team(_ skill: inout [Int]) -> Int {
-    return mergeSort(&skill, 0, skill.count - 1)
-}
-
-var inputCountReversePair = [4, 1, 2, 3, 1]
-let outputCountReversePair = team(&inputCountReversePair)
-//print("->  The number of reverse pair is: ", outputCountReversePair)// 3
-
-// Question. maxProductSubArray
-
-func maxProductSubArray(_ arr: [Int]) ->Int {
-    var prod1 = arr[0]
-    var prod2 = arr[0]
-    var result = arr[0]
-    
-    for i in 1..<arr.count {
-        var temp = max(arr[i],max(prod1*arr[i], prod2*arr[i]))
-        prod2 = min(arr[i], min(prod1*arr[i], prod2*arr[i]))
-        prod1 = temp
-        result = max(result, prod1)
-    }
-    
-    return result
-}
-var inputMaxProductSubArray = [1,2,-3,0,-4,-5]
-var outputMaxProductSubArray = maxProductSubArray(nums)
-//print("The maximum product subarray is: ", outputMaxProductSubArray)// 4
 
 func lengthOfLongestSubstring(_ s: String) -> Int {
     var longest = 0, startIndex = 0
@@ -1612,7 +1698,6 @@ return sumOfDivisible(3) + sumOfDivisible(5) + sumOfDivisible(7) -
 }
 var opOfMultiply = sumOfMultiples(15)
 //print("opOfMultiply is--->", opOfMultiply) // 81
-
 
 func reverse(_ nums: inout [Int], _ start: Int, _ end: Int) {
     var start = start, end = end
