@@ -1,77 +1,119 @@
-import UIKit
+// Array questions.
 
-var greeting = "Hello, playground"
+// MARK: - Array Easy
+// Q #1,#2: Find second highest & lowest number...
+// https://takeuforward.org/data-structure/find-second-smallest-and-second-largest-element-in-an-array/
+func secondLargest(arr: inout [Int], _ n: Int) -> Int {
+    if n<2 { return -1 }
+    var large = 0
+    var secondLarge = 0
+    for i in 0..<n {
+        if arr[i] > large {
+            secondLarge = large
+            large = arr[i]
+        }
+        
+        else if arr[i] > secondLarge && arr[i] != large {
+            secondLarge = arr[i]
+        }
+    }
+    return secondLarge
+}
+
+func secondLowest(arr: inout [Int], _ n: Int) -> Int {
+    if n<2 { return -1 }
+    var small = Int.max
+    var secondSmall = Int.max
+    for i in 0..<n {
+        if arr[i] < small {
+            secondSmall = small
+            small = arr[i]
+        }
+        
+        else if arr[i] < secondSmall && arr[i] != small {
+            secondSmall = arr[i]
+        }
+    }
+    return secondSmall
+}
+
+var arr = [4,3,2,5,9,9]
+secondLargest(arr: &arr, arr.count)
+secondLowest(arr: &arr, arr.count)
+
+// Q #3 : Check is array is sorted...
+// https://takeuforward.org/data-structure/check-if-an-array-is-sorted/
+func isSorted(_ arr: [Int]) ->Bool {
+    for obj in 1..<arr.count {
+        if arr[obj-1] > arr[obj] {
+            return false
+        }
+    }
+    return true
+}
+
+//var digits = [5,2,3,4]
+//isSorted(digits)
+
+// #Addon : Find duplicate elements in array
 // Approach: 1 brute force
 // TC O(n^2)
 // SC O(n)
-//func findDuplicate(_ nums: [Int]) -> Int {
-//    let arr = nums.sorted()
-//    for i in 0..<arr.count {
-//        for j in i+1..<arr.count {
-//            if arr[i] == arr[j] {
-//                return arr[i]
-//            }
-//        }
-//    }
-//    return -1
-//
-//}
+func findDuplicate1(_ nums: [Int]) -> Int {
+    let arr = nums.sorted()
+    for i in 0..<arr.count {
+        for j in i+1..<arr.count {
+            if arr[i] == arr[j] {
+                return arr[i]
+            }
+        }
+    }
+    return -1
+
+}
 //let arr = [9,3,3,5,2,5]
-//let dup = findDuplicate(arr)
-////print("dup is", dup)
+//let dup = findDuplicate1(arr)
+//print("dup is", dup)
 
 // Approach: 2 Better solution.
 // TC O(n)
 // SC O(n)
-//func findDuplicate(_ nums: [Int]) -> Int {
-//    let arr = nums.sorted()
-//    let size = arr.count
-//    for i in 1..<arr.count {
-//        if arr[i] == arr[i-1] {
-//            return arr[i]
-//        }
-//    }
-//    return -1
-//}
+func findDuplicate2(_ nums: [Int]) -> Int {
+    let arr = nums.sorted()
+    let size = arr.count
+    for i in 1..<arr.count {
+        if arr[i] == arr[i-1] {
+            return arr[i]
+        }
+    }
+    return -1
+}
 //var arr = [3,3,5,4,1,3]
 //let dup = findDuplicate(arr)
-////print("dup is", dup)
+//print("dup is", dup)
 
-//func store(_ nums: inout [Int],  _ cur: Int) -> Int {
-//    if (cur == nums[cur]) {
-//        return cur
-//    }
-//    var nxt = nums[cur]
-//    nums[cur] = cur
-//    return store(&nums, nxt)
-//}
-//   
-//let duplicate = store(&arr, 0)
-////print(duplicate)
-////print("dd")
-
-// Approach: 3 Optimum solution using Hashing. Here original Array also not disturbed
+// Approach: #3 Optimum solution using Hashing. Here original Array also not disturbed
 // TC O(n)
 // SC O(n)
-//func findDuplicate(_ nums: [Int]) -> Int {
-//    var hashMap: [Int:Int] = [:]
-//    for i in nums {
-//        if hashMap[i] == nil {
-//            hashMap[i] = i
-//        } else {
-//            return hashMap[i]!
-//        }
-//    }
-//    return -1
-//}
+func findDuplicate3(_ nums: [Int]) -> Int {
+    var hashMap: [Int:Int] = [:]
+    for i in nums {
+        if hashMap[i] == nil {
+            hashMap[i] = i
+        } else {
+            return hashMap[i]!
+        }
+    }
+    return -1
+}
 //let arr = [9,2,3,3,5,2,5]
 //let dup = findDuplicate(arr)
-////print("dup is--->", dup)
+//print("dup is--->", dup)
 
-//Approach #3  Optimum Solution using Flyod Tortoise Hare solution
+//Approach #4  Optimum Solution using Flyod Tortoise Hare solution
 //Time Complexity: O(n)
 //Space Complexity: O(1)
-func findDuplicate(_ nums: [Int]) ->Int {
+func findDuplicate4(_ nums: [Int]) ->Int {
     // Find the intersection point of the two runners.
     if nums.isEmpty { return -1 }
     var tortoise = nums[0]
@@ -102,11 +144,310 @@ func findDuplicate(_ nums: [Int]) ->Int {
     return hare
 }
 
-let duplicate1 = findDuplicate([1,2,3,1])//1,2,2,3,4,5,6
-////print("dup is-->", duplicate1)
-////print("data--")
+
+let duplicate1 = findDuplicate1([1,2,3,1])//1,2,2,3,4,5,6
+//print("dup is-->", duplicate1)
+//print("data--")
+
+// Approach #5
+func findDuplicate5(_ nums: inout [Int],  _ cur: Int) -> Int {
+    if (cur == nums[cur]) {
+        return cur
+    }
+    var nxt = nums[cur]
+    nums[cur] = cur
+    return findDuplicate5(&nums, nxt)
+}
+//  var arr = [3,3,5,4,1,3]
+//
+//let duplicate = findDuplicate5(&arr, 0)
+//print(duplicate)
+
+// Q #4 Remove duplicates from sorted array.
+// https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+func removeDuplicates(_ nums: inout [Int]) -> Int {
+    
+    guard !nums.isEmpty else { return 0 }
+    var i = 0
+    
+    for j in 1..<nums.count {
+        // Only to add new elements in array
+        guard nums[i] != nums[j] else { continue }
+        i += 1
+        //Assign it to original array
+        nums[i] = nums[j]
+    }
+    return i + 1
+}
+
+// Q #5: Left Rotate array by one
+// https://takeuforward.org/data-structure/left-rotate-the-array-by-one/
+func rotateArrayByOne(_ arr: inout [Int], _ n: Int)  {
+    if n < 2 { return }
+    var temp = arr[0] // storing the first element of array in a variable
+    for i in 0..<n-1 {
+       arr[i] = arr[i + 1]
+     }
+     arr[n - 1] = temp // assigned the value of variable at the last index
+    
+}
+//var digits = [5,2,3,4]
+//rotateArrayByOne(&digits, digits.count)
+//print(digits)
+
+// Q #6 Rotate element by K place.
+//Input: nums = [1,2,3,4,5,6,7], k = 3
+//Output: [5,6,7,1,2,3,4]
+// https://leetcode.com/problems/rotate-array/description/
+func rotate(_ nums: inout [Int], _ k: Int) {
+    let arrCount = nums.count
+    let k = k%arrCount // Modulo ensures the range within the length and avoids unnecessary rotation.
+    reverse(&nums, 0, arrCount-1)
+    reverse(&nums, 0, k-1)
+    reverse(&nums, k, arrCount-1)
+}
+
+// Q #7 moves zeroes to end
+
+func moveZerosToEnd(_ arr: inout [Int]) {
+    var firstZeroIndex = 0
+    for obj in arr {
+        if obj == 0 {
+            break
+        } else {
+            firstZeroIndex+=1
+        }
+    }
+    var i = firstZeroIndex
+    var j = firstZeroIndex + 1
+    while i < arr.count && j < arr.count  {
+        if arr[j] != 0 {
+            let temp = arr[i]
+            arr[i] = arr[j]
+            arr[j] = temp
+            i+=1
+        }
+        j+=1
+    }
+    
+}
+
+//var mixArray = [1,2,0,1,0,4,0]
+//moveZerosToEnd(&mixArray)
+//print(mixArray)
+
+//Q #8  Calculate union of two sorted array
+
+//Input: n = 5,m = 5.
+//arr1[] = {1,2,3,4,5}
+//arr2[] = {2,3,4,4,5}
+//Output: {1,2,3,4,5}
+
+func unionOfTwoSortedArray(array1: [Int], array2: [Int]) -> [Int] {
+    let firstLength = array1.count
+    let secondLength = array2.count
+    var i = 0, j = 0
+    var unionArray: [Int] = []
+    
+    while i < firstLength && j < secondLength {
+        if array1[i] < array2[j] {
+            // To check if unionArray is non empty & elements is not present already
+            if unionArray.isEmpty || unionArray.last != array1[i] {
+                unionArray.append(array1[i])
+            }
+            i+=1
+        } else {
+            if unionArray.isEmpty || unionArray.last != array2[j] {
+                unionArray.append(array2[j])
+            }
+            j+=1
+        }
+    }
+    while i < firstLength {
+        if unionArray.last != array1[i] {
+            unionArray.append(array1[i])
+        }
+        i+=1
+    }
+    while j < secondLength {
+        if unionArray.last != array2[j] {
+            unionArray.append(array2[j])
+        }
+        j+=1
+    }
+    return unionArray
+}
+
+//let firstArray = [1,2,3,4,5]
+//let secondArray = [2,3,4,4,5]
+
+//let unionArray = unionOfTwoSortedArray(array1: firstArray, array2: secondArray)
+//print("union-Array->", unionArray)
 
 
+//Q #Add On: Find intersaction of two elements
+// Ex-->    A: [1 2 3 3 4 5 6] , B: [3 3 5] Output: 3,3,5
+// TC O(n)
+// SC O(1)
+
+func findIntersactionOfElements(array1: [Int], array2: [Int]) -> [Int] {
+    let firstLength = array1.count
+    let secondLength = array2.count
+    var i = 0, j = 0
+    var intersactionArray: [Int] = []
+    
+    while i < firstLength && j < secondLength {
+        // Intersaction means elements are equal so we just compare i & j
+        if array1[i] == array2[j] {
+            intersactionArray.append(array1[i])
+            i+=1
+            j+=1
+        } else  if array1[i] < array2[j] {
+            i+=1
+        } else  {
+            j+=1
+        }
+    }
+    return intersactionArray
+}
+
+let firstArray = [1, 2, 3, 3, 4, 5, 6]
+let secondArray = [3,3,5]
+
+let intersactionArray = findIntersactionOfElements(array1: firstArray, array2: secondArray)
+//print("intersactionArray-Array->", intersactionArray)
+
+//Q #9  Find the missing number in first n Natural numbers...
+//https://leetcode.com/problems/missing-number/description/
+// Approach 1: Using Summation
+// TC:O(n)
+// SC:O(1)
+func findMissingNumber1(arr: [Int]) ->Int {
+    let len = arr.count
+    var summationOfFirstN = len*(len+1)/2
+    for value in arr {
+        summationOfFirstN -= value
+    }
+    return summationOfFirstN
+}
+
+// Approach 2: Using Summation
+// TC:O(n)
+// SC:O(1)
+//To avoid integer overflow, pick one number from the range [1, N] and subtract a number from the given array (don’t subtract the same number twice)
+
+func findMissingNumber2(arr: [Int]) ->Int {
+    var total: Int = 1
+    var arrCount = arr.count + 1
+ 
+    for i in 2..<arrCount {
+        total += i
+        total = total - arr[i - 2]
+    }
+    return total
+}
+
+// Approach 3: Using XOR
+// TC:O(2n)
+// SC:O(1)
+func findMissingNumber3(arr: [Int]) ->Int {
+
+    var arrCount = arr.count
+    // For xor of all the elements in array
+    var x1 = arr[0]
+ 
+    // For xor of all the elements from 1 to n+1
+    var x2 = 1
+ 
+    for i in 1..<arrCount-1 {
+        x1 = x1 ^ arr[i]
+    }
+    for i in 2..<arrCount+1 {
+        x2 = x2 ^ i
+    }
+    return x1 ^ x2
+}
+ var arrayMiss: [Int] = [1,2,3,5]
+//print("Missing numbers is-->", findMissingNumber1(arr: arrayMiss))
+//print("Missing numbers is-->", findMissingNumber2(arr: arrayMiss))
+//print("Missing numbers is-->", findMissingNumber3(arr: arrayMiss))
+
+
+//Q #10 find maximum number of concecutive 1's by flipping the zeros
+//https://leetcode.com/problems/max-consecutive-ones-iii/description/
+
+func findMaxConsecutiveOnes(_ nums: [Int]) -> Int {
+    var cnt = 0
+    var maxi = 0
+    for num in nums {
+        if num == 1 {
+            cnt += 1
+        } else {
+            cnt = 0
+        }
+        maxi = max(maxi, cnt)
+    }
+    return maxi
+}
+
+// Example usage:
+let array = [1, 1, 0, 1, 1, 1]
+let result = findMaxConsecutiveOnes(array)
+print(result) // Output: 3
+
+// TC: O(n)
+// SC: O(1)
+func maxConsecutiveOfonesWithFlipiingZeros(arr: inout [Int],
+                                           arrCount: inout Int,
+                                           maxZeros: inout Int) -> Int {
+    
+    var startWindowIndex = 0
+    var endWindowIndex = 0
+    
+    for currentWindowIndex in 0..<arrCount {
+        if arr[currentWindowIndex] == 0 {
+            maxZeros -= 1
+        }
+        if maxZeros < 0 {
+            startWindowIndex += 1
+            if arr[startWindowIndex] == 0 {
+                maxZeros += 1
+            }
+        }
+        endWindowIndex = currentWindowIndex
+    }
+    return endWindowIndex-startWindowIndex
+}
+
+var arrMix = [1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1]
+var arrCount = 11
+var maxZeros = 2
+let op = maxConsecutiveOfonesWithFlipiingZeros(arr: &arrMix,
+                                               arrCount: &arrCount,
+                                               maxZeros: &maxZeros)
+//print("op", op)
+
+//Q #11 Find a number which appears only onces & other twice
+
+func singleNumber(_ nums: [Int]) -> Int {
+    var dictionaryObj: [Int: Int] = [:]
+    // set key of dictionary as count: 1 if there
+    // are more elements increase the count
+    for obj in nums {
+        if dictionaryObj[obj] == nil {
+            dictionaryObj[obj] = 1
+        } else {
+            dictionaryObj[obj]! += 1
+        }
+    }
+    for (key, _) in dictionaryObj where dictionaryObj[key] == 1 {
+        return key
+    }
+    return -1
+}
+
+
+// MARK: - Array medium
 func sortColors(_ nums: inout [Int]) {
     var low = 0
     var high = nums.count - 1
@@ -152,7 +493,7 @@ func findOccurance(_ arr: [Int]) -> [Int:Int] {
 
 //var anArray = [5,4,5,5,6,9,5,6]
 //let hashObj = findOccurance(anArray)
-////print("Hash obj---", hashObj) // [4: 1, 6: 2, 9: 1, 5: 4]
+//print("Hash obj---", hashObj) // [4: 1, 6: 2, 9: 1, 5: 4]
 
 // Question diffrence between highest & lowest occurance of a number in an array..
 // TC: O(n)
@@ -179,71 +520,7 @@ var anArray = [5,4,5,5,6,9,5,6]
 let diffrence = findDiffranceBetweenHighLowOccurance(anArray)
 //print("diffrence", diffrence) // 2
 
-// Question: Find second highest & lowest number...
-func secondLargest(arr: inout [Int], _ n: Int) -> Int {
-    if n<2 { return -1 }
-    var large = 0
-    var secondLarge = 0
-    for i in 0..<n {
-        if arr[i] > large {
-            secondLarge = large
-            large = arr[i]
-        }
-        
-        else if arr[i] > secondLarge && arr[i] != large {
-            secondLarge = arr[i]
-        }
-    }
-    return secondLarge
-}
 
-func secondLowest(arr: inout [Int], _ n: Int) -> Int {
-    if n<2 { return -1 }
-    var small = Int.max
-    var secondSmall = Int.max
-    for i in 0..<n {
-        if arr[i] < small {
-            secondSmall = small
-            small = arr[i]
-        }
-        
-        else if arr[i] < secondSmall && arr[i] != small {
-            secondSmall = arr[i]
-        }
-    }
-    return secondSmall
-}
-
-var arr = [4,3,2,5,9,9]
-secondLargest(arr: &arr, arr.count)
-secondLowest(arr: &arr, arr.count)
-// Question : Check is array is sorted...
-func isSorted(_ arr: [Int]) ->Bool {
-    for obj in 1..<arr.count {
-        if arr[obj-1] > arr[obj] {
-            return false
-        }
-    }
-    return true
-}
-
-//var digits = [5,2,3,4]
-//isSorted(digits)
-
-// Question: Rotate array by one
-
-func rotateArrayByOne(_ arr: inout [Int], _ n: Int)  {
-    if n < 2 { return }
-    var temp = arr[0] // storing the first element of array in a variable
-    for i in 0..<n-1 {
-       arr[i] = arr[i + 1]
-     }
-     arr[n - 1] = temp // assigned the value of variable at the last index
-    
-}
-//var digits = [5,2,3,4]
-//rotateArrayByOne(&digits, digits.count)
-////print(digits)
 
 // Question rotate array by K elements
 
@@ -269,154 +546,7 @@ func shiftElementsByK(_ arr: inout [Int], k: Int, count: Int) {
 //shiftElementsByK(&digits, k: 3, count: digits.count)
 ////print(digits)
 
-// Question: moves zeroes to end
 
-func moveZerosToEnd(_ arr: inout [Int]) {
-    var firstZeroIndex = 0
-    for obj in arr {
-        if obj == 0 {
-            break
-        } else {
-            firstZeroIndex+=1
-        }
-    }
-    var i = firstZeroIndex
-    var j = firstZeroIndex + 1
-    while i < arr.count && j < arr.count  {
-        if arr[j] != 0 {
-            let temp = arr[i]
-            arr[i] = arr[j]
-            arr[j] = temp
-            i+=1
-        }
-        j+=1
-    }
-    
-}
-
-//var mixArray = [1,2,0,1,0,4,0]
-//moveZerosToEnd(&mixArray)
-////print(mixArray)
-
-//Question:
-// Calculate union of two sorted array
-// example: --
-//Input:
-//n = 5,m = 5.
-//arr1[] = {1,2,3,4,5}
-//arr2[] = {2,3,4,4,5}
-//Output:
-// {1,2,3,4,5}
-
-
-func unionOfTwoSortedArray(array1: [Int], array2: [Int]) -> [Int] {
-    let firstLength = array1.count
-    let secondLength = array2.count
-    var i = 0, j = 0
-    var unionArray: [Int] = []
-    
-    while i < firstLength && j < secondLength {
-        if array1[i] < array2[j] {
-            // To check if unionArray is non empty & elements is not present already
-            if unionArray.isEmpty || unionArray.last != array1[i] {
-                unionArray.append(array1[i])
-            }
-            i+=1
-        } else {
-            if unionArray.isEmpty || unionArray.last != array2[j] {
-                unionArray.append(array2[j])
-            }
-            j+=1
-        }
-    }
-    while i < firstLength {
-        if unionArray.last != array1[i] {
-            unionArray.append(array1[i])
-        }
-        i+=1
-    }
-    while j < secondLength {
-        if unionArray.last != array2[j] {
-            unionArray.append(array2[j])
-        }
-        j+=1
-    }
-    return unionArray
-}
-
-//let firstArray = [1,2,3,4,5]
-//let secondArray = [2,3,4,4,5]
-//
-//let unionArray = unionOfTwoSortedArray(array1: firstArray, array2: secondArray)
-////print("union-Array->", unionArray)
-
-
-// Question: Find intersaction of two elements
-// Ex-->    A: [1 2 3 3 4 5 6] , B: [3 3 5] Output: 3,3,5
-// TC O(n)
-// SC O(1)
-
-func findIntersactionOfElements(array1: [Int], array2: [Int]) -> [Int] {
-    let firstLength = array1.count
-    let secondLength = array2.count
-    var i = 0, j = 0
-    var intersactionArray: [Int] = []
-    
-    while i < firstLength && j < secondLength {
-        // Intersaction means elements are equal so we just compare i & j
-        if array1[i] == array2[j] {
-            intersactionArray.append(array1[i])
-            i+=1
-            j+=1
-        } else  if array1[i] < array2[j] {
-            i+=1
-        } else  {
-            j+=1
-        }
-    }
-    return intersactionArray
-}
-
-let firstArray = [1, 2, 3, 3, 4, 5, 6]
-let secondArray = [3,3,5]
-
-let intersactionArray = findIntersactionOfElements(array1: firstArray, array2: secondArray)
-//print("intersactionArray-Array->", intersactionArray)
-
-
-// Question find maximum number of concecutive 1's by flipping the zeros
-//https://leetcode.com/problems/max-consecutive-ones-iii/description/
-// TC: O(n)
-// SC: O(1)
-func maxConsecutiveOfonesWithFlipiingZeros(arr: inout [Int],
-                                           arrCount: inout Int,
-                                           maxZeros: inout Int) -> Int {
-    
-    var startWindowIndex = 0
-    var endWindowIndex = 0
-    
-    for currentWindowIndex in 0..<arrCount {
-        if arr[currentWindowIndex] == 0 {
-            maxZeros -= 1
-        }
-        if maxZeros < 0 {
-            startWindowIndex += 1
-            if arr[startWindowIndex] == 0 {
-                maxZeros += 1
-            }
-        }
-        endWindowIndex = currentWindowIndex
-    }
-    return endWindowIndex-startWindowIndex
-}
-
-var arrMix = [1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1]
-var arrCount = 11
-var maxZeros = 2
-let op = maxConsecutiveOfonesWithFlipiingZeros(arr: &arrMix,
-                                               arrCount: &arrCount,
-                                               maxZeros: &maxZeros)
-//print("op", op)
 // Largest subarray with sum K
 
 func subarraySum(_ nums: [Int], _ targetSum: Int) -> Int {
@@ -502,61 +632,6 @@ let desiredSum = 10
 let largestSumElements = longestSubarrayWithGivenSumKTwoLoops(&arrayex, k: desiredSum)
 //print("largestSum elements", largestSumElements)
 
-
-// Question:--> Find the missing number in first n Natural numbers...
-
-// Approach 1: Using Summation
-// TC:O(n)
-// SC:O(1)
-func findMissingNumber1(arr: [Int]) ->Int {
-    let len = arr.count 
-    var summationOfFirstN = len*(len+1)/2
-    for value in arr {
-        summationOfFirstN -= value
-    }
-    return summationOfFirstN
-}
-
-// Approach 2: Using Summation
-// TC:O(n)
-// SC:O(1)
-//To avoid integer overflow, pick one number from the range [1, N] and subtract a number from the given array (don’t subtract the same number twice)
-
-func findMissingNumber2(arr: [Int]) ->Int {
-    var total: Int = 1
-    var arrCount = arr.count + 1
- 
-    for i in 2..<arrCount {
-        total += i
-        total = total - arr[i - 2]
-    }
-    return total
-}
-
-// Approach 3: Using XOR
-// TC:O(2n)
-// SC:O(1)
-func findMissingNumber3(arr: [Int]) ->Int {
-
-    var arrCount = arr.count
-    // For xor of all the elements in array
-    var x1 = arr[0]
- 
-    // For xor of all the elements from 1 to n+1
-    var x2 = 1
- 
-    for i in 1..<arrCount-1 {
-        x1 = x1 ^ arr[i]
-    }
-    for i in 2..<arrCount+1 {
-        x2 = x2 ^ i
-    }
-    return x1 ^ x2
-}
- var arrayMiss: [Int] = [1,2,3,5]
-//print("Missing numbers is-->", findMissingNumber1(arr: arrayMiss))
-//print("Missing numbers is-->", findMissingNumber2(arr: arrayMiss))
-//print("Missing numbers is-->", findMissingNumber3(arr: arrayMiss))
 
 // Question: Search in Sorted 2D matrix
 ///Problem Statement: Given an m*n 2D matrix and an integer, write a program to find if the given integer exists in the matrix.
@@ -1597,14 +1672,6 @@ return sumOfDivisible(3) + sumOfDivisible(5) + sumOfDivisible(7) -
 var opOfMultiply = sumOfMultiples(15)
 //print("opOfMultiply is--->", opOfMultiply) // 81
 
-// Question # Rotate Array in swift
-func rotate(_ nums: inout [Int], _ k: Int) {
-    let arrCount = nums.count
-    let k = k%arrCount // Modulo ensures the range within the length and avoids unnecessary rotation.
-    reverse(&nums, 0, arrCount-1)
-    reverse(&nums, 0, k-1)
-    reverse(&nums, k, arrCount-1)
-}
 
 func reverse(_ nums: inout [Int], _ start: Int, _ end: Int) {
     var start = start, end = end

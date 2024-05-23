@@ -39,6 +39,38 @@ func bubbleSort(_ arr: inout [Int]) {
 //print("Sorted Array--> ", arrayToSort)// [2, 4, 9, 11]
 //
 
+// Bubble sort using recursion with optimisation
+
+
+func bubbleSort(_ arr: inout [Int], _ n: Int) {
+    // Base Case: range == 1.
+    if n == 1 {
+        return
+    }
+
+    var didSwap = false
+    for j in 0..<n-1 {
+        if arr[j] > arr[j + 1] {
+            let temp = arr[j + 1]
+            arr[j + 1] = arr[j]
+            arr[j] = temp
+            didSwap = true
+        }
+    }
+
+    // If no swapping happens.
+    if !didSwap {
+        return
+    }
+
+    // Range reduced after recursion:
+    bubbleSort(&arr, n - 1)
+}
+
+// Example usage:
+var array = [64, 34, 25, 12, 22, 11, 90]
+bubbleSort(&array, array.count)
+print(array) // Output: [11, 12, 22, 25, 34, 64, 90]
 
 
 // Insertion Sort
@@ -66,6 +98,31 @@ func insertionSort(_ arr: inout [Int]) {
 var arrayToSort: [Int] = [5,4,10,1,6,2]
 insertionSort(&arrayToSort)
 //print("Sorted Array--> ", arrayToSort) // [1, 2, 4, 5, 6, 10]
+
+// Insertion Sort with recursion.
+func insertionSort(_ arr: inout [Int], _ i: Int, _ n: Int) {
+    // Base Case: i == n.
+    if i == n {
+        return
+    }
+
+    var j = i
+    while j > 0 && arr[j - 1] > arr[j] {
+        let temp = arr[j - 1]
+        arr[j - 1] = arr[j]
+        arr[j] = temp
+        j -= 1
+    }
+
+    insertionSort(&arr, i + 1, n)
+}
+
+// Example usage:
+//var array = [64, 34, 25, 12, 22, 11, 90]
+//insertionSort(&array, 0, array.count)
+//print(array) // Output: [11, 12, 22, 25, 34, 64, 90]
+
+
 
 // Merge Sort...
 func mergeSort(_ arr: inout [Int], _ l: Int, _ r: Int) {
