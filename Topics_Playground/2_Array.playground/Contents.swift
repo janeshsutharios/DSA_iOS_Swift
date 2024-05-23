@@ -514,7 +514,47 @@ let largestSumElements = longestSubarrayWithGivenSumKTwoLoops(&arrayex, k: desir
 //print("largestSum elements", largestSumElements)
 
 
-// MARK: - Array medium
+// MARK: - Array Medium
+//Q #1 Two-Sum. Using two pointers approach..
+// https://leetcode.com/problems/two-sum/
+// First sort array then
+//If arr[left] + arr[right] > sum, we will decrement the right pointer.
+//If arr[left] + arr[right] < sum, we will increment the left pointer.
+//If arr[left] + arr[right] == sum, we will return the result.
+func twoSum(arr: inout [Int], target: Int) ->[Int] {
+    arr.sort()
+    var left = 0
+    var right = arr.count - 1
+    while (left < right) {
+        let sum = arr[left] + arr[right]
+        if (sum == target) {
+            return [left, right]
+        } else if sum < target {
+            left+=1
+        } else {
+            right-=1
+        }
+    }
+    return []
+}
+
+func twoSumUsingDictionary(_ nums: [Int], _ target: Int) -> [Int] {
+    var dictionary = [Int:Int]()
+   for (i, n) in nums.enumerated() {
+       if let last = dictionary[target - n] {
+           return [last, i]
+       }
+       dictionary[n] = i
+   }
+   return []
+}
+var twoSumArr = [2, 6, 5, 8, 11]
+let target = 14
+let ans = twoSum(arr: &twoSumArr, target: target)
+//print("two sum index found-->", ans, twoSumArr[ans[0]], twoSumArr[ans[1]])
+
+//Q #2 Sort 0, 1 & 2's in an given array.
+// https://leetcode.com/problems/sort-colors/description/
 func sortColors(_ nums: inout [Int]) {
     var low = 0
     var high = nums.count - 1
@@ -538,11 +578,372 @@ func sortColors(_ nums: inout [Int]) {
 }
 var nums = [2,0,2,1,1,0]
 sortColors(&nums)
-////print("sort--->", nums)
+//print("sort--->", nums)
+
+//Q #3 - Find the Majority Element that occurs more than N/2 times
+// https://leetcode.com/problems/majority-element/description/
+// TC: O(n*2)
+// SC: O(1)
+func majorityElement(arr: inout [Int]) -> Int {
+    // Size of the given array
+    let n = arr.count
+
+    for i in 0..<n {
+        // Selected element is arr[i]
+        var cnt = 0
+        for j in 0..<n {
+            // Counting the frequency of arr[i]
+            if arr[j] == arr[i] {
+                cnt+=1
+            }
+        }
+        
+        // Check if frequency is greater than n/2
+        if (cnt > n/2) {
+            return arr[i]
+        }
+    }
+
+    return -1
+}
+// Approach #2 Optimal Approach: Moore’s Voting Algorithm:--->
+/**
+ Basically, we are trying to keep track of the occurrences of the majority element and minority elements dynamically. if, the count becomes 0 as the occurrence of Element and the occurrence of the other elements are the same. So, they canceled each other. This is how the process works. The element with the most occurrence will remain and the rest will cancel themselves.
+
+ */
+func majorityElementMooreVoting(arr: inout [Int]) -> Int {
+    // Size of the given array
+    let n = arr.count
+    var cnt = 0 // Count
+    var el = 0 // Element
+
+    // Applying the algorithm
+    for i in 0..<n {
+        if cnt == 0 {
+            cnt = 1
+            el = arr[i]
+        } else if el == arr[i] {
+            cnt+=1
+        } else {
+            cnt-=1
+        }
+    }
+
+    // Checking if the stored element is the majority element
+    var cnt1 = 0
+    for i in 0..<n where arr[i] == el {
+        cnt1+=1
+    }
+
+    if (cnt1 > n / 2) {
+        return el
+    }
+    return -1
+}
+var majorityArr = [2, 2, 1, 1, 1, 2, 2]
+let ansMajority = majorityElementMooreVoting(arr: &majorityArr)
+//print("The majority element is:", ansMajority)
+
+//Q #4,#5 Kadane-Algo Max subarray sum in an array
+//https://leetcode.com/problems/maximum-subarray/description/
+func findSubArrayWithMaxSumKadane(arr: inout [Int]) -> (sumValue: Int, startIndex: Int, endIndex: Int) {
+ 
+    var sum = 0
+    var maximumValue = 0
+    
+    // variables to capture start and end index
+    var startIndex = 0
+    var endIndex = 0
+    var progressiveStartIndex = 0
+    //
+    
+    for i in 0..<arr.count {
+        sum += arr[i]
+        if sum > maximumValue {
+            maximumValue = sum
+            startIndex = progressiveStartIndex
+            endIndex = i
+        }
+        if sum < 0 {
+            sum = 0
+            progressiveStartIndex = i+1
+        }
+    }
+    return (sumValue: maximumValue, startIndex: startIndex, endIndex: endIndex)
+}
+
+var kadaneArray = [-2,1,-3,4,-1,2,1,-5,4]
+let kadaneSum = findSubArrayWithMaxSumKadane(arr: &kadaneArray)
+//print("The kadaneSum  is:", kadaneSum)
+
+//Q 6: Best time to Buy sell stocks
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/
+func maxProfit(arr: [Int]) -> Int {
+    var buyPrice = Int.max
+    var difference = 0
+    
+    for i in 0..<arr.count {
+        if arr[i] < buyPrice {
+            buyPrice = arr[i]
+        }
+        if difference < (arr[i] - buyPrice) {
+            difference = arr[i] - buyPrice
+        }
+        // OR.
+        /**
+        minPrice = min(minPrice, arr[i])
+        maxPro = max(maxPro, arr[i] - minPrice)
+         */
+    }
+    return difference
+}
+
+var stockArray = [7, 1, 5, 3, 6, 4]
+let profitMax = maxProfit(arr: stockArray)
+//print("The maxProfit  is:", profitMax)
+
+// Q #7 Rearrange array by sign
+// https://leetcode.com/problems/rearrange-array-elements-by-sign/
+// Appoach: as postive index is on even numbers so create variable named positiveIndex with 0 & negativeIndex with 1 and increment the index by +2 after fill.
+// TC: O(n)
+// SC: O(1)
+func rearrangeArray(arr: [Int]) -> [Int] {
+    var positiveIndex = 0
+    var negativeIndex = 1
+    var arrangedArray = Array.init(repeating: 0, count: arr.count)
+    for i in 0..<arr.count {
+        if arr[i] < 0 {
+            arrangedArray[negativeIndex] = arr[i]
+            negativeIndex += 2
+        } else {
+            arrangedArray[positiveIndex] = arr[i]
+            positiveIndex += 2
+        }
+    }
+    return arrangedArray
+}
+
+var mixArray = [1,2,-3,-1,-2,3]
+let opArrangedArr = rearrangeArray(arr: mixArray)
+//print("The op Arranged Arr  is:", opArrangedArr)// [1, -3, 2, -1, 3, -2]
+
+//Q #8 Find Next permutation.
+//https://leetcode.com/problems/next-permutation/
+func nextPermutation(_ nums: inout [Int]) {
+    let arrayCount = nums.count
+    var lhs = -1, rhs = -1, idx = arrayCount - 2
+    while idx >= 0 {
+        if nums[idx] < nums[idx + 1] {
+            lhs = idx
+            break
+        }
+        idx -= 1
+    }
+    if lhs == -1 {
+        nums = nums.reversed()
+        return
+    }
+    
+    idx = arrayCount - 1
+    while idx > lhs {
+        rhs = idx
+        if nums[idx] > nums[lhs] { break }
+        idx -= 1
+    }
+    nums.swapAt(lhs, rhs)
+    nums.replaceSubrange(lhs + 1..<arrayCount, with: nums[lhs + 1...arrayCount - 1].reversed())
+}
+var permutationArr = [1,2,3]
+nextPermutation( &permutationArr)
+//print("The next permutation is: ", permutationArr )// 1,3,2
+
+//Q #9 Leaders in an Array
+//https://www.geeksforgeeks.org/problems/leaders-in-an-array-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=leaders-in-an-array
+//Problem Statement: Given an array, //print all the elements which are leaders. A Leader is an element that is greater than all of the elements on its right side in the array.
+// TC O(N)
+// SC O(N)
+func findLeader(arr: [Int]) ->[Int] {
+    var leader = arr.last ?? 0
+    var leaderArray:[Int] = [leader]//  Last will always leader because no elements are on right
+    for obj in stride(from: arr.count-2, to: 0, by: -1) {
+        if arr[obj] > leader {// If element is greater than leader append it into new array
+            leader = arr[obj]
+            leaderArray.append(leader)
+        }
+    }
+    return leaderArray
+}
+
+var leaderArr = [10, 22, 12, 3, 0, 6]
+let leaderArrayOutput = findLeader(arr: leaderArr)
+//print("Leader array-->", leaderArrayOutput)
+
+//Q #10 longest-consecutive-sequence-in-an-array/
+//https://takeuforward.org/data-structure/longest-consecutive-sequence-in-an-array/
+// TC: O(N)
+// SC: O(N)
+func  longestConsecutive(_ nums: [Int]) -> Int {
+    
+    var setObject = Set(nums)
+    var longestStreak = 0
+    
+    for i in 0..<nums.count {
+        
+        if !setObject.contains(nums[i] - 1) {// Find smallest element in the set
+            var currentNum = nums[i]
+            var currentStreak = 1
+            
+            while setObject.contains(currentNum + 1) {// Based on smallest element we got find next higher number
+                currentNum += 1
+                currentStreak += 1
+            }
+            
+            longestStreak = max(longestStreak, currentStreak)// compare max length array
+        }
+    }
+    
+    return longestStreak
+}
+var consecutiveArr = [200,4,2,1,3,100]
+var ansConsecutiveArr = longestConsecutive(consecutiveArr)
+//print("The longest consecutive sequence is ", ansConsecutiveArr)// 4
+
+//Q #11 Set matrix zero
+//https://leetcode.com/problems/set-matrix-zeroes/description/
+// Time Complexity: O(M×N) where M and N are the number of rows and columns respectively.
+// Space Complexity: O(M + N).
+// This is taking extra space because of storage of rows & cols.
+// Here we find the rows & cols which is zero & then iterate over matrix & make that rows and cols as zero
+func setZeroes(_ matrix: inout [[Int]]) {
+    
+    var cacheRows: [Int] = []
+    var cacheCols: [Int] = []
+    
+    for i in 0..<matrix.count {
+        for j in 0..<matrix[i].count {
+            // Set Rows Cols index cache
+            if matrix[i][j] == 0 {
+                cacheRows.append(i)
+                cacheCols.append(j)
+            }
+        }
+    }
+    
+    
+    for i in 0..<matrix.count {
+        for j in 0..<matrix[i].count {
+            // Set matrix to zero where it contains i Row & j Col
+            if cacheRows.contains(i) || cacheCols.contains(j) {
+                matrix[i][j] = 0
+            }
+        }
+    }
+}
+var matrixArr1 = [[1,1,1],[1,0,1],[1,1,1]]
+var matrixArr2 = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+setZeroes(&matrixArr1)
+setZeroes(&matrixArr2)
+//print("matrix1 array-->", matrixArr1) // [[1, 0, 1], [0, 0, 0], [1, 0, 1]]
+//print("matrix2 array-->", matrixArr2) // [[0, 0, 0, 0], [0, 4, 5, 0], [0, 3, 1, 0]]
+
+// Q #12 Rotate matrix
+//https://leetcode.com/problems/rotate-image/description/
+
+func rotateMatrix(_ matrix: inout [[Int]]) {
+    var rows = matrix.count
+    var columns = rows
+    
+    //transpose of Matrix
+    for row in 0..<rows {
+        for column in row..<columns {
+            let temp = matrix[row][column]
+            matrix[row][column] = matrix[column][row]
+            matrix[column][row] = temp
+        }
+    }
+    
+    for row in 0..<rows {
+        matrix[row].reverse()
+    }
+}
+
+var matrixToRotate =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+rotateMatrix(&matrixToRotate)
+//print("Rotated matrix output-->", matrixToRotate)//  [[7, 4, 1], [8, 5, 2], [9, 6, 3]]
+
+//Q 13: Spiral matrix swift..
+// TC: O(MxN)
+// TC: O(N)
+func spiralOrder(_ matrix: [[Int]]) -> [Int] {
+    if matrix.isEmpty { return [] }
+    
+    var result: [Int] = []
+    var rBegin = 0, rEnd = matrix.count - 1
+    var cBegin = 0, cEnd = matrix[0].count - 1
+    
+    while rBegin <= rEnd && cBegin <= cEnd {
+        // Traverse right
+        for i in stride(from: cBegin, to: cEnd + 1, by: 1) {
+            result.append(matrix[rBegin][i])
+        }
+        rBegin += 1
+        
+        // Traverse down
+        for i in stride(from: rBegin, to: rEnd + 1, by: 1) {
+            result.append(matrix[i][cEnd])
+        }
+        cEnd -= 1
+        
+        // Traverse left
+        if rBegin <= rEnd {
+            for i in stride(from: cEnd, to: cBegin - 1, by: -1) {
+                result.append(matrix[rEnd][i])
+            }
+        }
+        rEnd -= 1
+        
+        // Traverse up
+        if cBegin <= cEnd {
+            for i in stride(from: rEnd, to: rBegin - 1, by: -1) {
+                result.append(matrix[i][cBegin])
+            }
+        }
+        cBegin += 1
+    }
+    return result
+}
+
+
+var spiralMatrix =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+//print("spiralMatrix matrix output-->", spiralOrder(spiralMatrix))//  [1, 2, 3, 6, 9, 8, 7, 4, 5]
+
+//Q 14: Subarray Sum Equals K
+//https://leetcode.com/problems/subarray-sum-equals-k/description/
+// TC: O(n)
+// SC: O(n)
+func subarraySumK(_ arr: [Int], _ k: Int) ->Int {
+    var result = 0, sum = 0
+    var dict: [Int:Int] = [:]
+    dict[0] = 1
+    for num in arr {
+        sum += num
+        if let val = dict[sum - k] {
+            result += val
+        }
+        dict[sum, default: 0] += 1// Storing the previous sum value which can be added to result.
+    }
+    return result
+}
+
+let subArr = [1,0,2,3]
+let kSum = 3
+let opKsum = subarraySumK(subArr, kSum)
+//print(" subArr with k sum is-->", opKsum)// 2 (1,2 & 3)
+
+// MARK: - Array Hard
 
 
 // Question Found occurance of elements
-
 // TC: O(n)
 // SC: O(n)
 func findOccurance(_ arr: [Int]) -> [Int:Int] {
@@ -674,284 +1075,6 @@ let matrix: [[Int]] =
 let k = 80
 //print("is element present in matrix", searchMatrix2(matrix: matrix, target: k))// true
 
-// Question 2-Sum. Using two pointers approach..
-// First sort array then
-//If arr[left] + arr[right] > sum, we will decrement the right pointer.
-//If arr[left] + arr[right] < sum, we will increment the left pointer.
-//If arr[left] + arr[right] == sum, we will return the result.
-func twoSum(arr: inout [Int], target: Int) ->[Int] {
-    arr.sort()
-    var left = 0
-    var right = arr.count - 1
-    while (left < right) {
-        let sum = arr[left] + arr[right]
-        if (sum == target) {
-            return [left, right]
-        } else if sum < target {
-            left+=1
-        } else {
-            right-=1
-        }
-    }
-    return []
-}
-
-
-func twoSumUsingDictionary(_ nums: [Int], _ target: Int) -> [Int] {
-    var dictionary = [Int:Int]()
-   for (i, n) in nums.enumerated() {
-       if let last = dictionary[target - n] {
-           return [last, i]
-       }
-       dictionary[n] = i
-   }
-   return []
-}
-var twoSumArr = [2, 6, 5, 8, 11]
-let target = 14
-let ans = twoSum(arr: &twoSumArr, target: target)
-//print("two sum index found-->", ans, twoSumArr[ans[0]], twoSumArr[ans[1]])
-
-
-// Question: Sort 0's 1's 2's
-/*
- Using dutch national flag algorithm. I used three pointers low mid & high
- The sorting of 0,1,2 is as per below steps
-arr[0….low-1] contains 0. [most left part]
-arr[low….mid-1] contains 1.
-arr[high+1….n-1] contains 2. [most right part], n = size of the array
- So we swap according to the left(0) mid(1) & hight(2) position
- */
-func sortZerosOnesTwos(nums: inout [Int]) {
-    var low = 0
-    var high = nums.count - 1
-    var mid = 0
-    
-    while mid <= high {
-        let item = nums[mid]
-        switch item {
-            case 0:
-                nums.swapAt(low,mid)
-                low += 1
-                mid += 1
-            case 2:
-                nums.swapAt(mid,high)
-                high -= 1
-            case 1:
-                mid += 1
-            default:
-                continue
-        }
-    }
-}
-
-var miscArray = [0,2,0,2,1,1]
-sortZerosOnesTwos(nums: &miscArray)
-//print("After sorting 0's, 1's, 2's", miscArray)
-
-
-//Question: --> Find the Majority Element that occurs more than N/2 times
-
-// TC: O(n*2)
-// SC: O(1)
-func majorityElement(arr: inout [Int]) -> Int {
-    // Size of the given array
-    let n = arr.count
-
-    for i in 0..<n {
-        // Selected element is arr[i]
-        var cnt = 0
-        for j in 0..<n {
-            // Counting the frequency of arr[i]
-            if arr[j] == arr[i] {
-                cnt+=1
-            }
-        }
-        
-        // Check if frequency is greater than n/2
-        if (cnt > n/2) {
-            return arr[i]
-        }
-    }
-
-    return -1
-}
-// Approach #2 Optimal Approach: Moore’s Voting Algorithm:--->
-/**
- Basically, we are trying to keep track of the occurrences of the majority element and minority elements dynamically. if, the count becomes 0 as the occurrence of Element and the occurrence of the other elements are the same. So, they canceled each other. This is how the process works. The element with the most occurrence will remain and the rest will cancel themselves.
-
- */
-func majorityElementMooreVoting(arr: inout [Int]) -> Int {
-    // Size of the given array
-    let n = arr.count
-    var cnt = 0 // Count
-    var el = 0 // Element
-
-    // Applying the algorithm
-    for i in 0..<n {
-        if cnt == 0 {
-            cnt = 1
-            el = arr[i]
-        } else if el == arr[i] {
-            cnt+=1
-        } else {
-            cnt-=1
-        }
-    }
-
-    // Checking if the stored element is the majority element
-    var cnt1 = 0
-    for i in 0..<n where arr[i] == el {
-        cnt1+=1
-    }
-
-    if (cnt1 > n / 2) {
-        return el
-    }
-    return -1
-}
-
-
-
-var majorityArr = [2, 2, 1, 1, 1, 2, 2]
-let ansMajority = majorityElementMooreVoting(arr: &majorityArr)
-//print("The majority element is:", ansMajority)
-
-// Question: Kadane Algorithm: Max subarray sum in an array
-
-
-func findSubArrayWithMaxSumKadane(arr: inout [Int]) -> (sumValue: Int, startIndex: Int, endIndex: Int) {
- 
-    var sum = 0
-    var maximumValue = 0
-    
-    // variables to capture start and end index
-    var startIndex = 0
-    var endIndex = 0
-    var progressiveStartIndex = 0
-    //
-    
-    for i in 0..<arr.count {
-        sum += arr[i]
-        if sum > maximumValue {
-            maximumValue = sum
-            startIndex = progressiveStartIndex
-            endIndex = i
-        }
-        if sum < 0 {
-            sum = 0
-            progressiveStartIndex = i+1
-        }
-    }
-    return (sumValue: maximumValue, startIndex: startIndex, endIndex: endIndex)
-}
-
-var kadaneArray = [-2,1,-3,4,-1,2,1,-5,4]
-let kadaneSum = findSubArrayWithMaxSumKadane(arr: &kadaneArray)
-//print("The kadaneSum  is:", kadaneSum)
-
-// Question Stock buy sell with max profit
-
-func maxProfit(arr: [Int]) -> Int {
-    var buyPrice = Int.max
-    var difference = 0
-    
-    for i in 0..<arr.count {
-        if arr[i] < buyPrice {
-            buyPrice = arr[i]
-        }
-        if difference < (arr[i] - buyPrice) {
-            difference = arr[i] - buyPrice
-        }
-        // OR.
-        /**
-        minPrice = min(minPrice, arr[i])
-        maxPro = max(maxPro, arr[i] - minPrice)
-         */
-    }
-    return difference
-}
-
-var stockArray = [7, 1, 5, 3, 6, 4]
-let profitMax = maxProfit(arr: stockArray)
-//print("The maxProfit  is:", profitMax)
-
-// Question Rearrange array by sign
-// Appoach: as postive index is on even numbers so create variable named positiveIndex with 0 & negativeIndex with 1 and increment the index by +2 after fill.
-// TC: O(n)
-// SC: O(1)
-func arrangeArray(arr: [Int]) -> [Int] {
-    var positiveIndex = 0
-    var negativeIndex = 1
-    var arrangedArray = Array.init(repeating: 0, count: arr.count)
-    for i in 0..<arr.count {
-        if arr[i] < 0 {
-            arrangedArray[negativeIndex] = arr[i]
-            negativeIndex += 2
-        } else {
-            arrangedArray[positiveIndex] = arr[i]
-            positiveIndex += 2
-        }
-    }
-    return arrangedArray
-}
-
-var mixArray = [1,2,-3,-1,-2,3]
-let opArrangedArr = arrangeArray(arr: mixArray)
-//print("The op Arranged Arr  is:", opArrangedArr)// [1, -3, 2, -1, 3, -2]
-
-// Find Next permutation.
-func nextPermutation(_ nums: inout [Int]) {
-    let arrayCount = nums.count
-    var lhs = -1, rhs = -1, idx = arrayCount - 2
-    while idx >= 0 {
-        if nums[idx] < nums[idx + 1] {
-            lhs = idx
-            break
-        }
-        idx -= 1
-    }
-    if lhs == -1 {
-        nums = nums.reversed()
-        return
-    }
-    
-    idx = arrayCount - 1
-    while idx > lhs {
-        rhs = idx
-        if nums[idx] > nums[lhs] { break }
-        idx -= 1
-    }
-    nums.swapAt(lhs, rhs)
-    nums.replaceSubrange(lhs + 1..<arrayCount, with: nums[lhs + 1...arrayCount - 1].reversed())
-}
-var permutationArr = [1,2,3]
-nextPermutation( &permutationArr)
-//print("The next permutation is: ", permutationArr )// 1,3,2
-
-
-
-// Question Leaders in an Array
-//Problem Statement: Given an array, //print all the elements which are leaders. A Leader is an element that is greater than all of the elements on its right side in the array.
-// TC O(N)
-// SC O(N)
-func findLeader(arr: [Int]) ->[Int] {
-    var leader = arr.last ?? 0
-    var leaderArray:[Int] = [leader]//  Last will always leader because no elements are on right
-    for obj in stride(from: arr.count-2, to: 0, by: -1) {
-        if arr[obj] > leader {// If element is greater than leader append it into new array
-            leader = arr[obj]
-            leaderArray.append(leader)
-        }
-    }
-    return leaderArray
-}
-
-var leaderArr = [10, 22, 12, 3, 0, 6]
-let leaderArrayOutput = findLeader(arr: leaderArr)
-//print("Leader array-->", leaderArrayOutput)
-
-
 // TC: O(N)
 // SC: O(N)
 func replaceElements(_ arr: [Int]) -> [Int] {
@@ -976,36 +1099,6 @@ func replaceElements(_ arr: [Int]) -> [Int] {
 var leaderArr1 = [10, 22, 12, 3, 0, 6]
 let leaderArrayOutput1 = replaceElements( leaderArr1)
 //print("leaderArrayOutput1 array-->", leaderArrayOutput1)
-
-
-// TC: O(N)
-// SC: O(N)
-// Question: Find longest consecutive in an array
-func  longestConsecutive(_ nums: [Int]) -> Int {
-    
-    var setObject = Set(nums)
-    var longestStreak = 0
-    
-    for i in 0..<nums.count {
-        
-        if !setObject.contains(nums[i] - 1) {// Find smallest element in the set
-            var currentNum = nums[i]
-            var currentStreak = 1
-            
-            while setObject.contains(currentNum + 1) {// Based on smallest element we got find next higher number
-                currentNum += 1
-                currentStreak += 1
-            }
-            
-            longestStreak = max(longestStreak, currentStreak)// compare max length array
-        }
-    }
-    
-    return longestStreak
-}
-var consecutiveArr = [200,4,2,1,3,100]
-var ansConsecutiveArr = longestConsecutive(consecutiveArr)
-//print("The longest consecutive sequence is ", ansConsecutiveArr)// 4
 
 
 // Question: Find longest consecutive in an array
@@ -1034,115 +1127,6 @@ var consecutiveArr1 = [6,8,7,100,200]
 var ansConsecutiveArr1 = longestConsecutiveArray(consecutiveArr1)
 //print("The longest consecutive sequence is ", ansConsecutiveArr1)//[6, 7, 8]
 
-
-
-// Question set matrix to zero
-// Time Complexity: O(M×N) where M and N are the number of rows and columns respectively.
-// Space Complexity: O(M + N).
-// This is taking extra space because of storage of rows & cols.
-// Here we find the rows & cols which is zero & then iterate over matrix & make that rows and cols as zero
-func setZeroes(_ matrix: inout [[Int]]) {
-    
-    var cacheRows: [Int] = []
-    var cacheCols: [Int] = []
-    
-    for i in 0..<matrix.count {
-        for j in 0..<matrix[i].count {
-            // Set Rows Cols index cache
-            if matrix[i][j] == 0 {
-                cacheRows.append(i)
-                cacheCols.append(j)
-            }
-        }
-    }
-    
-    
-    for i in 0..<matrix.count {
-        for j in 0..<matrix[i].count {
-            // Set matrix to zero where it contains i Row & j Col
-            if cacheRows.contains(i) || cacheCols.contains(j) {
-                matrix[i][j] = 0
-            }
-        }
-    }
-}
-var matrixArr1 = [[1,1,1],[1,0,1],[1,1,1]]
-var matrixArr2 = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
-setZeroes(&matrixArr1)
-setZeroes(&matrixArr2)
-//print("matrix1 array-->", matrixArr1) // [[1, 0, 1], [0, 0, 0], [1, 0, 1]]
-//print("matrix2 array-->", matrixArr2) // [[0, 0, 0, 0], [0, 4, 5, 0], [0, 3, 1, 0]]
-
-// Question:-- Rotation matrix
-func rotateMatrix(_ matrix: inout [[Int]]) {
-    var rows = matrix.count
-    var columns = rows
-    
-    //transpose of Matrix
-    for row in 0..<rows {
-        for column in row..<columns {
-            let temp = matrix[row][column]
-            matrix[row][column] = matrix[column][row]
-            matrix[column][row] = temp
-        }
-    }
-    
-    for row in 0..<rows {
-        matrix[row].reverse()
-    }
-}
-
-var matrixToRotate =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-rotateMatrix(&matrixToRotate)
-////print("Rotated matrix output-->", matrixToRotate)//  [[7, 4, 1], [8, 5, 2], [9, 6, 3]]
-
-
-//Question: Spiral matrix swift..
-// TC: O(MxN)
-// TC: O(N)
-func spiralOrder(_ matrix: [[Int]]) -> [Int] {
-    if matrix.isEmpty { return [] }
-    
-    var result: [Int] = []
-    var rBegin = 0, rEnd = matrix.count - 1
-    var cBegin = 0, cEnd = matrix[0].count - 1
-    
-    while rBegin <= rEnd && cBegin <= cEnd {
-        // Traverse right
-        for i in stride(from: cBegin, to: cEnd + 1, by: 1) {
-            result.append(matrix[rBegin][i])
-        }
-        rBegin += 1
-        
-        // Traverse down
-        for i in stride(from: rBegin, to: rEnd + 1, by: 1) {
-            result.append(matrix[i][cEnd])
-        }
-        cEnd -= 1
-        
-        // Traverse left
-        if rBegin <= rEnd {
-            for i in stride(from: cEnd, to: cBegin - 1, by: -1) {
-                result.append(matrix[rEnd][i])
-            }
-        }
-        rEnd -= 1
-        
-        // Traverse up
-        if cBegin <= cEnd {
-            for i in stride(from: rEnd, to: rBegin - 1, by: -1) {
-                result.append(matrix[i][cBegin])
-            }
-        }
-        cBegin += 1
-    }
-    return result
-}
-
-
-var spiralMatrix =  [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-//print("spiralMatrix matrix output-->", spiralOrder(spiralMatrix))//  [1, 2, 3, 6, 9, 8, 7, 4, 5]
-
 // Question Pascal triangle .
 
 // Time : o(n^2) double loop
@@ -1167,7 +1151,6 @@ func generate(_ numRows: Int) -> [[Int]] {
 
 let numberOfRows = 5
 //print("Pascal triangle --->", generate(numberOfRows))
-// MARK: - Medium Question...
 // Question: -- Majority elements > N/3 times
 
 func majorityElementNBy3(_ nums: [Int]) -> [Int] {
@@ -1578,28 +1561,6 @@ func maxProductSubArray(_ arr: [Int]) ->Int {
 var inputMaxProductSubArray = [1,2,-3,0,-4,-5]
 var outputMaxProductSubArray = maxProductSubArray(nums)
 //print("The maximum product subarray is: ", outputMaxProductSubArray)// 4
-    
-
-// TC: O(n)
-// SC: O(n)
-func subarraySumK(_ arr: [Int], _ k: Int) ->Int {
-    var result = 0, sum = 0
-    var dict: [Int:Int] = [:]
-    dict[0] = 1
-    for num in arr {
-        sum += num
-        if let val = dict[sum - k] {
-            result += val
-        }
-        dict[sum, default: 0] += 1// Storing the previous sum value which can be added to result.
-    }
-    return result
-}
-
-let subArr = [1,0,2,3]
-let kSum = 3
-let opKsum = subarraySumK(subArr, kSum)
-//print(" subArr with k sum is-->", opKsum)// 2 (1,2 & 3)
 
 func lengthOfLongestSubstring(_ s: String) -> Int {
     var longest = 0, startIndex = 0
