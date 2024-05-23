@@ -207,7 +207,7 @@ func rotate(_ nums: inout [Int], _ k: Int) {
     reverse(&nums, k, arrCount-1)
 }
 
-// Q #7 moves zeroes to end
+//Q #7 moves zeroes to end
 
 func moveZerosToEnd(_ arr: inout [Int]) {
     var firstZeroIndex = 0
@@ -427,24 +427,91 @@ let op = maxConsecutiveOfonesWithFlipiingZeros(arr: &arrMix,
                                                maxZeros: &maxZeros)
 //print("op", op)
 
-//Q #11 Find a number which appears only onces & other twice
-
-func singleNumber(_ nums: [Int]) -> Int {
-    var dictionaryObj: [Int: Int] = [:]
-    // set key of dictionary as count: 1 if there
-    // are more elements increase the count
-    for obj in nums {
-        if dictionaryObj[obj] == nil {
-            dictionaryObj[obj] = 1
+//Q #11 Find the number that appears once, and the other numbers twice
+func findNumberAppearOnce(arr: inout [Int]) -> Int {
+    
+    var hashObject: [Int:Int] = [:]
+    
+    for obj in arr {
+        if hashObject[obj] == nil {
+            hashObject[obj] = 1
         } else {
-            dictionaryObj[obj]! += 1
+            hashObject[obj]!+=1
         }
     }
-    for (key, _) in dictionaryObj where dictionaryObj[key] == 1 {
-        return key
+    for (key, _) in hashObject where hashObject[key] == 1 {
+      return key
     }
     return -1
 }
+// Optimum approach using XOR operation
+func findNumberAppearOnceUsingXOR(arr: inout [Int]) -> Int {
+    var xorOutput = 0
+    for obj in arr {
+        xorOutput^=obj
+    }
+    return xorOutput
+}
+
+var randomArray: [Int] = [9,2,2,3,4,4,3]
+let uniqueAppearNumber = findNumberAppearOnceUsingXOR(arr: &randomArray)
+//print(" uniqueAppearNumber ", uniqueAppearNumber)
+
+//Q 12 Largest subarray with sum K
+
+func subarraySum(_ nums: [Int], _ targetSum: Int) -> Int {
+    var result = 0
+    var dict = [Int: Int]()
+    dict[0] = 1
+    
+    var sum = 0
+    for num in nums {
+        sum += num
+        if let val = dict[sum - targetSum] {
+            result += val
+            //print("value got-->", val)
+        }
+        dict[sum, default: 0] += 1
+        // Same as
+        //        if let val = dict[sum] {
+        //            dict[sum] = val + 1
+        //        } else {
+        //            dict[sum] = 1
+        //        }
+    }
+    //print("sum--->", dict)
+    return result
+}
+
+let yyy = [10, 5, 2, 7, 1, 9]
+let targetSum = 15
+let xxx = subarraySum(yyy, 15)
+//print("xxx-->",xxx)
+
+
+// Question find longest subarray with given sum k
+// Example : - [2, 3, 5, 1, 9] and k - 10 => output - 2,3,5
+
+func longestSubarrayWithGivenSumKTwoLoops(_ arr: inout [Int], k: Int) -> Int {
+    
+    var len = 0
+    
+    for i in 0..<arr.count {
+        var sum: UInt64 = 0
+        for j in i..<arr.count {
+            sum+=UInt64(arr[j])
+            if sum == k {
+                len = max(len, j - i + 1)
+            }
+        }
+    }
+    return len
+}
+
+var arrayex: [Int] = [2, 3, 5, 1, 9]
+let desiredSum = 10
+let largestSumElements = longestSubarrayWithGivenSumKTwoLoops(&arrayex, k: desiredSum)
+//print("largestSum elements", largestSumElements)
 
 
 // MARK: - Array medium
@@ -544,97 +611,10 @@ func shiftElementsByK(_ arr: inout [Int], k: Int, count: Int) {
 
 //var digits = [3,7,8,9,10,11]
 //shiftElementsByK(&digits, k: 3, count: digits.count)
-////print(digits)
-
-
-// Largest subarray with sum K
-
-func subarraySum(_ nums: [Int], _ targetSum: Int) -> Int {
-    var result = 0
-    var dict = [Int: Int]()
-    dict[0] = 1
-    
-    var sum = 0
-    for num in nums {
-        sum += num
-        if let val = dict[sum - targetSum] {
-            result += val
-            //print("value got-->", val)
-        }
-        dict[sum, default: 0] += 1
-        // Same as
-        //        if let val = dict[sum] {
-        //            dict[sum] = val + 1
-        //        } else {
-        //            dict[sum] = 1
-        //        }
-    }
-    //print("sum--->", dict)
-    return result
-}
-
-let yyy = [10, 5, 2, 7, 1, 9]
-let targetSum = 15
-let xxx = subarraySum(yyy, 15)
-//print("xxx-->",xxx)
-
-// Question : Find the number that appears once, and the other numbers twice
-func findNumberAppearOnce(arr: inout [Int]) -> Int {
-    
-    var hashObject: [Int:Int] = [:]
-    
-    for obj in arr {
-        if hashObject[obj] == nil {
-            hashObject[obj] = 1
-        } else {
-            hashObject[obj]!+=1
-        }
-    }
-    for (key, _) in hashObject where hashObject[key] == 1 {
-      return key
-    }
-    return -1
-}
-// Optimum approach using XOR operation
-func findNumberAppearOnceUsingXOR(arr: inout [Int]) -> Int {
-    var xorOutput = 0
-    for obj in arr {
-        xorOutput^=obj
-    }
-    return xorOutput
-}
-
-var randomArray: [Int] = [9,2,2,3,4,4,3]
-let uniqueAppearNumber = findNumberAppearOnceUsingXOR(arr: &randomArray)
-//print(" uniqueAppearNumber ", uniqueAppearNumber)
-
-// Question find longest subarray with given sum k
-// Example : - [2, 3, 5, 1, 9] and k - 10 => output - 2,3,5
-
-func longestSubarrayWithGivenSumKTwoLoops(_ arr: inout [Int], k: Int) -> Int {
-    
-    var len = 0
-    
-    for i in 0..<arr.count {
-        var sum: UInt64 = 0
-        for j in i..<arr.count {
-            sum+=UInt64(arr[j])
-            if sum == k {
-                len = max(len, j - i + 1)
-            }
-        }
-    }
-    return len
-}
-
-var arrayex: [Int] = [2, 3, 5, 1, 9]
-let desiredSum = 10
-let largestSumElements = longestSubarrayWithGivenSumKTwoLoops(&arrayex, k: desiredSum)
-//print("largestSum elements", largestSumElements)
-
+//print(digits)
 
 // Question: Search in Sorted 2D matrix
-///Problem Statement: Given an m*n 2D matrix and an integer, write a program to find if the given integer exists in the matrix.
+//Problem Statement: Given an m*n 2D matrix and an integer, write a program to find if the given integer exists in the matrix.
 // Approach #1 By removing row and col in each comparisons . Starting from the top right of matrix, move towards the bottom left in search of the target element
 // TC O(n)
 // SC O(1)
