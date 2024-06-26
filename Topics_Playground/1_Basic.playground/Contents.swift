@@ -8,9 +8,9 @@ Example: log10(12345.0)) = > 4.091491094267951 so we have to use 4+1
 // https://janeshswift.com/ios/dsa/how-to-count-number-of-digits/
 // Read more about Logarithm here https://janeshswift.com/ios/dsa/math/logarithms-explained/
 print ("count the number of digits = ", Int(log10(12345.0))+1)// prints 5
-Remember log2 8 = 3 which means 2 power 3 = 8
-log10(12345.0) gives output as 4.091491094267951
-So 10^4.09149 = 12345.2
+//Remember log2 8 = 3 which means 2 power 3 = 8
+//log10(12345.0) gives output as 4.091491094267951
+//So 10^4.09149 = 12345.2
 
 
 //Q #2: Reverse Integer x = 123 output = 321
@@ -51,7 +51,7 @@ func isPalindrome(_ x: Int) -> Bool {
 // Method #1 Using Recursion
 // TC: O(log(min(a,b)))
 // SC: O(log(min(a,b)))
-
+//This logarithmic time complexity arises because each recursive step reduces the problem size roughly by half (specifically, by the size of the smaller number)
 func gcd(_ a: Int, _ b: Int) -> Int {
     if (b == 0) { return a }
     return gcd(b, a % b)
