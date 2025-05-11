@@ -41,3 +41,20 @@ class Solution {
 example 625 125 
 36 72 
 */
+//https://getsdeready.com/courses/dsa/lesson/repeating-gcd/
+// https://www.geeksforgeeks.org/problems/repeating-gcd4659/1
+// TC: (log⁡(min⁡(x.y))) 
+// SC: O(1)
+class Solution {
+    func gcd(_ a: Int, _ b: Int) -> Int {
+        if b == 0 {
+            return a
+        }
+        return gcd(b, a % b)
+    }
+
+    func repeatedGcd(_ N: Int, _ x: Int, _ y: Int) -> Int {
+        return gcd(x, y)
+    }
+}
+
