@@ -83,36 +83,31 @@ class Solution {
 // SC O(1)
 
 class Solution {
-    // Function to compute the product of all divisors of a number 'n' modulo 10^9 + 7
+    /// Computes the product of all positive divisors of a number `n`, modulo 10^9 + 7.
+    /// - Parameter n: The input number
+    /// - Returns: The product of all divisors modulo 1_000_000_007
     func factorProduct(_ n: Int) -> Int {
-        let mod = 1_000_000_007  // A large prime number to prevent overflow
-        var product: Int = 1  // Initialize the product to 1 (neutral element for multiplication)
-        
-        // Loop through all numbers from 1 to sqrt(n)
+        let mod = 1_000_000_007  // A large prime used to prevent integer overflow
+        var product = 1          // Initialize product as 1 (identity for multiplication)
+
         var i = 1
         while i * i <= n {
-            // Check if 'i' is a divisor of 'n'
             if n % i == 0 {
-                let pairedDivisor = n / i  // Find the paired divisor 'n / i'
-                
-                // If 'i' and 'pairedDivisor' are the same (i.e., n is a perfect square)
-                if i == pairedDivisor {
-                    // Multiply only once if both divisors are the same (e.g., 4 for n = 16)
-                    product = (product * i) % mod
-                } else {
-                    // If divisors are different, multiply both 'i' and 'pairedDivisor'
-                    product = (product * i) % mod
+                let pairedDivisor = n / i
+                // Multiply by the divisor i
+                product = (product * i) % mod
+
+                // If pairedDivisor is different, multiply it too
+                if i != pairedDivisor {
                     product = (product * pairedDivisor) % mod
                 }
             }
-            i += 1  // Move to the next possible divisor
+            i += 1
         }
-        
-        // Return the product modulo 10^9 + 7
+
         return product
     }
 }
-
 
 
 
