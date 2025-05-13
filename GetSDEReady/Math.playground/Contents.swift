@@ -53,3 +53,27 @@ class Solution {
 | 3 | 0           | A\[0] = 1       | 1     |
 | 4 | 1           | A\[1] = 2       | 2     |
 */
+
+//https://leetcode.com/problems/find-peak-element/
+//Time: O(log n) (binary search)
+//Space: O(1)
+class Solution {
+    func findPeakElement(_ nums: [Int]) -> Int {
+        var left = 0
+        var right = nums.count - 1
+
+        while left < right {
+            let mid = (left + right) / 2
+            if nums[mid] > nums[mid + 1] {
+                // Peak is in the left half (including mid)
+                right = mid
+            } else {
+                // Peak is in the right half
+                left = mid + 1
+            }
+        }
+
+        // left and right have converged to a peak element index
+        return left
+    }
+}
