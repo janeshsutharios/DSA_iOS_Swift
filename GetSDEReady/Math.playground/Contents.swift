@@ -24,3 +24,32 @@ func plusOne(_ digits: [Int]) -> [Int] {
     return expandedResult
 }
 //  Test with [1,9,9] [1,4,3] [9,9,9]
+
+// https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/description/
+// 
+class Solution {
+    func check(_ nums: [Int]) -> Bool {
+        let count = nums.count
+        var rotationBreaks = 0
+
+        // Check for places where the array is not in non-decreasing order.
+        for index in 0..<count {
+            let nextIndex = (index + 1) % count  // Wrap around to handle rotation
+            //This wraps around the array using the modulus operator % to avoid going out of bounds.
+            if nums[index] > nums[nextIndex] {
+                rotationBreaks += 1
+            }
+        }
+        // Valid only if there's at most one break in the sorted order
+        return rotationBreaks <= 1
+    }
+}
+/* Modulo wraps around the array using the modulus operator % to avoid going out of bounds.
+| i | (i + 2) % 5 | A\[(i + 2) % 5] | B\[i] |
+| - | ----------- | --------------- | ----- |
+| 0 | 2           | A\[2] = 3       | 3     |
+| 1 | 3           | A\[3] = 4       | 4     |
+| 2 | 4           | A\[4] = 5       | 5     |
+| 3 | 0           | A\[0] = 1       | 1     |
+| 4 | 1           | A\[1] = 2       | 2     |
+*/
