@@ -146,5 +146,24 @@ func findPrimes(upTo limit: Int) -> [Int] {
     return primes
 }
 
+// Returns `true` if the given number is a factorial of some integer, otherwise `false`.
+//https://www.geeksforgeeks.org/problems/factorial-number2446/1?utm_source=geeksforgeeks&utm_medium=ml_article_practice_tab&utm_campaign=article_practice_tab
+func isFactorial(_ number: Int) -> Int {
+    guard number >= 1 else { return -1}
 
+    var factorial = 1
+    var n = 1
+
+    while factorial <= number {
+        factorial *= n
+        if factorial == number {
+            return n
+        }
+        n += 1
+    }
+
+    return -1
+}
+
+print(isFactorial(24)) // gives 4
 
