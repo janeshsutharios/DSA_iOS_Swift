@@ -77,3 +77,36 @@ class Solution {
         return left
     }
 }
+//https://leetcode.com/problems/sqrtx/
+//Time: O(log n) (binary search)
+//Space: O(1)
+class Solution {
+    func integerSquareRoot(_ number: Int) -> Int {
+        // Special case: square root of 0 is 0
+        if number == 0 { return 0 }
+
+        var low = 1
+        var high = number
+
+        // Binary search for the integer square root
+        while low <= high {
+            let mid = (low + high) / 2
+            let midSquared = mid * mid
+
+            if midSquared == number {
+                // Exact square root found
+                return mid
+            } else if midSquared < number {
+                // Move right to search larger values
+                low = mid + 1
+            } else {
+                // Move left to search smaller values
+                high = mid - 1
+            }
+        }
+
+        // When not a perfect square, return floor of square root
+        return high
+    }
+}
+
