@@ -109,5 +109,42 @@ class Solution {
     }
 }
 
+//https://getsdeready.com/courses/dsa/lesson/sieve-of-eratosthenes-6/
+/// Returns an array of all prime numbers up to and including `limit`
+/// using the Sieve of Eratosthenes algorithm.
+func findPrimes(upTo limit: Int) -> [Int] {
+    // Edge case: No prime numbers below 2
+    guard limit >= 2 else { return [] }
+
+    // Create a boolean array to track prime status of numbers from 0 to limit
+    // Initially, assume all numbers are prime
+    var isPrime = [Bool](repeating: true, count: limit + 1)
+    
+    // 0 and 1 are not prime
+    isPrime[0] = false
+    isPrime[1] = false
+
+    // Loop from 2 up to the square root of the limit
+    // because any non-prime number `n` has at least one factor less than or equal to √n
+    for number in 2...Int(Double(limit).squareRoot()) {
+        if isPrime[number] {
+            // Mark all multiples of `number` as not prime, starting from number * number
+            for multiple in stride(from: number * number, through: limit, by: number) {
+                isPrime[multiple] = false
+            }
+        }
+    }
+
+    // Collect all numbers still marked as prime
+    var primes: [Int] = []
+    for number in 2...limit {
+        if isPrime[number] {
+            primes.append(number)
+        }
+    }
+
+    return primes
+}
+
 
 
