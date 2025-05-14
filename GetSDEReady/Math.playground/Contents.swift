@@ -217,4 +217,33 @@ class Solution {
     }
 }
 
+//https://leetcode.com/problems/factorial-trailing-zeroes/
+// 🧠 Key Insight:
+// Trailing zeroes come from multiples of 10.
+// Each 10 = 2 × 5, and we get plenty of 2s from even numbers.
+// So, the number of 5s in the prime factorization of n! determines the number of trailing zeroes.
+✅ Approach:
+Count how many multiples of 5, 25, 125, ... are in n.
+Each contributes more 5s to the factorial.
 
+class Solution {
+    func trailingZeroes(_ n: Int) -> Int {
+        // Initialize count to keep track of the number of trailing zeroes
+        var count = 0
+        
+        // Initialize divisor to 5 (the smallest power of 5 we need to consider)
+        var divisor = 5
+        
+        // Loop while the divisor is less than or equal to n
+        while divisor <= n {
+            // Add the number of times n can be divided by the current divisor
+            count += n / divisor
+            
+            // Move to the next power of 5 (e.g., 5, 25, 125, ...)
+            divisor *= 5
+        }
+        
+        // Return the total count of trailing zeroes
+        return count
+    }
+}
