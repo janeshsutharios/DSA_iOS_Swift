@@ -151,5 +151,34 @@ class Solution {
     }
 }
 
+//https://leetcode.com/problems/excel-sheet-column-title/description/
 
+| **Step**                  | **Explanation**                                                                                               |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **1. Subtract 1**         | Subtract 1 from the `columnNumber` to handle 1-based indexing (e.g., `A = 1`, `B = 2`, etc.).                 |
+| **2. Modulo Operation**   | Calculate `columnNumber % 26` to get the remainder, which maps to a letter (`0 → A`, `1 → B`, ..., `25 → Z`). |
+| **3. Map to Character**   | Convert the remainder to its corresponding letter using `UnicodeScalar(remainder + 65)`.                      |
+| **4. Prepend the Letter** | Add the mapped letter to the result string (we prepend because we build the title from right to left).        |
+| **5. Divide by 26**       | Divide `columnNumber` by 26 and repeat the process until the number becomes 0.                                |
+| **Input (columnNumber)** | **Output (Excel Column Title)** |
+| ------------------------ | ------------------------------- |
+| `1`                      | `"A"`                           |
+| `28`                     | `"AB"`                          |
+| `701`                    | `"ZY"`                          |
+
+class Solution {
+// Olog(n) This is because the algorithm iterates logarithmically with base 26, as it continuously divides the input by 26 until it reaches 0
+    func convertToTitle(_ columnNumber: Int) -> String {
+      var result = ""
+      var number = columnNumber
+          while number > 0 {
+            number -= 1
+            let reminder = number % 26
+            let char =  Character(UnicodeScalar(reminder + 65)!) 
+            result = String(char) + result
+            number /= 26
+          }
+          return result
+    }
+}
 
