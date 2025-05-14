@@ -110,3 +110,46 @@ class Solution {
     }
 }
 
+// https://leetcode.com/problems/power-of-four/
+/*
+1. ((n & (n - 1)) == 0)
+This checks if n is a power of 2.
+
+Why it works: A power of 2 has only one bit set in binary. For example:
+
+1 → 0001
+
+2 → 0010
+
+4 → 0100
+
+8 → 1000
+
+For such numbers, n & (n - 1) will be 0.
+Example:
+
+n = 4 (0100), n-1 = 3 (0011)
+
+4 & 3 = 0000
+
+This ensures n is a power of 2.
+
+2. n % 3 == 1
+This is a mathematical trick to filter out powers of 2 that are not powers of 4.
+
+Observation:
+
+Powers of 4 (like 1, 4, 16, 64...) all give remainder 1 when divided by 3
+
+Powers of 2 that are not powers of 4 (like 2, 8, 32...) do not give remainder 1
+*/
+class Solution {
+    // TC: O(1)
+    // SC: O(1)
+    func isPowerOfFour(_ n: Int) -> Bool {
+        return ((n&(n-1) == 0) && (n % 3 == 1))
+    }
+}
+
+
+
