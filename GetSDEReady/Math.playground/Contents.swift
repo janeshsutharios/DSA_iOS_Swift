@@ -182,3 +182,39 @@ class Solution {
     }
 }
 
+// https://leetcode.com/problems/reverse-integer/description/
+
+| **Step** | `remaining` | `lastDigit` = `remaining % 10` | `reversedNumber` (before \*10 + lastDigit) | `reversedNumber` (after) |
+| -------: | ----------- | ------------------------------ | ------------------------------------------ | ------------------------ |
+|        1 | 123         | 3                              | 0                                          | 0 \* 10 + 3 = **3**      |
+|        2 | 12          | 2                              | 3                                          | 3 \* 10 + 2 = **32**     |
+|        3 | 1           | 1                              | 32                                         | 32 \* 10 + 1 = **321**   |
+|        4 | 0           | —                              | —                                          | Loop ends                |
+
+
+class Solution {
+    func reverse(_ number: Int) -> Int {
+        var reversedNumber = 0
+        var remaining = number
+
+        while remaining != 0 {
+            // Get the last digit
+            let lastDigit = remaining % 10
+
+            // Add it to the reversed number (shift left by 1 digit)
+            reversedNumber = reversedNumber * 10 + lastDigit
+
+            // Remove the last digit from the remaining number
+            remaining /= 10
+        }
+
+        // Check if the reversed number fits in a 32-bit signed integer
+        if reversedNumber < Int32.min || reversedNumber > Int32.max {
+            return 0
+        }
+
+        return reversedNumber
+    }
+}
+
+
