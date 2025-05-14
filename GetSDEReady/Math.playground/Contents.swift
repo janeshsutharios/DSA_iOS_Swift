@@ -247,3 +247,31 @@ class Solution {
         return count
     }
 }
+//https://leetcode.com/problems/fibonacci-number/description/
+
+class Solution {
+    func fib(_ n: Int) -> Int {
+        if n == 0 { return 0 }
+        if n == 1 { return 1 }
+
+        var prev = 0
+        var curr = 1
+
+        for _ in 2...n {
+            let next = prev + curr
+            prev = curr
+            curr = next
+        }
+
+        return curr
+    }
+}
+// Or using recursion...
+//TC O(2^n)
+//SC O(n)
+class Solution {
+    func fib(_ n: Int) -> Int {
+        if n == 1 || n == 0 { return n }
+        return fib(n-1) + fib(n-2)
+    }
+}
