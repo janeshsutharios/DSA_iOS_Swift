@@ -440,4 +440,41 @@ if n > 1 {
         return product
     }
 }
+//https://getsdeready.com/courses/dsa/lesson/find-prime-numbers-in-a-range/
+// TC: O((N - M + 1) * sqrt(N))
+// SC: O(1)
+
+class PrimeRangeFinder {
+    
+    /// Returns a list of prime numbers in the range [start...end].
+    func primeNumbers(inRange start: Int, to end: Int) -> [Int] {
+        var primes: [Int] = []
+
+        for number in start...end {
+            if isPrime(number) {
+                primes.append(number)
+            }
+        }
+
+        return primes
+    }
+
+    /// Checks if a number is prime using divisor count logic.
+    private func isPrime(_ n: Int) -> Bool {
+        if n < 2 { return false } // 0 and 1 are not prime
+
+        var divisorCount = 0
+
+        for i in 1...Int(sqrt(Double(n))) {
+            if n % i == 0 {
+                divisorCount += 1  // i is a divisor
+                if i != n / i {
+                    divisorCount += 1  // n/i is also a divisor
+                }
+            }
+        }
+
+        return divisorCount == 2  // Only 1 and n are divisors
+    }
+}
 
