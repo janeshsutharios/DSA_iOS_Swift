@@ -420,7 +420,23 @@ class PrimeProductCalculator {
         if n > 1 {
             product *= n
         }
-        
+        /*
+        n = 13 (which is prime)
+Loop checks 2 and 3 — no match
+
+So product is still 1
+
+But 13 is a valid prime factor of itself
+
+👉 We check:
+
+swift
+Copy
+Edit
+if n > 1 {
+    product *= 13  // Adds the missing prime factor
+}
+        */
         return product
     }
 }
