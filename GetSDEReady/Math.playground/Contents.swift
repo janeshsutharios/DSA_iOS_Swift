@@ -275,3 +275,42 @@ class Solution {
         return fib(n-1) + fib(n-2)
     }
 }
+
+// Sieve of Eratosthenes
+https://www.geeksforgeeks.org/problems/sieve-of-eratosthenes5242/1?utm_source=geeksforgeeks&utm_medium=article_practice_tab&utm_campaign=article_practice_tabntiation
+import Foundation
+
+/// Generates all prime numbers up to a given limit `n` using the Sieve of Eratosthenes algorithm.
+func sieveOfEratosthenes(upTo n: Int) -> [Int] {
+    // Edge case: No primes below 2
+    guard n >= 2 else { return [] }
+
+    // Step 1: Initialize a Boolean array to track primality
+    var isPrime = Array(repeating: true, count: n + 1)
+    isPrime[0] = false
+    isPrime[1] = false
+
+    // Step 2: Mark non-primes using sieve logic
+    for i in 2...Int(sqrt(Double(n))) {
+        if isPrime[i] {
+            // Mark all multiples of i as non-prime
+            for multiple in stride(from: i * i, through: n, by: i) {
+                isPrime[multiple] = false
+            }
+        }
+    }
+
+    // Step 3: Collect all prime numbers
+    var primes: [Int] = []
+    for i in 2...n {
+        if isPrime[i] {
+            primes.append(i)
+        }
+    }
+
+    return primes
+}
+let primesUpTo100 = sieveOfEratosthenes(upTo: 100)
+print(primesUpTo100)
+// Output: [2, 3, 5, 7, 11, 13, 17,
+
