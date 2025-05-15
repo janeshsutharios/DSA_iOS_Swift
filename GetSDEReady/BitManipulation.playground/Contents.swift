@@ -13,3 +13,15 @@ class Solution {
         return result
     }
 }
+//https://leetcode.com/problems/xor-operation-in-an-array/description/
+// Input: n = 5, start = 0 Output: 8
+class Solution {
+    func xorOperation(_ n: Int, _ start: Int) -> Int {
+        var xorNumber = 0
+        for i in 0..<n {
+            let num = start + 2 * i// Formula given in question it self
+            xorNumber ^= num
+        }
+        return xorNumber
+    }
+}
