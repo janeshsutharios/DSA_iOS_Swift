@@ -334,3 +334,28 @@ class FactorialHelper {
     }
 }
 
+//: GCD, LCM, and Custom Value Calculation
+//https://getsdeready.com/courses/dsa/lesson/gcd-lcm-and-distributive-property/
+
+class NumberHelper {
+    
+    /// Calculates the Greatest Common Divisor (GCD) of two integers using the Euclidean algorithm.
+    static func gcd(_ a: Int, _ b: Int) -> Int {
+        if b == 0 {
+            return a
+        }
+        return gcd(b, a % b)
+    }
+
+    /// Calculates the Least Common Multiple (LCM) of two integers.
+    static func lcm(_ a: Int, _ b: Int) -> Int {
+        return (a * b) / gcd(a, b)
+    }
+
+    /// Computes: GCD(LCM(x, y), LCM(x, z))
+    static func findValue(x: Int, y: Int, z: Int) -> Int {
+        let lcmXY = lcm(x, y)
+        let lcmXZ = lcm(x, z)
+        return gcd(lcmXY, lcmXZ)
+    }
+}
