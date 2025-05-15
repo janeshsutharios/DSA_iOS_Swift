@@ -359,3 +359,69 @@ class NumberHelper {
         return gcd(lcmXY, lcmXZ)
     }
 }
+//https://getsdeready.com/courses/dsa/lesson/product-of-prime-factors/
+
+
+| Step | Current Value | Divisor Tried | Is Divisible? | Result After Division | Prime Factor Found? |
+| ---- | ------------- | ------------- | ------------- | --------------------- | ------------------- |
+| 1    | 500           | 2             | ✅ Yes         | 250                   | ✅ 2                 |
+| 2    | 250           | 2             | ✅ Yes         | 125                   | ✅ 2                 |
+| 3    | 125           | 2             | ❌ No          | —                     | —                   |
+| 4    | 125           | 3             | ❌ No          | —                     | —                   |
+| 5    | 125           | 5             | ✅ Yes         | 25                    | ✅ 5                 |
+| 6    | 25            | 5             | ✅ Yes         | 5                     | ✅ 5                 |
+| 7    | 5             | 5             | ✅ Yes         | 1                     | ✅ 5                 |
+
+Step-by-Step Prime Factorization of 500
+We start with N = 500
+We’ll divide it by the smallest prime numbers: 2, 3, 5, 7, ..., repeatedly.
+
+✅ Step 1: Try dividing by 2
+500 ÷ 2 = 250
+250 ÷ 2 = 125
+125 ÷ 2 = not divisible → stop here
+
+So 2 appears twice in the factorization.
+
+500 = 2 × 2 × 125
+✅ Step 2: Try dividing by 3
+125 ÷ 3 = not divisible → skip
+
+✅ Step 3: Try dividing by 5
+125 ÷ 5 = 25
+25 ÷ 5 = 5
+5 ÷ 5 = 1
+
+Now we’re done — fully divided.
+
+So 5 appears three times.
+
+class PrimeProductCalculator {
+    
+    /// Returns the product of all **distinct prime factors** of `n`.
+    func productOfDistinctPrimeFactors(of n: Int) -> Int {
+        var n = n
+        var product = 1
+        
+        // Check for each number from 2 up to sqrt(n)
+        for i in 2...Int(sqrt(Double(n))) {
+            if n % i == 0 {
+                // If `i` is a prime factor, include it once
+                product *= i
+                
+                // Divide all powers of this prime factor out of `n`
+                while n % i == 0 {
+                    n /= i
+                }
+            }
+        }
+        
+        // If `n` is still greater than 1, it's a prime number itself
+        if n > 1 {
+            product *= n
+        }
+        
+        return product
+    }
+}
+
