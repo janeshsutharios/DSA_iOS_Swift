@@ -314,3 +314,23 @@ let primesUpTo100 = sieveOfEratosthenes(upTo: 100)
 print(primesUpTo100)
 // Output: [2, 3, 5, 7, 11, 13, 17,
 
+//: Factorial Numbers Less Than or Equal to N
+class FactorialHelper {
+    /// Returns a list of all factorial numbers less than or equal to `n`.
+    /// A factorial number is of the form: 1!, 2!, 3!, ...
+    func factorialNumbers(lessThanOrEqualTo n: Int) -> [Int] {
+        var result: [Int] = []
+        var factorial = 1
+        var i = 1
+
+        // Generate factorials until the value exceeds n
+        while factorial <= n {
+            result.append(factorial)
+            i += 1
+            factorial *= i
+        }
+
+        return result
+    }
+}
+
