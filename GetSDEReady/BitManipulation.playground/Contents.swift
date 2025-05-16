@@ -274,5 +274,44 @@ class Solution {
         return ones
     }
 }
+// https://leetcode.com/problems/total-hamming-distance/description/
+/*
+Input: nums = [4,14,2]
+Output: 6
+Explanation: In binary representation, the 4 is 0100, 14 is 1110, and 2 is 0010 (just
+showing the four bits relevant in this case).
+The answer will be:
+HammingDistance(4, 14) + HammingDistance(4, 2) + HammingDistance(14, 2) = 2 + 2 + 2 = 6.
+*/
+class Solution {
 
+    /// Computes the total Hamming distance between all pairs in the array.
+    ///
+    /// - Parameter nums: An array of integers.
+    /// - Returns: The sum of Hamming distances for all possible pairs.
+    func totalHammingDistance(_ nums: [Int]) -> Int {
+        let count = nums.count
+        var totalDistance = 0
+
+        // Iterate over each bit position (0 to 31 for 32-bit integers)
+        for bitPosition in 0..<32 {
+            var countOfZeros = 0
+            var countOfOnes = 0
+
+            // Count how many numbers have 0 or 1 at the current bit position
+            for num in nums {
+                if (num & (1 << bitPosition)) == 0 {
+                    countOfZeros += 1
+                } else {
+                    countOfOnes += 1
+                }
+            }
+
+            // For each bit position, number of differing pairs = zeros * ones
+            totalDistance += countOfZeros * countOfOnes
+        }
+
+        return totalDistance
+    }
+}
 
