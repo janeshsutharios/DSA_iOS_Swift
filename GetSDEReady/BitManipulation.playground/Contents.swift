@@ -198,4 +198,39 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/find-sum-of-different-corresponding-bits-for-all-pairs/
+
+class Solution {
+    func countBits(_ nums: [Int]) -> Int {
+        var total: Int64 = 0
+        let mod = 1_000_000_007
+        let n = nums.count
+        var copy = nums // To avoid modifying the original array
+
+        // Loop over 31 bits (sufficient for 32-bit signed integers)
+        for _ in 0..<31 {
+            var set: Int64 = 0
+            var unset: Int64 = 0
+
+            // Count set and unset bits at the current least significant bit (LSB)
+            for i in 0..<n {
+                if (copy[i] & 1) == 1 {
+                    set += 1
+                } else {
+                    unset += 1
+                }
+
+                // Prepare number for next round (remove LSB)
+                copy[i] >>= 1
+            }
+            // Here we are multiplying because we have used two loop hence set * unset 
+            // We also need duplicate pair hence *2 used example [1,3] [3,1]
+            // For this bit position, add contribution of all differing pairs
+            total += set * unset * 2
+        }
+
+        return Int(total % Int64(mod))
+    }
+}
+
 
