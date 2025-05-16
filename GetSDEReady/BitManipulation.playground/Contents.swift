@@ -66,3 +66,30 @@ class Solution {
         return primeSetBitCount
     }
 }
+//https://leetcode.com/problems/sum-of-all-subset-xor-totals/description/
+/// A solution to calculate the sum of XOR totals for all subsets of an array.
+class Solution {
+    
+    /// Computes the sum of XORs of all subsets of the given array.
+    ///
+    /// - Parameter nums: An array of integers.
+    /// - Returns: The total sum of XORs of all possible subsets.
+    ///
+    /// ### Explanation:
+    /// - XOR is sensitive to odd/even occurrences.
+    /// - Every bit that appears in `nums` (i.e., in the OR of all elements) will affect exactly half of the subsets.
+    /// - Each bit appears in `2^(n-1)` subsets (where `n` is the number of elements).
+    /// - XOR aggregates the contributions of bits over subsets.
+    /// - So, multiplying the OR of all numbers by `2^(n-1)` gives the total XOR subset sum.
+    func subsetXORSum(_ nums: [Int]) -> Int {
+        var result = 0
+        
+        // Compute the bitwise OR of all numbers
+        for num in nums {
+            result |= num
+        }
+        
+        // Multiply the OR result by 2^(n - 1) using bit shift
+        return result << (nums.count - 1)
+    }
+}
