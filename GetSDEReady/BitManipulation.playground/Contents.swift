@@ -93,3 +93,32 @@ class Solution {
         return result << (nums.count - 1)
     }
 }
+// https://leetcode.com/problems/convert-a-number-to-hexadecimal/
+class Solution {
+    func toHex(_ num: Int) -> String {
+        // If the input number is zero, return "0"
+        if num == 0 {
+            return "0"
+        }
+
+        // If the number is negative, convert it to its 32-bit two's complement representation
+        var value = num
+        if num < 0 {
+            value = Int(UInt32(bitPattern: Int32(num)))
+        }
+
+        let hexDigits = "0123456789abcdef"  // The hexadecimal digit characters
+        var hexString = ""  // Store the resulting hex string
+
+        // Repeatedly divide the number by 16 and prepend the corresponding hex digit
+        while value > 0 {
+            let digit = value % 16
+            let hexChar = hexDigits[hexDigits.index(hexDigits.startIndex, offsetBy: digit)]
+            hexString = String(hexChar) + hexString
+            value /= 16
+        }
+
+        return hexString
+    }
+}
+
