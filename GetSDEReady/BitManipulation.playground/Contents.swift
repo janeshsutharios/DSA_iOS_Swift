@@ -314,4 +314,42 @@ class Solution {
         return totalDistance
     }
 }
+// https://leetcode.com/problems/xor-queries-of-a-subarray/
+/*
+| Concept         | Purpose                                          |
+| --------------- | ------------------------------------------------ |
+| Prefix XOR      | Precompute cumulative XORs for fast queries      |
+| XOR trick       | `prefix[R] ^ prefix[L - 1]` gives subarray XOR   |
+| Edge case `L=0` | Use `prefix[R]` directly                         |
+| Time Complexity | O(n + q), much faster than O(n \* q) brute-force |
+*/
+class Solution {
+    func xorQueries(_ arr: [Int], _ queries: [[Int]]) -> [Int] {
+        var curr = 0
+        var v: [Int] = []
+        var ans: [Int] = []
 
+        // Build prefix XOR array
+        for i in 0..<arr.count {
+            curr ^= arr[i]
+            v.append(curr)
+        }
+
+        // Answer each query using prefix XOR
+        for i in 0..<queries.count {
+            let start = queries[i][0]
+            let end = queries[i][1]
+
+            let tempAns: Int
+            if start == 0 {
+                tempAns = v[end]
+            } else {
+                tempAns = v[end] ^ v[start - 1]
+            }
+
+            ans.append(tempAns)
+        }
+
+        return ans
+    }
+}
