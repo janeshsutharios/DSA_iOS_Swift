@@ -322,6 +322,7 @@ class Solution {
 | XOR trick       | `prefix[R] ^ prefix[L - 1]` gives subarray XOR   |
 | Edge case `L=0` | Use `prefix[R]` directly                         |
 | Time Complexity | O(n + q), much faster than O(n \* q) brute-force |
+![XOR Queries Diagram](https://github.com/janeshsutharios/DSA_iOS_Swift/raw/main/GetSDEReady/Images/Xor-Queries.jpg)
 */
 class Solution {
     func xorQueries(_ arr: [Int], _ queries: [[Int]]) -> [Int] {
