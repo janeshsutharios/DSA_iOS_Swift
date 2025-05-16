@@ -122,3 +122,80 @@ class Solution {
     }
 }
 
+//https://leetcode.com/problems/bitwise-ors-of-subarrays/
+// A subarray is defined as a contiguous (unbroken) sequence of elements from the array.
+/*
+So for array [1, 2, 3], the valid subarrays are:
+
+[1]
+
+[2]
+
+[3]
+
+[1, 2]
+
+[2, 3]
+
+[1, 2, 3]
+
+But [1, 3] is not a subarray, because 2 is skipped.
+---- 
+ Recap with ORs from [1, 2, 3]:
+Let's compute all subarray ORs manually:
+
+Subarrays starting at index 0:
+
+[1] → 1
+
+[1, 2] → 1 | 2 = 3
+
+[1, 2, 3] → 1 | 2 | 3 = 3
+
+Starting at index 1:
+
+[2] → 2
+
+[2, 3] → 2 | 3 = 3
+
+Starting at index 2:
+
+[3] → 3
+
+🔢 Unique ORs: {1, 2, 3} → ✅ Output: 3
+*/
+
+class Solution {
+    func subarrayBitwiseORs(_ arr: [Int]) -> Int {
+        // Set to store all unique bitwise OR results from subarrays
+        var allResults = Set<Int>()
+        
+        // Set to store OR results of subarrays ending at the previous index
+        var previousResults = Set<Int>()
+        
+        for currentValue in arr {
+            // Temporary set to store OR results ending at the current index
+            var currentResults = Set<Int>()
+            
+            // Each OR result with currentValue includes:
+            // - currentValue itself (as a subarray of one element)
+            // - OR with every result from the previous subarrays
+            currentResults.insert(currentValue)
+            for value in previousResults {
+                currentResults.insert(currentValue | value)
+            }
+            
+            // Update previous results for next iteration
+            previousResults = currentResults
+            
+            // Merge current results into the final set
+            for result in currentResults {
+                allResults.insert(result)
+            }
+        }
+        
+        return allResults.count
+    }
+}
+
+
