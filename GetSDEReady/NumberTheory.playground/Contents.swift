@@ -208,6 +208,32 @@ func isFactorial(_ number: Int) -> Int {
 
 print(isFactorial(24)) // gives 4
 
+// https://getsdeready.com/courses/dsa/lesson/gcd-lcm/
+// Input: A = 5 , B = 10 Output: 10 5 LCM of 5 and 10 is 10, while their GCD is 5.
+class Solution {
+    
+    /// Returns the LCM and GCD of two integers as a tuple (lcm, gcd).
+    static func lcmAndGcd(_ a: Int, _ b: Int) -> (lcm: Int, gcd: Int) {
+        let gcd = findGCD(a, b)
+        let lcm = findLCM(a, b, gcd)
+        return (lcm, gcd)
+    }
+
+    /// Uses the Euclidean algorithm to find the greatest common divisor (GCD).
+    private static func findGCD(_ m: Int, _ n: Int) -> Int {
+        if m == 0 {
+            return n
+        }
+        return findGCD(n % m, m)
+    }
+
+    /// Computes the least common multiple (LCM) using GCD.
+    private static func findLCM(_ m: Int, _ n: Int, _ gcd: Int) -> Int {
+        return (m * n) / gcd
+    }
+}
+
+
 // https://leetcode.com/problems/divide-two-integers/description/
 // Input: dividend = 10, divisor = 3 Output: 3
 class Solution {
