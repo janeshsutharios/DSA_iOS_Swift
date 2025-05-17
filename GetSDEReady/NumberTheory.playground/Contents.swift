@@ -61,6 +61,43 @@ class Solution {
     }
 
 }
+// https://getsdeready.com/courses/dsa/lesson/product-of-factors-of-number-2/
+/*
+Input: N=6
+Output: 36
+Explanation: Factors of 6 are 1,2,3,6.Their product is (1*2*3*6)%(109+7)=36.
+*/
+class Solution {
+    /// Returns the product of all factors of the given number `n`, modulo 1_000_000_007.
+    ///
+    /// - Parameter n: The input number to find the product of its factors.
+    /// - Returns: The product of all factors of `n`, modulo 1_000_000_007.
+    func productOfFactors(of n: Int) -> Int {
+        let modulo = 1_000_000_007
+        var result = 1
+
+        // Iterate from 1 to square root of n
+        for divisor in 1...Int(Double(n).squareRoot()) {
+            if n % divisor == 0 {
+                let pairedDivisor = n / divisor
+
+                if divisor == pairedDivisor {
+                    // divisor is the square root of n, only multiply once
+                    result = (result * divisor) % modulo
+                } else {
+                    // Multiply both divisor and its pair
+                    result = (result * divisor) % modulo
+                    result = (result * pairedDivisor) % modulo
+                }
+            }
+        }
+
+        return result
+    }
+}
+let solution = Solution()
+print(solution.productOfFactors(of: 10))  // Output: 100
+print(solution.productOfFactors(of: 16))  // Output: 1024
 
 
 /*
