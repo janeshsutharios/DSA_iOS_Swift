@@ -365,6 +365,45 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/find-prime-numbers-in-a-range/
+
+class Solution {
+
+    /// Returns a list of prime numbers in the range [start, end].
+    ///
+    /// - Parameters:
+    ///   - start: The lower bound of the range.
+    ///   - end: The upper bound of the range.
+    /// - Returns: An array of prime numbers between start and end (inclusive).
+    func primeRange(from start: Int, to end: Int) -> [Int] {
+        var primes: [Int] = []
+        
+        for number in start...end {
+            if isPrime(number) {
+                primes.append(number)
+            }
+        }
+        
+        return primes
+    }
+
+    /// Checks whether a number is prime.
+    ///
+    /// - Parameter number: The number to check.
+    /// - Returns: `true` if the number is prime, `false` otherwise.
+    private func isPrime(_ number: Int) -> Bool {
+        if number <= 1 { return false }
+        if number == 2 { return true }
+
+        for i in 2...Int(Double(number).squareRoot()) {
+            if number % i == 0 {
+                return false
+            }
+        }
+        
+        return true
+    }
+}
 
 // https://leetcode.com/problems/divide-two-integers/description/
 // Input: dividend = 10, divisor = 3 Output: 3
