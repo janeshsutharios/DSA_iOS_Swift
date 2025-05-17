@@ -291,6 +291,50 @@ class Solution {
 }
 
 
+// https://getsdeready.com/courses/dsa/lesson/gcd-lcm-and-distributive-property/
+/*
+Input: x = 15, y = 20, z = 100
+Output: 60
+Explanation: GCD(LCM(15,20), LCM(15,100)) =GCD(60,300)=60.
+*/
+class Solution {
+
+    /// Computes the Greatest Common Divisor (GCD) using the Euclidean algorithm.
+    ///
+    /// - Parameters:
+    ///   - a: First integer
+    ///   - b: Second integer
+    /// - Returns: The GCD of a and b
+    static func gcd(_ a: Int, _ b: Int) -> Int {
+        if b == 0 {
+            return a
+        }
+        return gcd(b, a % b)
+    }
+
+    /// Computes the Least Common Multiple (LCM) using GCD.
+    ///
+    /// - Parameters:
+    ///   - a: First integer
+    ///   - b: Second integer
+    /// - Returns: The LCM of a and b
+    static func lcm(_ a: Int, _ b: Int) -> Int {
+        return (a * b) / gcd(a, b)
+    }
+
+    /// Finds GCD of LCM(x, y) and LCM(x, z).
+    ///
+    /// - Parameters:
+    ///   - x: First integer
+    ///   - y: Second integer
+    ///   - z: Third integer
+    /// - Returns: GCD(LCM(x, y), LCM(x, z))
+    static func findValue(x: Int, y: Int, z: Int) -> Int {
+        let lcmXY = lcm(x, y)
+        let lcmXZ = lcm(x, z)
+        return gcd(lcmXY, lcmXZ)
+    }
+}
 
 // https://leetcode.com/problems/divide-two-integers/description/
 // Input: dividend = 10, divisor = 3 Output: 3
