@@ -232,7 +232,36 @@ class Solution {
         return (m * n) / gcd
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/prime-numbers-and-primality-check/
+/* Input: N = 100 Output: 2 5
+Explanation: 2 and 5 are the unique prime factors of 100*/
+class Solution {
+    
+    /// Returns a list of all **distinct prime factors** of the given number `n`.
+    func allPrimeFactors(of n: Int) -> [Int] {
+        var number = n
+        var primeFactors: [Int] = []
+        var lastPrime = 0
 
+        // Check divisibility from 2 up to sqrt(number)
+        for divisor in 2...Int(Double(number).squareRoot()) {
+            while number % divisor == 0 {
+                if divisor != lastPrime {
+                    primeFactors.append(divisor)
+                }
+                lastPrime = divisor
+                number /= divisor
+            }
+        }
+
+        // If remaining number is a prime > sqrt(n)
+        if number > 1 {
+            primeFactors.append(number)
+        }
+
+        return primeFactors
+    }
+}
 
 // https://leetcode.com/problems/divide-two-integers/description/
 // Input: dividend = 10, divisor = 3 Output: 3
