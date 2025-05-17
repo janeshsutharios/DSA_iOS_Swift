@@ -276,51 +276,7 @@ class Solution {
     }
 }
 
-//: Factorial Numbers Less Than or Equal to N
-class FactorialHelper {
-    /// Returns a list of all factorial numbers less than or equal to `n`.
-    /// A factorial number is of the form: 1!, 2!, 3!, ...
-    func factorialNumbers(lessThanOrEqualTo n: Int) -> [Int] {
-        var result: [Int] = []
-        var factorial = 1
-        var i = 1
 
-        // Generate factorials until the value exceeds n
-        while factorial <= n {
-            result.append(factorial)
-            i += 1
-            factorial *= i
-        }
-
-        return result
-    }
-}
-
-//: GCD, LCM, and Custom Value Calculation
-//https://getsdeready.com/courses/dsa/lesson/gcd-lcm-and-distributive-property/
-
-class NumberHelper {
-    
-    /// Calculates the Greatest Common Divisor (GCD) of two integers using the Euclidean algorithm.
-    static func gcd(_ a: Int, _ b: Int) -> Int {
-        if b == 0 {
-            return a
-        }
-        return gcd(b, a % b)
-    }
-
-    /// Calculates the Least Common Multiple (LCM) of two integers.
-    static func lcm(_ a: Int, _ b: Int) -> Int {
-        return (a * b) / gcd(a, b)
-    }
-
-    /// Computes: GCD(LCM(x, y), LCM(x, z))
-    static func findValue(x: Int, y: Int, z: Int) -> Int {
-        let lcmXY = lcm(x, y)
-        let lcmXZ = lcm(x, z)
-        return gcd(lcmXY, lcmXZ)
-    }
-}
 //https://getsdeready.com/courses/dsa/lesson/product-of-prime-factors/
 
 
