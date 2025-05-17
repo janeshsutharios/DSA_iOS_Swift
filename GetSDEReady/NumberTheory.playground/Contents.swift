@@ -404,6 +404,125 @@ class Solution {
         return true
     }
 }
+//https://getsdeready.com/courses/dsa/lesson/product-of-prime-factors/
+
+
+| Step | Current Value | Divisor Tried | Is Divisible? | Result After Division | Prime Factor Found? |
+| ---- | ------------- | ------------- | ------------- | --------------------- | ------------------- |
+| 1    | 500           | 2             | ✅ Yes         | 250                   | ✅ 2                 |
+| 2    | 250           | 2             | ✅ Yes         | 125                   | ✅ 2                 |
+| 3    | 125           | 2             | ❌ No          | —                     | —                   |
+| 4    | 125           | 3             | ❌ No          | —                     | —                   |
+| 5    | 125           | 5             | ✅ Yes         | 25                    | ✅ 5                 |
+| 6    | 25            | 5             | ✅ Yes         | 5                     | ✅ 5                 |
+| 7    | 5             | 5             | ✅ Yes         | 1                     | ✅ 5                 |
+
+Step-by-Step Prime Factorization of 500
+We start with N = 500
+We’ll divide it by the smallest prime numbers: 2, 3, 5, 7, ..., repeatedly.
+
+✅ Step 1: Try dividing by 2
+500 ÷ 2 = 250
+250 ÷ 2 = 125
+125 ÷ 2 = not divisible → stop here
+
+So 2 appears twice in the factorization.
+
+500 = 2 × 2 × 125
+✅ Step 2: Try dividing by 3
+125 ÷ 3 = not divisible → skip
+
+✅ Step 3: Try dividing by 5
+125 ÷ 5 = 25
+25 ÷ 5 = 5
+5 ÷ 5 = 1
+
+Now we’re done — fully divided.
+
+So 5 appears three times.
+
+class PrimeProductCalculator {
+    
+    /// Returns the product of all **distinct prime factors** of `n`.
+    func productOfDistinctPrimeFactors(of n: Int) -> Int {
+        var n = n
+        var product = 1
+        
+        // Check for each number from 2 up to sqrt(n)
+        for i in 2...Int(sqrt(Double(n))) {
+            if n % i == 0 {
+                // If `i` is a prime factor, include it once
+                product *= i
+                
+                // Divide all powers of this prime factor out of `n`
+                while n % i == 0 {
+                    n /= i
+                }
+            }
+        }
+        
+        // If `n` is still greater than 1, it's a prime number itself
+        if n > 1 {
+            product *= n
+        }
+        /*
+        n = 13 (which is prime)
+Loop checks 2 and 3 — no match
+
+So product is still 1
+
+But 13 is a valid prime factor of itself
+
+👉 We check:
+
+swift
+Copy
+Edit
+if n > 1 {
+    product *= 13  // Adds the missing prime factor
+}
+        */
+        return product
+    }
+}
+//https://getsdeready.com/courses/dsa/lesson/find-prime-numbers-in-a-range/
+// TC: O((N - M + 1) * sqrt(N))
+// SC: O(1)
+
+class PrimeRangeFinder {
+    
+    /// Returns a list of prime numbers in the range [start...end].
+    func primeNumbers(inRange start: Int, to end: Int) -> [Int] {
+        var primes: [Int] = []
+
+        for number in start...end {
+            if isPrime(number) {
+                primes.append(number)
+            }
+        }
+
+        return primes
+    }
+
+    /// Checks if a number is prime using divisor count logic.
+    private func isPrime(_ n: Int) -> Bool {
+        if n < 2 { return false } // 0 and 1 are not prime
+
+        var divisorCount = 0
+
+        for i in 1...Int(sqrt(Double(n))) {
+            if n % i == 0 {
+                divisorCount += 1  // i is a divisor
+                if i != n / i {
+                    divisorCount += 1  // n/i is also a divisor
+                }
+            }
+        }
+
+        return divisorCount == 2  // Only 1 and n are divisors
+    }
+}
+
 
 // https://leetcode.com/problems/divide-two-integers/description/
 // Input: dividend = 10, divisor = 3 Output: 3
