@@ -39,8 +39,8 @@ class Solution {
     }
 }
 
-// Add two integers 
-//https://leetcode.com/problems/add-two-integers/
+// Add two numbers without using airthmatic operator because bitwise operator is quite faster than airthmetic operator
+// https://leetcode.com/problems/add-two-integers/
 class Solution {
     // Using Loop
     func sum(_ num1: Int, _ num2: Int) -> Int {
@@ -119,28 +119,6 @@ class Solution {
     func repeatedGcd(_ N: Int, _ x: Int, _ y: Int) -> Int {
         return gcd(x, y)
     }
-}
-// Add two numbers without using airthmatic operator 
-// https://leetcode.com/problems/add-two-integers/description/
-class Solution {
-    /* Using Loop
-    func sum(_ num1: Int, _ num2: Int) -> Int {
-        var num1 = num1, num2 = num2
-        while num2 != 0 {
-            let carry = num1 & num2 // find carry
-            num1 = num1 ^ num2 // do sumWithoutCarry
-            num2 = carry << 1 // shift carry to next head
-        }
-       return num1// because  ^ sum operation we are storing in num1
-    }*/
-    // Using recursion 
-    func sum(_ num1: Int, _ num2: Int) -> Int {
-       if num2 == 0 { return num1 }
-        let carry = num1 & num2
-        let sumWithoutCarry = num1 ^ num2 
-        return sum(sumWithoutCarry, carry << 1)
-    }
-
 }
 // TC O(n)
 // SC O(1)
