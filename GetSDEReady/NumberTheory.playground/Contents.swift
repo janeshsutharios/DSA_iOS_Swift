@@ -20,6 +20,7 @@ class Solution {
         return a
     }
     // We have taken square here because f*f <= N, hence f = squareRoot(n) example 6*6 = 36
+    // Instead of using square root inbuilt function use i * i <= N 
     func commonDivisior(_ n: Int) -> Int {
         let sqrt = Int(Double(n).squareRoot())
         var count = 0
