@@ -264,6 +264,7 @@ class Solution {
 }
 // Pending.. https://getsdeready.com/courses/dsa/lesson/modulo-arithmetic/
 // Pending.. https://getsdeready.com/courses/dsa/lesson/binary-exponentiation/
+// Pending.. https://getsdeready.com/courses/dsa/lesson/ncr-computations-using-inverse-modulo/
 
 
 
