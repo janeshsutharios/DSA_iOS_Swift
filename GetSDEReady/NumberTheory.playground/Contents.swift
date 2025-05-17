@@ -266,6 +266,29 @@ class Solution {
 // Pending.. https://getsdeready.com/courses/dsa/lesson/binary-exponentiation/
 // Pending.. https://getsdeready.com/courses/dsa/lesson/ncr-computations-using-inverse-modulo/
 
+// https://getsdeready.com/courses/dsa/lesson/find-all-factorial-numbers-less-than-or-equal-to-n/
+// Input: N = 6 Output: 1 2 6 Explanation: The first three factorial numbers are less than equal to N but the fourth factorial number 24 is greater than N. So we print only first three factorial numbers.
+class Solution {
+    
+    /// Returns an array of all factorial numbers less than or equal to the given limit.
+    ///
+    /// - Parameter limit: The maximum value up to which factorial numbers should be included.
+    /// - Returns: An array of factorial numbers less than or equal to `limit`.
+    static func factorialNumbers(upto limit: Int) -> [Int] {
+        var factorialList: [Int] = []
+        var currentFactorial = 1
+        var number = 1
+
+        // Keep generating factorials until the next one exceeds the limit
+        while currentFactorial <= limit {
+            factorialList.append(currentFactorial)
+            number += 1
+            currentFactorial *= number
+        }
+
+        return factorialList
+    }
+}
 
 
 
