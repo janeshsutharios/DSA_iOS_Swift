@@ -336,6 +336,36 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/product-of-prime-factors/
+class Solution {
+    
+    /// Computes the product of all **distinct prime factors** of a given number.
+    ///
+    /// - Parameter number: The integer for which to compute the product of prime factors.
+    /// - Returns: The product of all unique prime factors of the number.
+    static func primeProduct(of number: Int) -> Int {
+        var remaining = number
+        var productOfPrimes = 1
+        
+        for factor in 2...Int(Double(remaining).squareRoot()) {
+            if remaining % factor == 0 {
+                productOfPrimes *= factor
+                while remaining % factor == 0 {
+                    remaining /= factor
+                }
+            }
+        }
+        
+        // If what's left is a prime greater than sqrt(original number)
+        if remaining > 1 {
+            productOfPrimes *= remaining
+        }
+        
+        return productOfPrimes
+    }
+}
+
+
 // https://leetcode.com/problems/divide-two-integers/description/
 // Input: dividend = 10, divisor = 3 Output: 3
 class Solution {
