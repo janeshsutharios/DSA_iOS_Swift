@@ -19,7 +19,7 @@ class Solution {
         }
         return a
     }
-    
+    // We have taken square here because f*f <= N, hence f = squareRoot(n)
     func commonDivisior(_ n: Int) -> Int {
         let sqrt = Int(Double(n).squareRoot())
         var count = 0
