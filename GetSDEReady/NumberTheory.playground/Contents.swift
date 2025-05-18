@@ -1,5 +1,6 @@
 import Fondation
-//https://leetcode.com/problems/number-of-common-factors/description/
+// https://getsdeready.com/courses/dsa/lesson/number-of-common-factors/
+// https://leetcode.com/problems/number-of-common-factors/description/
 // TC:O(log(min(a, b)) + √g), where g = gcd(a, b)
 // SC: O(1)
 
@@ -186,7 +187,7 @@ func findPrimes(upTo limit: Int) -> [Int] {
 
     return primes
 }
-
+// https://getsdeready.com/courses/dsa/lesson/factorial/
 // Returns `true` if the given number is a factorial of some integer, otherwise `false`.
 //https://www.geeksforgeeks.org/problems/factorial-number2446/1?utm_source=geeksforgeeks&utm_medium=ml_article_practice_tab&utm_campaign=article_practice_tab
 func isFactorial(_ number: Int) -> Int {
