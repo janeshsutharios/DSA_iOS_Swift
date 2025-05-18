@@ -244,82 +244,7 @@ class Solution {
     }
 }
 
-// https://getsdeready.com/courses/dsa/lesson/find-sum-of-different-corresponding-bits-for-all-pairs/
-
-class Solution {
-    func countBits(_ nums: [Int]) -> Int {
-        var total: Int64 = 0
-        let mod = 1_000_000_007
-        let n = nums.count
-        var copy = nums // To avoid modifying the original array
-
-        // Loop over 31 bits (sufficient for 32-bit signed integers)
-        for _ in 0..<31 {
-            var set: Int64 = 0
-            var unset: Int64 = 0
-
-            // Count set and unset bits at the current least significant bit (LSB)
-            for i in 0..<n {
-                if (copy[i] & 1) == 1 {
-                    set += 1
-                } else {
-                    unset += 1
-                }
-
-                // Prepare number for next round (remove LSB)
-                copy[i] >>= 1
-            }
-            // Here we are multiplying because we have used two loop hence set * unset 
-            // We also need duplicate pair hence *2 used example [1,3] [3,1]
-            // For this bit position, add contribution of all differing pairs
-            total += set * unset * 2
-        }
-
-        return Int(total % Int64(mod))
-    }
-}
-
-// https://leetcode.com/problems/single-number-ii/
-/*
-Input: [2, 2, 3, 2]
-Binary:
-2 = 10
-3 = 11
-| Step | `num` | `ones` | `twos` | Explanation                                     |
-| ---- | ----- | ------ | ------ | ----------------------------------------------- |
-| 1    | 2     | 10     | 00     | First time: add to `ones`                       |
-| 2    | 2     | 00     | 10     | Second time: remove from `ones`, move to `twos` |
-| 3    | 3     | 11     | 00     | `3` is new → added to `ones`                    |
-| 4    | 2     | 01     | 00     | Third time: `2` bits cleared from both          |
-Result: ones = 11 → 3
-We don’t care which numbers appeared — just how many times each bit appeared.
-
-If we track bits that appeared:
-once, we store them in ones
-twice, we store them in twos
-If a bit appears the third time, it should be removed from both.
-*/
-class Solution {
-    func singleNumber(_ nums: [Int]) -> Int {
-        // `ones` will hold bits that have appeared exactly once
-        // `twos` will hold bits that have appeared exactly twice
-        var ones = 0, twos = 0
-        
-        // Iterate through each number in the array
-        for n in nums {
-            // Update `ones` with bits that have appeared exactly once.
-            // `ones` is updated by toggling bits of `n` that are not in `twos`
-            ones = ones ^ n & ~twos
-            
-            // Update `twos` with bits that have appeared exactly twice.
-            // `twos` is updated by toggling bits of `n` that are not in `ones`
-            twos = twos ^ n & ~ones
-        }
-        
-        // `ones` now holds the bits of the number that appears exactly once
-        return ones
-    }
-}
+//https://getsdeready.com/courses/dsa/lesson/total-hamming-distance/
 // https://leetcode.com/problems/total-hamming-distance/description/
 /*
 Input: nums = [4,14,2]
@@ -361,3 +286,81 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/single-number-ii/
+// https://leetcode.com/problems/single-number-ii/
+/*
+Input: [2, 2, 3, 2]
+Binary:
+2 = 10
+3 = 11
+| Step | `num` | `ones` | `twos` | Explanation                                     |
+| ---- | ----- | ------ | ------ | ----------------------------------------------- |
+| 1    | 2     | 10     | 00     | First time: add to `ones`                       |
+| 2    | 2     | 00     | 10     | Second time: remove from `ones`, move to `twos` |
+| 3    | 3     | 11     | 00     | `3` is new → added to `ones`                    |
+| 4    | 2     | 01     | 00     | Third time: `2` bits cleared from both          |
+Result: ones = 11 → 3
+We don’t care which numbers appeared — just how many times each bit appeared.
+
+If we track bits that appeared:
+once, we store them in ones
+twice, we store them in twos
+If a bit appears the third time, it should be removed from both.
+*/
+class Solution {
+    func singleNumber(_ nums: [Int]) -> Int {
+        // `ones` will hold bits that have appeared exactly once
+        // `twos` will hold bits that have appeared exactly twice
+        var ones = 0, twos = 0
+        
+        // Iterate through each number in the array
+        for n in nums {
+            // Update `ones` with bits that have appeared exactly once.
+            // `ones` is updated by toggling bits of `n` that are not in `twos`
+            ones = ones ^ n & ~twos
+            
+            // Update `twos` with bits that have appeared exactly twice.
+            // `twos` is updated by toggling bits of `n` that are not in `ones`
+            twos = twos ^ n & ~ones
+        }
+        
+        // `ones` now holds the bits of the number that appears exactly once
+        return ones
+    }
+}
+
+
+// https://getsdeready.com/courses/dsa/lesson/find-sum-of-different-corresponding-bits-for-all-pairs/
+
+class Solution {
+    func countBits(_ nums: [Int]) -> Int {
+        var total: Int64 = 0
+        let mod = 1_000_000_007
+        let n = nums.count
+        var copy = nums // To avoid modifying the original array
+
+        // Loop over 31 bits (sufficient for 32-bit signed integers)
+        for _ in 0..<31 {
+            var set: Int64 = 0
+            var unset: Int64 = 0
+
+            // Count set and unset bits at the current least significant bit (LSB)
+            for i in 0..<n {
+                if (copy[i] & 1) == 1 {
+                    set += 1
+                } else {
+                    unset += 1
+                }
+
+                // Prepare number for next round (remove LSB)
+                copy[i] >>= 1
+            }
+            // Here we are multiplying because we have used two loop hence set * unset 
+            // We also need duplicate pair hence *2 used example [1,3] [3,1]
+            // For this bit position, add contribution of all differing pairs
+            total += set * unset * 2
+        }
+
+        return Int(total % Int64(mod))
+    }
+}
