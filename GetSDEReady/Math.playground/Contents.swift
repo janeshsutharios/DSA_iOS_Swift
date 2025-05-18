@@ -229,6 +229,170 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/check-if-it-is-a-straight-line/
+// https://leetcode.com/problems/check-if-it-is-a-straight-line/description/
+class Solution {
+    func checkStraightLine(_ coordinates: [[Int]]) -> Bool {
+        let x0 = coordinates[0][0]
+       let y0 = coordinates[0][1]
+        let x1 = coordinates[1][0]
+        let y1 = coordinates[1][1]
+
+        for i in 2..<coordinates.count {
+            let x = coordinates[i][0]
+            let y = coordinates[i][1]
+            if (x1-x0) * (y-y0) != (x - x0) * (y1-y0) {
+                return false
+            }
+        }
+        return true
+    }
+}
+
+// https://getsdeready.com/courses/dsa/lesson/count-days-spent-together/
+// https://leetcode.com/problems/count-days-spent-together/description/
+class Solution {
+    // Array representing the number of days in each month (non-leap year)
+    let daysOfMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    
+    // Function to count the number of overlapping days between Alice and Bob's available time
+    func countDaysTogether(_ arriveAlice: String, _ leaveAlice: String, _ arriveBob: String, _ leaveBob: String) -> Int {
+        // Convert Alice's arrival and departure dates to total days of the year
+        let arriveAliceDays = getDays(arriveAlice)
+        let leaveAliceDays = getDays(leaveAlice)
+        
+        // Convert Bob's arrival and departure dates to total days of the year
+        let arriveBobDays = getDays(arriveBob)
+        let leaveBobDays = getDays(leaveBob)
+        
+        // If their time periods do not overlap, return 0
+        if leaveAliceDays < arriveBobDays || leaveBobDays < arriveAliceDays {
+            return 0
+        }
+        
+        // Calculate the overlap period by finding the maximum start date and minimum end date
+        return abs(max(arriveAliceDays, arriveBobDays) - min(leaveAliceDays, leaveBobDays)) + 1
+    }
+    
+    // Helper function to calculate the total number of days from the start of the year for a given date (MMDD)
+    private func getDays(_ date: String) -> Int {
+        // Extract the month (MM) and day (DD) from the date string
+        let month = Int(date.prefix(2))!
+        let day = Int(date.suffix(2))!
+        
+        // Initialize a variable to count the total number of days
+        var totalDays = 0
+        
+        // Add the days of each month up to the given month (excluding the current month)
+        for i in 0..<month-1 {
+            totalDays += daysOfMonth[i]
+        }
+        
+        // Add the days of the current month
+        totalDays += day
+        
+        // Return the total number of days
+        return totalDays
+    }
+}
+
+// https://leetcode.com/problems/minimum-sum-of-four-digit-number-after-splitting-digits/description/
+// https://getsdeready.com/courses/dsa/lesson/minimum-sum-of-four-digit-number-after-splitting-digits/
+class Solution {
+    func minimumSum(_ num: Int) -> Int {
+        // Initialize an array of 4 integers to hold the digits
+        var digits = [Int](repeating: 0, count: 4)
+        var n = num
+        var i = 0
+
+        // Extract digits from the number using modulus and division
+        while n > 0 {
+            digits[i] = n % 10  // Take the last digit
+            n /= 10             // Remove the last digit
+            i += 1
+        }
+
+        // Sort the digits to make the smallest possible numbers
+        digits.sort()
+
+        // Combine digits to form two numbers with smallest possible sum
+        // For example: digits = [2, 2, 3, 9] → 23 + 29 = 52
+        let num1 = digits[0] * 10 + digits[2]
+        let num2 = digits[1] * 10 + digits[3]
+
+        return num1 + num2
+    }
+}
+// OR swifty way 
+/*
+
+class Solution {
+    func minimumSum(_ num: Int) -> Int {
+        // Convert the number to a string, map each character to Int, then sort the digits
+        let digits = String(num)
+            .compactMap { $0.wholeNumberValue }
+            .sorted()
+
+        // Form two numbers by combining digits:
+        // - First number: smallest digit + third smallest digit
+        // - Second number: second smallest + largest digit
+        let num1 = digits[0] * 10 + digits[2]
+        let num2 = digits[1] * 10 + digits[3]
+
+        // Return the sum of the two new numbers
+        return num1 + num2
+    }
+}
+*/
+
+// https://getsdeready.com/courses/dsa/lesson/day-of-the-year/
+// https://leetcode.com/problems/day-of-the-year/description/
+class Solution {
+    func dayOfYear(_ date: String) -> Int {
+        let parts = date.split(separator: "-")
+        let year = Int(parts[0])!
+        let month = Int(parts[1])!
+        let day = Int(parts[2])!
+
+        var daysInMonth = [31, 28, 31, 30, 31, 30,
+                           31, 31, 30, 31, 30, 31]
+
+        // Check for leap year
+        if (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) {
+            daysInMonth[1] = 29
+        }
+
+        var dayOfYear = 0
+
+        for i in 0..<month-1 {
+            dayOfYear += daysInMonth[i]
+        }
+
+        dayOfYear += day
+
+        return dayOfYear
+    }
+}
+
+// https://getsdeready.com/courses/dsa/lesson/subtract-the-product-and-sum-of-digits-of-an-integer/
+// https://leetcode.com/problems/subtract-the-product-and-sum-of-digits-of-an-integer/description/
+
+class Solution {
+    func subtractProductAndSum(_ n: Int) -> Int {
+        var number = n
+        var product = 1
+        var sum = 0
+
+        while number > 0 {
+            let digit = number % 10
+            product *= digit
+            sum += digit
+            number /= 10
+        }
+
+        return product - sum
+    }
+}
 
 // https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/description/
 // 
