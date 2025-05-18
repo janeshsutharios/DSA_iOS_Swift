@@ -1,4 +1,5 @@
 //https://leetcode.com/problems/single-number/
+//https://getsdeready.com/courses/dsa/lesson/single-number/
 // [2,2,1]  output 1
 // [4,1,2,1,2] output 4
 class Solution {
@@ -25,8 +26,67 @@ class Solution {
         return xorNumber
     }
 }
-//https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/description/
 
+//https://leetcode.com/problems/sum-of-all-subset-xor-totals/description/
+//https://getsdeready.com/courses/dsa/lesson/sum-of-all-subset-xor-totals/
+/// A solution to calculate the sum of XOR totals for all subsets of an array.
+class Solution {
+    
+    /// Computes the sum of XORs of all subsets of the given array.
+    ///
+    /// - Parameter nums: An array of integers.
+    /// - Returns: The total sum of XORs of all possible subsets.
+    ///
+    /// ### Explanation:
+    /// - XOR is sensitive to odd/even occurrences.
+    /// - Every bit that appears in `nums` (i.e., in the OR of all elements) will affect exactly half of the subsets.
+    /// - Each bit appears in `2^(n-1)` subsets (where `n` is the number of elements).
+    /// - XOR aggregates the contributions of bits over subsets.
+    /// - So, multiplying the OR of all numbers by `2^(n-1)` gives the total XOR subset sum.
+    func subsetXORSum(_ nums: [Int]) -> Int {
+        var result = 0
+        
+        // Compute the bitwise OR of all numbers
+        for num in nums {
+            result |= num
+        }
+        
+        // Multiply the OR result by 2^(n - 1) using bit shift
+        return result << (nums.count - 1)
+    }
+}
+
+//https://getsdeready.com/courses/dsa/lesson/convert-a-number-to-hexadecimal/
+// https://leetcode.com/problems/convert-a-number-to-hexadecimal/
+class Solution {
+    func toHex(_ num: Int) -> String {
+        // If the input number is zero, return "0"
+        if num == 0 {
+            return "0"
+        }
+
+        // If the number is negative, convert it to its 32-bit two's complement representation
+        var value = num
+        if num < 0 {
+            value = Int(UInt32(bitPattern: Int32(num)))
+        }
+
+        let hexDigits = "0123456789abcdef"  // The hexadecimal digit characters
+        var hexString = ""  // Store the resulting hex string
+
+        // Repeatedly divide the number by 16 and prepend the corresponding hex digit
+        while value > 0 {
+            let digit = value % 16
+            let hexChar = hexDigits[hexDigits.index(hexDigits.startIndex, offsetBy: digit)]
+            hexString = String(hexChar) + hexString
+            value /= 16
+        }
+
+        return hexString
+    }
+}
+//https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/description/
+//https://getsdeready.com/courses/dsa/lesson/prime-number-of-set-bits-in-binary-representation/
 class Solution {
     
     // Helper function to check if a number is prime
@@ -66,62 +126,48 @@ class Solution {
         return primeSetBitCount
     }
 }
-//https://leetcode.com/problems/sum-of-all-subset-xor-totals/description/
-/// A solution to calculate the sum of XOR totals for all subsets of an array.
+
+// https://leetcode.com/problems/xor-queries-of-a-subarray/
+// https://getsdeready.com/courses/dsa/lesson/xor-queries-of-a-subarray/
+/*
+| Concept         | Purpose                                          |
+| --------------- | ------------------------------------------------ |
+| Prefix XOR      | Precompute cumulative XORs for fast queries      |
+| XOR trick       | `prefix[R] ^ prefix[L - 1]` gives subarray XOR   |
+| Edge case `L=0` | Use `prefix[R]` directly                         |
+| Time Complexity | O(n + q), much faster than O(n \* q) brute-force |
+![XOR Queries Diagram](https://github.com/janeshsutharios/DSA_iOS_Swift/raw/main/GetSDEReady/Images/Xor-Queries.jpg)
+*/
 class Solution {
-    
-    /// Computes the sum of XORs of all subsets of the given array.
-    ///
-    /// - Parameter nums: An array of integers.
-    /// - Returns: The total sum of XORs of all possible subsets.
-    ///
-    /// ### Explanation:
-    /// - XOR is sensitive to odd/even occurrences.
-    /// - Every bit that appears in `nums` (i.e., in the OR of all elements) will affect exactly half of the subsets.
-    /// - Each bit appears in `2^(n-1)` subsets (where `n` is the number of elements).
-    /// - XOR aggregates the contributions of bits over subsets.
-    /// - So, multiplying the OR of all numbers by `2^(n-1)` gives the total XOR subset sum.
-    func subsetXORSum(_ nums: [Int]) -> Int {
-        var result = 0
-        
-        // Compute the bitwise OR of all numbers
-        for num in nums {
-            result |= num
+    func xorQueries(_ arr: [Int], _ queries: [[Int]]) -> [Int] {
+        var curr = 0
+        var v: [Int] = []
+        var ans: [Int] = []
+
+        // Build prefix XOR array
+        for i in 0..<arr.count {
+            curr ^= arr[i]
+            v.append(curr)
         }
-        
-        // Multiply the OR result by 2^(n - 1) using bit shift
-        return result << (nums.count - 1)
+
+        // Answer each query using prefix XOR
+        for i in 0..<queries.count {
+            let start = queries[i][0]
+            let end = queries[i][1]
+
+            let tempAns: Int
+            if start == 0 {
+                tempAns = v[end]
+            } else {
+                tempAns = v[end] ^ v[start - 1]
+            }
+
+            ans.append(tempAns)
+        }
+
+        return ans
     }
 }
-// https://leetcode.com/problems/convert-a-number-to-hexadecimal/
-class Solution {
-    func toHex(_ num: Int) -> String {
-        // If the input number is zero, return "0"
-        if num == 0 {
-            return "0"
-        }
-
-        // If the number is negative, convert it to its 32-bit two's complement representation
-        var value = num
-        if num < 0 {
-            value = Int(UInt32(bitPattern: Int32(num)))
-        }
-
-        let hexDigits = "0123456789abcdef"  // The hexadecimal digit characters
-        var hexString = ""  // Store the resulting hex string
-
-        // Repeatedly divide the number by 16 and prepend the corresponding hex digit
-        while value > 0 {
-            let digit = value % 16
-            let hexChar = hexDigits[hexDigits.index(hexDigits.startIndex, offsetBy: digit)]
-            hexString = String(hexChar) + hexString
-            value /= 16
-        }
-
-        return hexString
-    }
-}
-
 //https://leetcode.com/problems/bitwise-ors-of-subarrays/
 // A subarray is defined as a contiguous (unbroken) sequence of elements from the array.
 /*
@@ -314,43 +360,4 @@ class Solution {
         return totalDistance
     }
 }
-// https://leetcode.com/problems/xor-queries-of-a-subarray/
-/*
-| Concept         | Purpose                                          |
-| --------------- | ------------------------------------------------ |
-| Prefix XOR      | Precompute cumulative XORs for fast queries      |
-| XOR trick       | `prefix[R] ^ prefix[L - 1]` gives subarray XOR   |
-| Edge case `L=0` | Use `prefix[R]` directly                         |
-| Time Complexity | O(n + q), much faster than O(n \* q) brute-force |
-![XOR Queries Diagram](https://github.com/janeshsutharios/DSA_iOS_Swift/raw/main/GetSDEReady/Images/Xor-Queries.jpg)
-*/
-class Solution {
-    func xorQueries(_ arr: [Int], _ queries: [[Int]]) -> [Int] {
-        var curr = 0
-        var v: [Int] = []
-        var ans: [Int] = []
 
-        // Build prefix XOR array
-        for i in 0..<arr.count {
-            curr ^= arr[i]
-            v.append(curr)
-        }
-
-        // Answer each query using prefix XOR
-        for i in 0..<queries.count {
-            let start = queries[i][0]
-            let end = queries[i][1]
-
-            let tempAns: Int
-            if start == 0 {
-                tempAns = v[end]
-            } else {
-                tempAns = v[end] ^ v[start - 1]
-            }
-
-            ans.append(tempAns)
-        }
-
-        return ans
-    }
-}
