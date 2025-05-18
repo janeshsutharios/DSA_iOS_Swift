@@ -446,3 +446,41 @@ class Solution {
         return left
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/prime-arrangements/
+// https://leetcode.com/problems/prime-arrangements/description/
+class Solution {
+    let modulos = 1_000_000_007
+    func countPrimes(_ n: Int) -> Int { // https://leetcode.com/problems/count-primes/
+        var primes: [Int] = [2]
+        var i: Int = 3
+        ext: while i <= n {
+            for x in primes {
+                if x * x > i {
+                    break
+                }
+                if i % x == 0 {
+                    i += 2
+                    continue ext
+                }
+            }
+            primes.append(i)
+            i += 2
+        }
+        return n < 2 ? 0 : primes.count
+    }
+    func xfactorial(_ n: Int) -> Int {
+        if n < 1 {
+            return 1
+        }
+        var result: Int = 1
+        for i in 1...n {
+            result = (result * i) % modulos
+        }
+        return result
+    }
+    func numPrimeArrangements(_ n: Int) -> Int {
+        let primesCount = countPrimes(n)
+        return xfactorial(primesCount) * xfactorial(n - primesCount) % modulos
+    }
+}
