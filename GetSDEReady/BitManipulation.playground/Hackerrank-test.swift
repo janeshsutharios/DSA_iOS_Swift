@@ -109,3 +109,32 @@ The answer is 2, meaning there are 2 values of 𝑥 x that satisfy 𝑛 + 𝑥 =
 */
 
 
+//Question# https://www.hackerrank.com/contests/get-sde-ready-bit-manipulation/challenges/maximizing-xor
+// 
+/// Computes the maximum XOR value between any two integers in the given range [lowerBound, upperBound].
+///
+/// The maximum XOR is determined by identifying the position of the most significant bit
+/// where the two bounds differ. This allows us to compute the highest possible XOR value
+/// within the range, based on bit manipulation.
+///
+/// - Parameters:
+///   - lowerBound: The lower bound of the range (inclusive).
+///   - upperBound: The upper bound of the range (inclusive).
+/// - Returns: The maximum XOR value obtainable by XOR-ing any two integers in the given range.
+func getMaxXorValueInRange(lowerBound: Int, upperBound: Int) -> Int {
+    var xorDifference = lowerBound ^ upperBound
+    var numberOfBits = 0
+
+    // Count the number of bits required to represent the XOR difference
+    while xorDifference > 0 {
+        numberOfBits += 1
+        xorDifference >>= 1
+    }
+
+    // The maximum XOR value is obtained when all bits up to the most significant
+    // differing bit are set to 1, which is (1 << numberOfBits) - 1
+    let maxXorValue = (1 << numberOfBits) - 1
+    return maxXorValue
+}
+
+
