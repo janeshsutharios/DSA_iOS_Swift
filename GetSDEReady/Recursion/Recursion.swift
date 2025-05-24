@@ -11,7 +11,6 @@ func powerOf(_ x: Int, _ n: Int) -> Int {
 }
 
 // Solution #2  using Recursion
-
 // TC O(N) & OC O(n)
 func powerOf(_ x: Int, _ n: Int) -> Int {
     if n <= 1 {return x}
@@ -22,7 +21,6 @@ func powerOf(_ x: Int, _ n: Int) -> Int {
  
 // Solution #3  using Recursion + divide
 // Example 2power64 can be written as 2power32 X 2power32. hence we will do half*half
-
 // TC & OC = O(log(n))
 
 func powerOf(_ x: Int, _ n: Int) -> Int {
