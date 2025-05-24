@@ -1,4 +1,5 @@
 // Question# calculate power of n n ^ x
+// https://getsdeready.com/courses/dsa/lesson/power-of-four-2/
 // Example 2 power 5 = 2*2*2*2*2 = 32
 // Solution #1 using Loop
 // TC O(n) & SC O(1)
@@ -72,3 +73,97 @@ func isPowerOfFour(_ n: Int) -> Bool {
     }
 
 */
+
+//https://leetcode.com/problems/fibonacci-number/ 
+// https://getsdeready.com/courses/dsa/lesson/fibonacci-number-2/
+// Method: #1 Loop
+class Solution {
+    // Best // TC: O(n)+O(1)
+// SC: O(1)
+    func fib(_ n: Int) -> Int {
+     if n <= 1 {return n}
+    var prev2 = 0
+    var prev1 = 1
+    for _ in 2...n {
+        let curr = prev1 + prev2
+        prev2 = prev1
+        prev1 = curr
+    }
+    return prev1
+    }
+}
+// Method: #2 Basic Recursion
+    // TC: 2^n
+    // SC: 2^n
+func fib(_ n: Int) ->Int {
+   if n <= 1 {
+       return n
+   }
+   return fib(n-1) + fib(n-2)
+}
+
+print(fib(5))
+
+// Method: #3 Dynamic Programming |
+// TC: O(n)+O(1)
+// SC: O(1)
+func fib(_ n: Int) ->Int {
+   if n <= 1 {
+       return n
+   }
+   if dp[n] != -1 {return dp[n]}
+    dp[n] = fib(n-1) + fib(n-2)
+   return dp[n]
+}
+var n = 5
+var dp: [Int] = Array.init(repeating: -1, count: n+1)
+print(fib(n))
+
+
+// https://leetcode.com/problems/merge-two-sorted-lists/description/
+// https://getsdeready.com/courses/dsa/lesson/merge-two-sorted-lists/
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+        // Base cases
+        guard let list1 = list1 else { return list2 }
+        guard let list2 = list2 else { return list1 }
+
+        if list1.val < list2.val {
+            list1.next = mergeTwoLists(list1.next, list2)
+            return list1
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next)
+            return list2
+        }
+    }
+}
+
+/*
+func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+    var list1 = list1
+    var list2 = list2
+    let preHead = ListNode()
+    var tail = preHead
+    while list1 != nil && list2 != nil {
+        if list1!.val < list2!.val {
+            tail.next = list1
+            list1 = list1?.next
+        } else {
+            tail.next = list2
+            list2 = list2?.next
+        }
+        tail = tail.next!
+    }
+    tail.next = list1 == nil ? list2 : list1
+    return preHead.next
+}*/
