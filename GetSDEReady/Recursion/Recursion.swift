@@ -167,3 +167,24 @@ func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
     tail.next = list1 == nil ? list2 : list1
     return preHead.next
 }*/
+// https://leetcode.com/problems/power-of-two/
+// https://getsdeready.com/courses/dsa/lesson/power-of-two/
+
+class Solution {
+    func isPowerOfTwo(_ n: Int) -> Bool {
+        return (n > 0) && (n & (n-1) == 0)
+    }
+}
+// Dry run for n = 4
+/*
+4 = 100
+3 = 011
+---------
+R = 000 == 0 true
+Input n = 5
+5 = 101
+4 = 100
+--------
+R = 100 !=0 false
+*/
+
