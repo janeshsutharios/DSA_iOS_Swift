@@ -36,3 +36,38 @@ func powerOf(_ x: Int, _ n: Int) -> Int {
 
     return result
 }
+// Power of four 
+// https://leetcode.com/problems/power-of-four/description/
+//Input: n = 16
+//Output: true
+class Solution {
+    func isPowerOfFour(_ n: Int) -> Bool {
+     return n > 0 && (n & (n-1) == 0 )  && (n & 0x55555555) != 0
+    }
+}
+/* Explanation */
+/*
+func getPowerOfFour(num: Int) -> Int {
+    if num == 0 {
+        return 1
+    }
+    return 4 * getPowerOfFour(num: num-1)
+}
+print("getPowerOfFour", getPowerOfFour(num: 3))
+
+So the digits at odd number will be turned on & trip off power of two
+
+0x55555555 is hexadecimal---> 1010101010101010101010101010101
+1010101010101010101010101010101
+current------------> 1 00000001 1
+current------------> 4 00000100 100
+current-----------> 16 00010000 10000
+current-----------> 64 01000000 1000000
+
+// Swiftier solution 
+func isPowerOfFour(_ n: Int) -> Bool {
+        guard n != 1 else { return true }
+        return n.nonzeroBitCount == 1 && n.trailingZeroBitCount % 2 == 0
+    }
+
+*/
