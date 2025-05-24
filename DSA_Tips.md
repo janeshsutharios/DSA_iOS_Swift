@@ -8,3 +8,6 @@
 
 3. **Dry Run with Odd Test Cases**  
    Manually test your solution with at least two non-trivial or edge (odd) test cases to verify correctness.
+   
+## 🧠 Maximize Your Focus  
+**Use the maximum of your brain and utilize each minute.** Stay sharp and intentional with your time and attention.
