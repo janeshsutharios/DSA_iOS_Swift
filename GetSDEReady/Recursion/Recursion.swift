@@ -214,16 +214,13 @@ func generateAllSubsets(of input: String, currentSubset: String = "") {
 // Example usage
 generateAllSubsets(of: "abc")
 
-
-// Example usage
-generateSubSet("abc")
 /* Outut is total 8
-SubSet is--> abc
-SubSet is--> ab
-SubSet is--> ac
-SubSet is--> a
-SubSet is--> bc
-SubSet is--> b
-SubSet is--> c
-SubSet is--> 
+Subset → abc
+Subset → ab
+Subset → ac
+Subset → a
+Subset → bc
+Subset → b
+Subset → c
+Subset → 
 */
