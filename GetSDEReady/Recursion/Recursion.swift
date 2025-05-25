@@ -189,21 +189,31 @@ R = 100 !=0 false
 */
 // Class question Generate subset
 
-func generateSubSet(_ ques: String, _ ans: String = "") {
-    if ques.isEmpty {
-        print("SubSet is-->", ans)
+/// Recursively generates and prints all subsets (subsequences) of a given string.
+/// - Parameters:
+///   - input: The remaining string to process.
+///   - currentSubset: The current subset built so far (default is empty).
+func generateAllSubsets(of input: String, currentSubset: String = "") {
+    // Base case: if input is empty, print the accumulated subset
+    if input.isEmpty {
+        print("Subset →", currentSubset)
         return
     }
 
-    let ch = ques.first!
-    let ros = String(ques.dropFirst())
+    // Get the first character and the rest of the string
+    let firstChar = input.first!
+    let remaining = String(input.dropFirst())
 
-    // Part of answer
-    generateSubSet(ros, ans + String(ch))
+    // Recursive case 1: include the first character in the subset
+    generateAllSubsets(of: remaining, currentSubset: currentSubset + String(firstChar))
 
-    // Not part of answer
-    generateSubSet(ros, ans)
+    // Recursive case 2: exclude the first character from the subset
+    generateAllSubsets(of: remaining, currentSubset: currentSubset)
 }
+
+// Example usage
+generateAllSubsets(of: "abc")
+
 
 // Example usage
 generateSubSet("abc")
