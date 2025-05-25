@@ -187,4 +187,33 @@ Input n = 5
 --------
 R = 100 !=0 false
 */
+// Class question Generate subset
 
+func generateSubSet(_ ques: String, _ ans: String = "") {
+    if ques.isEmpty {
+        print("SubSet is-->", ans)
+        return
+    }
+
+    let ch = ques.first!
+    let ros = String(ques.dropFirst())
+
+    // Part of answer
+    generateSubSet(ros, ans + String(ch))
+
+    // Not part of answer
+    generateSubSet(ros, ans)
+}
+
+// Example usage
+generateSubSet("abc")
+/* Outut is total 8
+SubSet is--> abc
+SubSet is--> ab
+SubSet is--> ac
+SubSet is--> a
+SubSet is--> bc
+SubSet is--> b
+SubSet is--> c
+SubSet is--> 
+*/
