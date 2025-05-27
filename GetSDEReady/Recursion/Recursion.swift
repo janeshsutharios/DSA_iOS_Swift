@@ -119,6 +119,54 @@ var n = 5
 var dp: [Int] = Array.init(repeating: -1, count: n+1)
 print(fib(n))
 
+// Debug
+![Fibonacci Recursion](https://github.com/janeshsutharios/DSA_iOS_Swift/raw/main/GetSDEReady/Images/Fib_recursion.drawio.png)
+func fibonacci(of number: Int) -> Int {
+    if number <= 1 {
+        return number
+    }
+
+    print("👉 Starting fibonacci(\(number))")
+
+    let fibonacciOfPrevious = fibonacci(of: number - 1)
+    print("🔄 Computed fibonacci(\(number - 1)) = \(fibonacciOfPrevious)")
+
+    let fibonacciOfTwoBefore = fibonacci(of: number - 2)
+    print("🔄 Computed fibonacci(\(number - 2)) = \(fibonacciOfTwoBefore)")
+
+    let result = fibonacciOfPrevious + fibonacciOfTwoBefore
+    print("✅ fibonacci(\(number)) = \(result)")
+
+    return result
+}
+
+print("🎯 Final Result: fibonacci(4) = \(fibonacci(of: 4))")
+/*
+Stack (Top is current call)
+──────────────────────────────
+| fibonacci(of: 4)             |  <-- waiting for fib(3) and fib(2)
+| - number = 4                 |
+| - fibonacciOfPrevious = ?    |
+| - fibonacciOfTwoBefore = ?   |
+──────────────────────────────
+| fibonacci(of: 3)             |  <-- waiting for fib(2) and fib(1)
+| - number = 3                 |
+| - fibonacciOfPrevious = ?    |
+| - fibonacciOfTwoBefore = ?   |
+──────────────────────────────
+| fibonacci(of: 2)             |  <-- waiting for fib(1) and fib(0)
+| - number = 2                 |
+| - fibonacciOfPrevious = ?    |
+| - fibonacciOfTwoBefore = ?   |
+──────────────────────────────
+| fibonacci(of: 1)             |  <-- Base case → returns 1
+| - number = 1                 |
+──────────────────────────────
+| fibonacci(of: 0)             |  <-- Base case → returns 0
+| - number = 0                 |
+──────────────────────────────
+*/
+
 
 // https://leetcode.com/problems/merge-two-sorted-lists/description/
 // https://getsdeready.com/courses/dsa/lesson/merge-two-sorted-lists/
