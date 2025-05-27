@@ -258,7 +258,22 @@ func generateAllSubsets(of input: String, currentSubset: String = "") {
     // Recursive case 2: exclude the first character from the subset
     generateAllSubsets(of: remaining, currentSubset: currentSubset)
 }
+/*
 
+                                       (input: "abc", currentSubset: "")
+                             _____________/                                  \______________
+                            /                                                             \
+           (input: "bc", currentSubset: "a")                           (input: "bc", currentSubset: "")
+                 ___________/           \___________                       ____________/           \___________
+                /                                   \                     /                                     \
+(input: "c", currentSubset: "ab")   (input: "c", currentSubset: "a")   (input: "c", currentSubset: "b")   (input: "c", currentSubset: "")
+         _____/         \_____             _____/         \_____           _____/         \_____             _____/         \_____
+        /                     \           /                     \         /                     \           /                     \
+(input: "", "abc")   (input: "", "ab")  (input: "", "ac")   (input: "", "a")  (input: "", "bc")   (input: "", "b")  (input: "", "c")   (input: "", "")
+     ✅ print "abc"  ✅ print "ab"    ✅ print "ac"  ✅ print "a"    ✅ print "bc"  ✅ print "b"    ✅ print "c"  ✅ print ""
+
+                       
+ */
 // Example usage
 generateAllSubsets(of: "abc")
 
