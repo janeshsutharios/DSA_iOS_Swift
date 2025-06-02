@@ -8,7 +8,8 @@
 
 3. **Dry Run with Odd Test Cases**  
  -  Manually test your solution with at least two non-trivial or edge (odd) test cases to verify correctness.
- - Start dry run with n = 1 or small values 
+ - Start dry run with n = 1 or small values
+ - Any chance if you looked into solution then understand it throughly & do some tweakes in the answer & write down to your own in 20 minutes for hard question
    
 ## 🧠 Maximize Your Focus  
 **Use the maximum of your brain and utilize each minute.** Stay sharp and intentional with your time and attention.
