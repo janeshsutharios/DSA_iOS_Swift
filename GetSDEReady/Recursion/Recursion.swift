@@ -378,5 +378,33 @@ class Solution {
         return result
     }
 }
-                       
+// https://getsdeready.com/courses/dsa/lesson/combination-sum/
+// https://leetcode.com/problems/combination-sum/description/                       
+class Solution {
+    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        var res = [[Int]]()
+        var current: [Int] = []
+        dfs(0, &current, 0)
+
+        func dfs(_ i: Int, _ cur: inout [Int], _ total: Int) {
+            if total == target {
+                res.append(cur)
+                return
+            }
+
+            if i >= candidates.count || total > target {
+                return
+            }
+
+            // Include candidates[i]
+            cur.append(candidates[i])
+            dfs(i, &cur, total + candidates[i])
+            cur.removeLast()
+
+            // Skip candidates[i]
+            dfs(i + 1, &cur, total)
+        }
+        return res
+    }
+}                       
                        
