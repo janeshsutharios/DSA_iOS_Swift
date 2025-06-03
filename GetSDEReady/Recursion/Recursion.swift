@@ -333,6 +333,50 @@ func permuteUnique(_ nums: [Int]) -> [[Int]] {
     
     return allUniquePermutations
 }
+// Solution #2 using Dictionary
+class Solution {
+    func permuteUnique(_ nums: [Int]) -> [[Int]] {
+        var result: [[Int]] = []
 
+        // Dictionary to store the frequency of each number
+        var frequencyMap: [Int: Int] = [:]
+        for number in nums {
+            frequencyMap[number, default: 0] += 1
+        }
+
+        // Recursive backtracking function
+        func backtrack(currentPermutation: inout [Int], totalLength: Int) {
+            // Base case: if the current permutation is complete, add to result
+            if currentPermutation.count == totalLength {
+                result.append(currentPermutation)
+                return
+            }
+
+            // Iterate over all available numbers in the frequency map
+            for (number, count) in frequencyMap {
+                if count == 0 {
+                    continue  // Skip if this number is already fully used
+                }
+
+                // Choose the current number
+                currentPermutation.append(number)
+                frequencyMap[number]! -= 1
+
+                // Recurse with the current choice
+                backtrack(currentPermutation: &currentPermutation, totalLength: totalLength)
+
+                // Backtrack: undo the choice
+                currentPermutation.removeLast()
+                frequencyMap[number]! += 1
+            }
+        }
+
+        // Start the recursive backtracking with an empty list
+        var current: [Int] = []
+        backtrack(currentPermutation: &current, totalLength: nums.count)
+
+        return result
+    }
+}
                        
                        
