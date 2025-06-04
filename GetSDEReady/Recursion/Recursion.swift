@@ -380,32 +380,36 @@ class Solution {
 }
 // https://getsdeready.com/courses/dsa/lesson/combination-sum/
 // https://leetcode.com/problems/combination-sum/description/   
-// Hand Draw Recursion https://github.com/janeshsutharios/DSA_iOS_Swift/blob/main/GetSDEReady/Images/combination-sum.pdf
-class Solution {
-    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
-        var res = [[Int]]()
-        var current: [Int] = []
-        dfs(0, &current, 0)
+// Hand draw eecursion https://github.com/janeshsutharios/DSA_iOS_Swift/blob/main/GetSDEReady/Images/combination-sum.pdf
+func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+    var res = [[Int]]()
+    var current: [Int] = []
+    dfs(0, &current, 0)
 
-        func dfs(_ i: Int, _ cur: inout [Int], _ total: Int) {
-            if total == target {
-                res.append(cur)
-                return
-            }
-
-            if i >= candidates.count || total > target {
-                return
-            }
-
-            // Include candidates[i]
-            cur.append(candidates[i])
-            dfs(i, &cur, total + candidates[i])
-            cur.removeLast()
-
-            // Skip candidates[i]
-            dfs(i + 1, &cur, total)
+    func dfs(_ i: Int, _ cur: inout [Int], _ total: Int) {
+        if total == target {
+            res.append(cur)
+           // print(" res is -------- ", res)
+            print("RCurrent--------- ", i, cur)
+            return
         }
-        return res
+
+        if i >= candidates.count || total > target {
+            print("Out------ ", i, cur)
+            return
+        } else {
+            print("In------ ", i, cur)
+        }
+
+        // Include candidates[i]
+        cur.append(candidates[i])
+        dfs(i, &cur, total + candidates[i])
+        cur.removeLast()
+
+        // Skip candidates[i]
+        dfs(i + 1, &cur, total)
     }
-}                       
+    return res
+}
+print("combination sum, ", combinationSum([1,2], 3))                  
                        
