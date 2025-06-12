@@ -451,4 +451,49 @@ class Solution {
 
 // output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 
+
+// https://getsdeready.com/courses/dsa/lesson/subsets/
+// https://leetcode.com/problems/subsets/description/
+
+class Solution {
+    func subsets(_ nums: [Int]) -> [[Int]] {
+        guard nums.count > 0 else { return [] }
+        
+        var result = [[Int]]()
+        var candidates = [Int]()
+        let startIndex = 0
+        
+        backTracking(&result, &candidates, startIndex, nums)
+        return result
+    }
+    
+    // assume it's like a tree, we do a similar "inorder traversal"
+    private func backTracking(_ result: inout [[Int]], _ candidates: inout [Int], _ startIndex: Int, _ nums: [Int]) {
+        // store each case("node")'s value
+        result.append(candidates)
+        
+        // try to find if it has "children", if no "child", we done
+        for i in startIndex..<nums.count {
+            // update candidates to next level's value(child's value)
+            candidates.append(nums[i])
+            
+            // startIndex + 1, go next level(go to its child)
+            backTracking(&result, &candidates, i+1, nums)
+            
+            // update candidates to previous level's value(parent's value)
+            candidates.removeLast()
+        }
+    }
+}
+
+// eg: [1, 2, 3]; assume it is like a tree (inorder traversal)
+//                     []
+//              /       \       \
+//            [1]       [2]    [3]
+//           /   \       |
+//       [1, 2]  [1, 3] [2, 3]
+//         /
+//     [1, 2, 3]
+
+// output: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
                        
