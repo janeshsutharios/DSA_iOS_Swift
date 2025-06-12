@@ -646,4 +646,42 @@ class Solution {
         return result
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/find-the-winner-of-the-circular-game/
+// https://leetcode.com/problems/find-the-winner-of-the-circular-game/description/
+/*class Solution {
+    func findTheWinner(_ n: Int, _ k: Int) -> Int {
+        // Guard clause to prevent invalid inputs that would crash at runtime
+        guard n > 0 && k > 0 else {
+            fatalError("Both n and k must be greater than 0")
+        }
 
+        var winner = 0  // Base case: when there's 1 person, the 0th index wins (0-based)
+
+        // Apply the Josephus recurrence from 2 up to n
+        for i in 2...n {
+            // Update winner's index based on previous round and step count k
+            winner = (winner + k) % i
+        }
+
+        // Convert from 0-based index to 1-based friend numbering
+        return winner + 1
+    }
+}
+
+*/
+class Solution {
+    func findTheWinner(_ n: Int, _ k: Int) -> Int {
+        // Start the recursive Josephus function and convert 0-based result to 1-based
+        return josephus(n, k) + 1
+    }
+
+    // Recursive Josephus function
+    private func josephus(_ n: Int, _ k: Int) -> Int {
+        if n == 1 {
+            return 0  // Base case: only one person, index 0 is winner
+        }
+
+        // Recurrence relation: winner index in current size = (previous winner + k) % current size
+        return (josephus(n - 1, k) + k) % n
+    }
+}
