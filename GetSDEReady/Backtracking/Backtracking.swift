@@ -183,4 +183,74 @@ class Solution {
         if end < open  { backtrack(current + ")", open, end + 1, max, result) }
     }*/
 }
+// https://getsdeready.com/courses/dsa/lesson/unique-paths-iii/
+// https://leetcode.com/problems/unique-paths-iii/description/
 
+func uniquePathsIII(_ grid: [[Int]]) -> Int {
+    var grid = grid
+    let rows = grid.count
+    let cols = grid[0].count
+    var totalEmpty = 0
+    var startRow = 0, startCol = 0
+
+    // Step 1: Count all empty cells and locate the start cell (1)
+    for r in 0..<rows {
+        for c in 0..<cols {
+            if grid[r][c] == 0 {
+                totalEmpty += 1  // count the number of cells we must walk on
+            } else if grid[r][c] == 1 {
+                startRow = r
+                startCol = c     // save start cell location
+            }
+        }
+    }
+
+    var result = 0
+
+    // Step 2: DFS Helper Function
+    func dfs(_ r: Int, _ c: Int, _ remain: Int) {
+        // If out of bounds or hitting a wall (-1), stop
+        if r < 0 || c < 0 || r >= rows || c >= cols || grid[r][c] == -1 {
+            return
+        }
+
+        // If we reach the end cell (2)
+        if grid[r][c] == 2 {
+            if remain == -1 {  // If we visited all empty cells exactly once
+                result += 1
+            }
+            return
+        }
+
+        // Save current cell value and mark it visited
+        let temp = grid[r][c]
+        grid[r][c] = -1  // mark as visited by turning it into obstacle
+
+        // Recurse in 4 directions
+        dfs(r + 1, c, remain - 1) // down
+        dfs(r - 1, c, remain - 1) // up
+        dfs(r, c + 1, remain - 1) // right
+        dfs(r, c - 1, remain - 1) // left
+
+        // Backtrack: restore original value
+        grid[r][c] = temp
+    }
+
+    // We include starting point, so we start with totalEmpty (empty cells) only
+    dfs(startRow, startCol, totalEmpty)
+
+    return result
+}
+/*
+(0,0)
+  ├── (0,1)
+  │     ├── (0,2)
+  │     │     ├── (1,2)  ✅ (end with all cells visited)
+  │     │     └── (1,1) ─→ blocked (not all visited yet)
+  │     └── (1,1)
+  │           └── (1,2)  \U0001f6ab invalid (missed a cell)
+  └── (1,0)
+        └── (1,1)
+              └── (1,2)  ✅ (end with all visited)
+
+*/
