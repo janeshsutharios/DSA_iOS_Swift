@@ -139,3 +139,48 @@ class Solution {
 }
 
 */
+
+// https://getsdeready.com/courses/dsa/lesson/generate-parantheses/
+// https://leetcode.com/problems/generate-parentheses/description/
+class Solution {
+     func generateParenthesis(_ n: Int) -> [String] {
+        var output = [String]()
+        var stack: [(String, Int, Int)] = []
+        stack.append(("", 0, 0))  // (current, open, close)
+        
+        while !stack.isEmpty {
+            let (current, open, close) = stack.removeLast()
+            
+            if current.count == n * 2 {
+                output.append(current)
+                continue
+            }
+            
+            if open < n {
+                stack.append((current + "(", open + 1, close))
+            }
+            if close < open {
+                stack.append((current + ")", open, close + 1))
+            }
+        }
+        
+        return output
+    }
+    /*
+    func generateParenthesis(_ n: Int) -> [String] {
+        var output = [String]()
+        backtrack("", 0, 0, n) { output.append($0) }
+        return output
+    }
+    
+    func backtrack(_ current: String,_ open: Int,_ end: Int,_ max: Int, _ result: (String)->Void) {
+        if current.count == max * 2 {
+            result(current)
+            return
+        }
+        
+        if open < max { backtrack(current + "(", open + 1, end, max, result) }
+        if end < open  { backtrack(current + ")", open, end + 1, max, result) }
+    }*/
+}
+
