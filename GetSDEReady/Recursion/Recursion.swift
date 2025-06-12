@@ -560,7 +560,61 @@ class Solution {
         return result  // Return the complete sequence
     }
 }
-// 
-// 
-                       
+// https://getsdeready.com/courses/dsa/lesson/subsets-ii/
+// https://leetcode.com/problems/subsets-ii/
+ class Solution {
+    func subsetsWithDup(_ nums: [Int]) -> [[Int]] {
+        var subsets = [[Int]]()  // This will store all unique subsets
+        backTrack(nums.sorted(), &subsets, [], 0)  // Start the recursion
+        return subsets
+    }
+
+    // Backtracking function
+    func backTrack(
+        _ nums: [Int],                   // Sorted input array
+        _ subsets: inout [[Int]],       // Reference to result array
+        _ currArr: [Int],               // Current subset being built
+        _ start: Int                    // Start index for for-loop
+    ) {
+        subsets.append(currArr)         // Append the current subset to results
+
+        for i in start..<nums.count {
+            // Skip duplicate elements on the same level to avoid duplicate subsets
+            if i > start && nums[i] == nums[i - 1] { continue }
+
+            // Recursively build the next subset including nums[i]
+            backTrack(nums, &subsets, currArr + [nums[i]], i + 1)
+            // No need to manually backtrack since we're using a value type (currArr + [nums[i]])
+        }
+    }
+}
+/*
+class Solution {
+    func subsetsWithDup(_ nums: [Int]) -> [[Int]] {
+        var result = [[Int]]()      // Final list of all unique subsets
+        var subset = [Int]()        // Temporary list to build each subset
+        let nums = nums.sorted()    // Sort to bring duplicates together
+
+        func backtrack(_ start: Int) {
+            result.append(subset)   // Add the current subset to the result
+            
+            // Iterate over the remaining elements starting from 'start'
+            for i in start..<nums.count {
+                // Skip duplicate elements at the same recursive level
+                if i > start && nums[i] == nums[i - 1] {
+                    continue
+                }
+
+                subset.append(nums[i])       // Choose the current number
+                backtrack(i + 1)             // Recurse with next index
+                subset.removeLast()          // Backtrack: remove last choice
+            }
+        }
+
+        backtrack(0)  // Start backtracking from index 0
+        return result
+    }
+}
+
+*/                      
                        
