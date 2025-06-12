@@ -617,4 +617,33 @@ class Solution {
 }
 
 */                      
-                       
+// https://getsdeready.com/courses/dsa/lesson/permutation-sequence/
+// https://leetcode.com/problems/permutation-sequence/
+class Solution {
+    func getPermutation(_ n: Int, _ k: Int) -> String {
+        var numbers = [Int](1...n)
+        var k = k - 1                   // Convert to 0-based index
+        var factorial = 1
+        for i in 1..<n {
+            factorial *= i             // factorial = (n-1)!
+        }
+
+        var result = ""
+
+        var n = n
+        while n > 0 {
+            let index = k / factorial
+            result += String(numbers[index])
+            numbers.remove(at: index)
+
+            k %= factorial
+            n -= 1
+            if n > 0 {
+                factorial /= n
+            }
+        }
+
+        return result
+    }
+}
+
