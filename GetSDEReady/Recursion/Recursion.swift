@@ -540,5 +540,27 @@ class Solution {
         }
     }
 }
+                       
+// https://getsdeready.com/courses/dsa/lesson/gray-code/
+// https://leetcode.com/problems/gray-code/                     
+class Solution {
+    func grayCode(_ n: Int) -> [Int] {
+        var result = [Int]()  // This will store the final sequence of Gray codes
 
+        let total = 1 << n    // Total Gray codes for n bits = 2^n (using bit shift for efficiency)
+
+        for i in 0..<total {
+            // Gray code formula: i XOR (i shifted right by 1 bit)
+            // This ensures that each successive number differs by only one bit
+            let gray = i ^ (i >> 1)
+
+            result.append(gray)  // Append the computed Gray code to the result list
+        }
+
+        return result  // Return the complete sequence
+    }
+}
+// 
+// 
+                       
                        
