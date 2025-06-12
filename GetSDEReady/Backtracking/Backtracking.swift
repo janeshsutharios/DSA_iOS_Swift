@@ -542,5 +542,51 @@ class Solution {
     }
 }
 */
+// https://getsdeready.com/courses/dsa/lesson/permutations-ii/
+// https://leetcode.com/problems/permutations-ii/
+ class Solution {
+    func permuteUnique(_ nums: [Int]) -> [[Int]] {
+        var allUniquePermutations: [[Int]] = []         // Stores all unique permutations
+        var sortedNums = nums.sorted()                  // Sort input to group duplicates together
+        var isUsed = Array(repeating: false, count: nums.count) // Track which elements are used in the current path
+        var currentPermutation: [Int] = []              // Current permutation being built
+        
+        // Helper function using backtracking
+        func backtrack(_ currentPermutation: inout [Int]) {
+            // If the current permutation is complete, add it to results
+            if currentPermutation.count == sortedNums.count {
+                allUniquePermutations.append(currentPermutation)
+                return
+            }
+            
+            for index in 0..<sortedNums.count {
+                // Skip if number at index is already used in the current permutation
+                if isUsed[index] {
+                    continue
+                }
+                
+                // Skip duplicates: if current number is the same as previous and previous hasn't been used in this path
+                if index > 0 && sortedNums[index] == sortedNums[index - 1] && !isUsed[index - 1] {
+                    continue
+                }
 
+                // Include this number in current path
+                isUsed[index] = true
+                currentPermutation.append(sortedNums[index])
+                
+                // Continue building the permutation
+                backtrack(&currentPermutation)
+                
+                // Backtrack: remove last number and mark as unused
+                currentPermutation.removeLast()
+                isUsed[index] = false
+            }
+        }
+
+        // Start the backtracking process
+        backtrack(&currentPermutation)
+
+        return allUniquePermutations
+    }
+}
 
