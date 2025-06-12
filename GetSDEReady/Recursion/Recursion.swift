@@ -496,4 +496,49 @@ class Solution {
 //     [1, 2, 3]
 
 // output: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
+// https://getsdeready.com/courses/dsa/lesson/combination-sum-ii/
+// https://leetcode.com/problems/combination-sum-ii/description/                       
+class Solution {
+    func combinationSum2(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        var path: [Int] = []          // Temporary array to hold current combination
+        var result: [[Int]] = []      // Final result array to store valid combinations
+        
+        // Sort the candidates to easily skip duplicates later
+        dfs(&result, &path, candidates.sorted(), target)
+        
+        return result
+    }
+    
+    private func dfs(_ res: inout [[Int]],
+                     _ path: inout [Int],
+                     _ cands: [Int],
+                     _ t: Int,
+                     _ idx: Int = 0) {
+        
+        // If target becomes zero, we found a valid combination
+        guard t > 0 else {
+            res.append(path)         // Add the current combination to result
+            return
+        }
+        
+        // Loop through the candidates starting from the current index
+        for k in idx..<cands.count where cands[k] <= t {
+            
+            // Skip duplicates: only pick the first occurrence at this level of recursion
+            if k > idx && cands[k] == cands[k - 1] {
+                continue
+            }
+            
+            // Include current number in the combination
+            path.append(cands[k])
+            
+            // Recurse to next step, move index forward since each number can be used once
+            dfs(&res, &path, cands, t - cands[k], k + 1)
+            
+            // Backtrack: remove last element to try next possibility
+            path.removeLast()
+        }
+    }
+}
+
                        
