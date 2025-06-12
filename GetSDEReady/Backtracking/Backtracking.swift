@@ -254,3 +254,293 @@ func uniquePathsIII(_ grid: [[Int]]) -> Int {
               └── (1,2)  ✅ (end with all visited)
 
 */
+// https://getsdeready.com/courses/dsa/lesson/n-queens/
+// https://leetcode.com/problems/n-queens/description/
+class Solution {
+    func solveNQueens(_ n: Int) -> [[String]] {
+        var result: [[String]] = []
+        var board = Array(repeating: Array(repeating: ".", count: n), count: n)
+        
+        backtrack(&board, 0, n, &result)
+        return result
+    }
+    
+    private func backtrack(_ board: inout [[String]], _ row: Int, _ n: Int, _ result: inout [[String]]) {
+        // Base case: if we've placed queens in all rows, we found a solution
+        if row == n {
+            let solution = board.map { $0.joined() }
+            result.append(solution)
+            return
+        }
+        
+        // Try placing a queen in each column of the current row
+        for col in 0..<n {
+            if isSafePlace(board, row, col, n) {
+                // Place queen
+                board[row][col] = "Q"
+                
+                // Recursively try to place queens in the next row
+                backtrack(&board, row + 1, n, &result)
+                
+                // Backtrack: remove the queen
+                board[row][col] = "."
+            }
+        }
+    }
+    
+    private func isSafePlace(_ board: [[String]], _ row: Int, _ col: Int, _ n: Int) -> Bool {
+        // Check column (no need to check rows below current row as we haven't placed queens there yet)
+        for i in 0..<row {
+            if board[i][col] == "Q" {
+                return false
+            }
+        }
+        
+        // Check upper-left diagonal
+        var i = row - 1
+        var j = col - 1
+        while i >= 0 && j >= 0 {
+            if board[i][j] == "Q" {
+                return false
+            }
+            i -= 1
+            j -= 1
+        }
+        
+        // Check upper-right diagonal
+        i = row - 1
+        j = col + 1
+        while i >= 0 && j < n {
+            if board[i][j] == "Q" {
+                return false
+            }
+            i -= 1
+            j += 1
+        }
+        
+        return true
+    }
+}
+
+// // Example usage and test
+// let solution = Solution()
+
+// // Test with N = 4
+// let result4 = solution.solveNQueens(4)
+// print("Solutions for N = 4:")
+// for (index, sol) in result4.enumerated() {
+//     print("Solution \(index + 1):")
+//     for row in sol {
+//         print(row)
+//     }
+//     print()
+// }
+
+// // Test with N = 8 (classic 8-queens problem)
+// let result8 = solution.solveNQueens(8)
+// print("Number of solutions for N = 8: \(result8.count)")
+
+// // Display first solution for N = 8
+// if !result8.isEmpty {
+//     print("First solution for N = 8:")
+//     for row in result8[0] {
+//         print(row)
+//     }
+// }
+// class Solution {
+//     // Helper function to check if placing a queen at position (row,col) is safe
+//     private func isSafePlace(_ n: Int, _ nQueens: [String], _ row: Int, _ col: Int) -> Bool {
+//         // Check if there's any queen in the same column above current position
+//         for i in 0..<n {
+//             if Array(nQueens[i])[col] == "Q" {
+//                 return false
+//             }
+//         }
+        
+//         // Check upper-left diagonal for any queen
+//         var i = row - 1
+//         var j = col - 1
+//         while i >= 0 && j >= 0 {
+//             if Array(nQueens[i])[j] == "Q" {
+//                 return false
+//             }
+//             i -= 1
+//             j -= 1
+//         }
+        
+//         // Check upper-right diagonal for any queen
+//         i = row - 1
+//         j = col + 1
+//         while i >= 0 && j < n {
+//             if Array(nQueens[i])[j] == "Q" {
+//                 return false
+//             }
+//             i -= 1
+//             j += 1
+//         }
+        
+//         // If no conflicts found, position is safe
+//         return true
+//     }
+    
+//     // Recursive helper function to solve N-Queens problem
+//     private func solveNQueens(_ n: Int, _ output: inout [[String]], _ nQueens: inout [String], _ row: Int) {
+//         // Base case: if we've placed queens in all rows, we found a valid solution
+//         if row == n {
+//             output.append(nQueens)
+//             return
+//         }
+        
+//         // Try placing queen in each column of current row
+//         for col in 0..<n {
+//             // If current position is safe
+//             if isSafePlace(n, nQueens, row, col) {
+//                 // Place queen
+//                 var rowArray = Array(nQueens[row])
+//                 rowArray[col] = "Q"
+//                 nQueens[row] = String(rowArray)
+                
+//                 // Recursively solve for next row
+//                 solveNQueens(n, &output, &nQueens, row + 1)
+                
+//                 // Backtrack: remove queen for trying next position
+//                 rowArray[col] = "."
+//                 nQueens[row] = String(rowArray)
+//             }
+//         }
+//     }
+    
+//     // Main function to solve N-Queens problem
+//     func solveNQueens(_ n: Int) -> [[String]] {
+//         var output: [[String]] = []  // Stores all valid solutions
+//         var nQueens = Array(repeating: String(repeating: ".", count: n), count: n) // Initialize empty board
+//         solveNQueens(n, &output, &nQueens, 0) // Start solving from row 0
+//         return output
+//     }
+// }
+
+// https://leetcode.com/problems/n-queens-ii/
+class Solution {
+    func totalNQueens(_ n: Int) -> Int {
+        // Arrays to mark column, diagonal, and anti-diagonal occupancy
+        var col = Array(repeating: false, count: n)
+        var diag = Array(repeating: false, count: 2 * n - 1)
+        var antiDiag = Array(repeating: false, count: 2 * n - 1)
+        
+        // Start the recursive backtracking
+        return solve(&col, &diag, &antiDiag, 0)
+    }
+    
+    // Recursive function to place queens row by row
+    private func solve(_ col: inout [Bool],
+                       _ diag: inout [Bool],
+                       _ antiDiag: inout [Bool],
+                       _ row: Int) -> Int {
+        
+        let n = col.count
+        var count = 0
+        
+        // All queens are placed
+        if row == n {
+            return 1
+        }
+        
+        for column in 0..<n {
+            let d = row + column          // Diagonal index
+            let ad = row - column + n - 1 // Anti-diagonal index
+            
+            // Check if position is safe
+            if !col[column] && !diag[d] && !antiDiag[ad] {
+                // Place the queen
+                col[column] = true
+                diag[d] = true
+                antiDiag[ad] = true
+                
+                // Recurse to next row
+                count += solve(&col, &diag, &antiDiag, row + 1)
+                
+                // Backtrack
+                col[column] = false
+                diag[d] = false
+                antiDiag[ad] = false
+            }
+        }
+        
+        return count
+    }
+}
+
+
+/*
+class Solution {
+        func totalNQueens(_ n: Int) -> Int {
+        let op = solveNQueens(n)
+        return op.count
+       }
+    func solveNQueens(_ n: Int) -> [[String]] {
+        var result: [[String]] = []
+        var board = Array(repeating: Array(repeating: ".", count: n), count: n)
+        
+        backtrack(&board, 0, n, &result)
+        return result
+    }
+    
+    private func backtrack(_ board: inout [[String]], _ row: Int, _ n: Int, _ result: inout [[String]]) {
+        // Base case: if we've placed queens in all rows, we found a solution
+        if row == n {
+            let solution = board.map { $0.joined() }
+            result.append(solution)
+            return
+        }
+        
+        // Try placing a queen in each column of the current row
+        for col in 0..<n {
+            if isSafePlace(board, row, col, n) {
+                // Place queen
+                board[row][col] = "Q"
+                
+                // Recursively try to place queens in the next row
+                backtrack(&board, row + 1, n, &result)
+                
+                // Backtrack: remove the queen
+                board[row][col] = "."
+            }
+        }
+    }
+    
+    private func isSafePlace(_ board: [[String]], _ row: Int, _ col: Int, _ n: Int) -> Bool {
+        // Check column (no need to check rows below current row as we haven't placed queens there yet)
+        for i in 0..<row {
+            if board[i][col] == "Q" {
+                return false
+            }
+        }
+        
+        // Check upper-left diagonal
+        var i = row - 1
+        var j = col - 1
+        while i >= 0 && j >= 0 {
+            if board[i][j] == "Q" {
+                return false
+            }
+            i -= 1
+            j -= 1
+        }
+        
+        // Check upper-right diagonal
+        i = row - 1
+        j = col + 1
+        while i >= 0 && j < n {
+            if board[i][j] == "Q" {
+                return false
+            }
+            i -= 1
+            j += 1
+        }
+        
+        return true
+    }
+}
+*/
+
+
