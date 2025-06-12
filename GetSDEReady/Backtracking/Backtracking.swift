@@ -590,3 +590,48 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/palindrome-partitioning/
+// https://leetcode.com/problems/palindrome-partitioning/description/
+class Solution {
+    func partition(_ s: String) -> [[String]] {
+        var result: [[String]] = [] // To store all valid palindrome partitions
+        var currentPartition: [String] = [] // To build a single partition
+
+        // Helper function to check if a string is a palindrome
+        func isPalindrome(_ str: String) -> Bool {
+            return str == String(str.reversed())
+        }
+
+        // Backtracking function
+        func backtrack(_ start: Int) {
+            // If we've reached the end of the string, add the current partition to the result
+            if start == s.count {
+                result.append(currentPartition)
+                return
+            }
+
+            // Explore all possible substrings starting from `start`
+            for end in start..<s.count {
+                let startIndex = s.index(s.startIndex, offsetBy: start)
+                let endIndex = s.index(s.startIndex, offsetBy: end)
+                let substring = String(s[startIndex...endIndex])
+
+                // Proceed only if the substring is a palindrome
+                if isPalindrome(substring) {
+                    currentPartition.append(substring) // Choose the substring
+                    backtrack(end + 1) // Explore further with the rest of the string
+                    currentPartition.removeLast() // Backtrack by removing the last choice
+                }
+            }
+        }
+
+        backtrack(0) // Start backtracking from the beginning of the string
+        return result
+    }
+}
+
+// // Example usage:
+// let solution = Solution()
+// let s = "aab"
+// print(solution.partition(s)) 
+// // Output: [["a", "a", "b"], ["aa", "b"]]
