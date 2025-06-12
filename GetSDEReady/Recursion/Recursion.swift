@@ -411,5 +411,44 @@ func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
     }
     return res
 }
-print("combination sum, ", combinationSum([1,2], 3))                  
+print("combination sum, ", combinationSum([1,2], 3))       
+
+// https://getsdeready.com/courses/dsa/lesson/permutations/
+// https://leetcode.com/problems/permutations/description/
+class Solution {
+    func permute(_ nums: [Int]) -> [[Int]] {
+        guard nums.count != 0 else { return [] }
+
+        var result = [[Int]]()
+        var candidates = [Int]()
+
+        permutations(nums, &candidates, &result)
+        return result
+    }
+
+    private func permutations(_ nums: [Int], _ candidates: inout [Int], _ result: inout [[Int]]) {
+        guard candidates.count < nums.count else {
+            result.append(candidates)
+            return
+        }
+
+        for num in nums where !candidates.contains(num) {
+            candidates.append(num)
+            permutations(nums, &candidates, &result)
+            candidates.removeLast()
+        }
+    }
+}
+
+// example: [1, 2, 3]; assume it's like a tree, we need to find out all childs
+//                           [ ]
+//              /             |                \
+//            [1]            [2]               [3]
+//           /   \          /   \             /   \
+//       [1,2]  [1,3]     [2,1]  [2,3]      [3,1]  [3,2]
+//         /       \       /        \        /       \
+//     [1,2,3]  [1,3,2]  [2,1,3]  [2,3,1]  [3,1,2]  [3,2,1]
+
+// output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
                        
