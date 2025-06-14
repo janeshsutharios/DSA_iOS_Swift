@@ -87,4 +87,34 @@ class Solution {
          return Int(thirdMax)
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/sort-array-by-parity-ii/
+ // https://leetcode.com/problems/sort-array-by-parity-ii/   
+class Solution {
+    func sortArrayByParityII(_ nums: [Int]) -> [Int] {
+        // Create a copy of the input array to store the result
+        var result = nums
+        
+        // 'even' pointer starts at index 0, used for placing even numbers
+        var even = 0
+        
+        // 'odd' pointer starts at index 1, used for placing odd numbers
+        var odd = 1
+        
+        // Iterate through each number in the original array
+        for num in nums {
+            if num % 2 == 0 {
+                // If the number is even, place it at the current 'even' index
+                result[even] = num
+                even += 2 // Move to the next even index
+            } else {
+                // If the number is odd, place it at the current 'odd' index
+                result[odd] = num
+                odd += 2 // Move to the next odd index
+            }
+        }
+        
+        // Return the reordered array
+        return result
+    }
+}
 
