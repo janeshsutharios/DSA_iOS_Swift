@@ -146,5 +146,57 @@ class Solution {
         return result
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/fair-candy-swap/
+// https://leetcode.com/problems/fair-candy-swap/description/
+class Solution {
+    
+    func fairCandySwap(_ aliceSizes: [Int], _ bobSizes: [Int]) -> [Int] {
+        // Step 1: Calculate the total number of candies each person has
+        let sumA = aliceSizes.reduce(0, +)
+        let sumB = bobSizes.reduce(0, +)
+        
+        // Step 2: Calculate the difference to balance both
+        // We need to find x from Alice and y from Bob such that:
+        // sumA - x + y == sumB - y + x
+        // Simplifies to: x - y == (sumA - sumB) / 2
+        // Therefore: y = x + (sumB - sumA) / 2
+        let delta = (sumB - sumA) / 2  // This is the amount Bob's candy needs to be larger than Alice's
 
+        // Step 3: Create a set for Bob’s candies for O(1) lookup
+        let setB = Set(bobSizes)
+        
+        // Step 4: Loop through each candy size Alice has
+        for x in aliceSizes {
+            let y = x + delta  // The required candy size from Bob
+            if setB.contains(y) {
+                // Found a pair (x from Alice, y from Bob) such that swapping them balances the total
+                return [x, y]
+            }
+        }
+        
+        // According to problem constraints, a solution always exists,
+        // so this line would not be reached in valid test cases
+        return []
+    }
+}
+/*
+🎯 Example
+A = [1, 1]
+B = [2, 2]
+Total of A = 1 + 1 = 2
+Total of B = 2 + 2 = 4
+
+To make them equal, we want both to become 3 (average of 2 and 4).
+
+So we look for a pair:
+
+If Alice gives 1 and receives 2, then:
+
+Alice: 2 - 1 + 2 = 3
+
+Bob: 4 - 2 + 1 = 3
+✅ Success!
+
+So the answer is [1, 2].
+*/
     
