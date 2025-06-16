@@ -199,4 +199,73 @@ Bob: 4 - 2 + 1 = 3
 
 So the answer is [1, 2].
 */
+// https://getsdeready.com/courses/dsa/lesson/k-closest-points-to-origin/
+// https://leetcode.com/problems/k-closest-points-to-origin/
+/*class Solution {
+    func kClosest(_ points: [[Int]], _ k: Int) -> [[Int]] {
+        return points
+            .sorted { ($0[0] * $0[0] + $0[1] * $0[1]) < ($1[0] * $1[0] + $1[1] * $1[1]) }
+            .prefix(k)
+            .map { $0 }
+    }
+}*/
+// Solution #2 using min Heap 
+struct MaxHeap<T> {
+    private var heap: [(key: Int, value: T)] = []
+
+    mutating func push(_ key: Int, _ value: T) {
+        heap.append((key, value))
+        heap.sort { $0.key > $1.key }  // Max heap by distance
+    }
+
+    mutating func pop() -> T? {
+        return heap.isEmpty ? nil : heap.removeFirst().value
+    }
+
+    var count: Int {
+        return heap.count
+    }
+
+    var values: [T] {
+        return heap.map { $0.value }
+    }
+}
+class Solution {
+    func kClosest(_ points: [[Int]], _ k: Int) -> [[Int]] {
+        var heap = MaxHeap<[Int]>()
+
+        for point in points {
+            let dist = point[0]*point[0] + point[1]*point[1]
+            heap.push(dist, point)
+            if heap.count > k {
+                _ = heap.pop()
+            }
+        }
+        return heap.values
+    }
+}
+
+
+/*class Solution {
+    func kClosest(_ points: [[Int]], _ k: Int) -> [[Int]] {
+
+        // Store tuples of (distance, point)
+        var distances: [(Int, [Int])] = []
+
+        for point in points {
+            let x = point[0]
+            let y = point[1]
+            let distance = x * x + y * y  // No need for sqrt
+            distances.append((distance, point))
+        }
+
+        // Sort by distance
+        let sorted = distances.sorted { $0.0 < $1.0 }
+
+        // Extract first k points
+        let result = sorted.prefix(k).map { $0.1 }
+        return result
+    }
+}
+*/    
     
