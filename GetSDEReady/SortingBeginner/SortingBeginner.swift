@@ -295,18 +295,16 @@ print("maxMin sum", maxMinSum([1,2,3]))// 6
 class Solution {
     func maximumDifference(_ nums: [Int]) -> Int {
         var minVal = nums[0]
-        var maxDiff = 0
-        
-        for x in nums {
-            if x > minVal {
-                // possible increasing pair identified
-                maxDiff = max(maxDiff, x - minVal)
+        var maxDiff = -1
+
+        for i in 1..<nums.count {
+            if nums[i] > minVal {
+                maxDiff = max(maxDiff, nums[i] - minVal)
             } else {
-                // update the lowest seen so far
-                minVal = x
+                minVal = nums[i]
             }
         }
-        return maxDiff > 0 ? maxDiff : -1
+
+        return maxDiff
     }
 }
-    
