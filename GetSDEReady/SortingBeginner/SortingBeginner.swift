@@ -268,4 +268,24 @@ class Solution {
     }
 }
 */    
+// https://getsdeready.com/courses/dsa/lesson/maximum-difference/    
+// https://www.geeksforgeeks.org/dsa/find-sum-maximum-difference-possible-subset-given-array/
+// function for sum of max min difference
+func maxMinSum(_ arr: [Int]) -> Int {
+    var stotedArr = arr.sorted()
+    var n = stotedArr.count
+    // iterate over array and with help of
+    // horner's rule calc max_sum and min_sum
+    var min_sum: Int = 0
+    var max_sum: Int = 0
     
+    for i in 0..<n {
+        max_sum = 2 * max_sum + arr[n-1-i];
+        max_sum %= MOD;
+        min_sum = 2 * min_sum + arr[i];
+        min_sum %= MOD;
+    }
+
+    return (max_sum - min_sum + MOD) % MOD;
+}
+print("maxMin sum", maxMinSum([1,2,3]))// 6    
