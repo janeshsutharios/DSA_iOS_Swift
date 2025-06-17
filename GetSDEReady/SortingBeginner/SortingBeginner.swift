@@ -308,3 +308,39 @@ class Solution {
         return maxDiff
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/number-of-sextuplets/
+class Solution {
+    func countSextuplets(_ A: [Int], _ B: [Int], _ C: [Int],
+                         _ D: [Int], _ E: [Int], _ F: [Int]) -> Int {
+        let n = A.count
+        var leftCount = [Int: Int]()
+        
+        // 1️⃣ Compute all possible values of A[a]*B[b] + C[c], count occurrences
+        for a in A {
+            for b in B {
+                for c in C {
+                    let val = a * b + c
+                    leftCount[val, default: 0] += 1
+                }
+            }
+        }
+        
+        var total = 0
+        
+        // 2️⃣ For D[d] * (E[e] + F[f]), look up matching left side values
+        for d in D {
+            for e in E {
+                for f in F {
+                    let val = d * (e + f)
+                    if let cnt = leftCount[val] {
+                        total += cnt
+                    }
+                }
+            }
+        }
+        
+        return total
+    }
+}
+
+    
