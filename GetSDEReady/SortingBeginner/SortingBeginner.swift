@@ -289,3 +289,24 @@ func maxMinSum(_ arr: [Int]) -> Int {
     return (max_sum - min_sum + MOD) % MOD;
 }
 print("maxMin sum", maxMinSum([1,2,3]))// 6    
+
+// https://getsdeready.com/courses/dsa/lesson/maximum-difference-between-increasing-elements/
+// https://leetcode.com/problems/maximum-difference-between-increasing-elements/description/   
+class Solution {
+    func maximumDifference(_ nums: [Int]) -> Int {
+        var minVal = nums[0]
+        var maxDiff = 0
+        
+        for x in nums {
+            if x > minVal {
+                // possible increasing pair identified
+                maxDiff = max(maxDiff, x - minVal)
+            } else {
+                // update the lowest seen so far
+                minVal = x
+            }
+        }
+        return maxDiff > 0 ? maxDiff : -1
+    }
+}
+    
