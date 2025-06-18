@@ -363,4 +363,45 @@ func chocolateDistribution(_ packets: [Int], _ m: Int) -> (minDiff: Int, selecte
 
     return (minDiff, resultPackets)
 }
-    
+// https://getsdeready.com/courses/dsa/lesson/find-right-interval/    
+// https://leetcode.com/problems/find-right-interval/description/    
+class Solution {
+    func findRightInterval(_ intervals: [[Int]]) -> [Int] {
+        let n = intervals.count
+        var result = [Int]()
+
+        // Create a list of (start, originalIndex) so we can sort and track original position
+        var firstElementWithIndex = [(firstElement: Int, index: Int)]()
+        for (i, interval) in intervals.enumerated() {
+            firstElementWithIndex.append((interval[0], i))
+        }
+        
+        // Sort by start time so we can binary search later
+        firstElementWithIndex.sort { $0.firstElement < $1.firstElement }
+       // print("firstElementWithIndex is ", firstElementWithIndex)
+        
+        // For each interval, binary search for the smallest start >= current end
+        for interval in intervals {
+            let secondElement = interval[1]  // end of current interval
+            var left = 0
+            var right = n - 1
+            var foundIndex = -1
+            
+            while left <= right {
+                let mid = (left + right) / 2
+                if firstElementWithIndex[mid].firstElement >= secondElement {
+                    // Potential candidate, but keep searching left for smaller start
+                    foundIndex = firstElementWithIndex[mid].index
+                    right = mid - 1
+                } else {
+                    // Need larger start
+                    left = mid + 1
+                }
+            }
+            result.append(foundIndex)
+        }
+        
+        return result
+    }
+
+}    
