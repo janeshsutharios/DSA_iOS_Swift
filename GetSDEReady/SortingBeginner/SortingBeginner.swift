@@ -342,5 +342,25 @@ class Solution {
         return total
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/chocolate-distribution-problem/
+func chocolateDistribution(_ packets: [Int], _ m: Int) -> (minDiff: Int, selectedPackets: [Int]) {
+    let n = packets.count
+    if m == 0 || n == 0 || m > n {
+        return (0, [])
+    }
 
+    let sorted = packets.sorted()
+    var minDiff = Int.max
+    var resultPackets: [Int] = []
+    // Solving by sliding window..
+    for i in 0...(n - m) {
+        let currentDiff = sorted[i + m - 1] - sorted[i]
+        if currentDiff < minDiff {
+            minDiff = currentDiff
+            resultPackets = Array(sorted[i...(i + m - 1)])
+        }
+    }
+
+    return (minDiff, resultPackets)
+}
     
