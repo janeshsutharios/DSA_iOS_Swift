@@ -51,3 +51,26 @@ class Solution {
         return count
     }
 }*/
+// https://getsdeready.com/courses/dsa/lesson/merge-similar-items/
+// https://leetcode.com/problems/merge-similar-items/
+class Solution {
+    func mergeSimilarItems(_ items1: [[Int]], _ items2: [[Int]]) -> [[Int]] {
+        var map = [Int: Int]()
+        
+        // Add all items from items1
+        for item in items1 {
+            map[item[0], default: 0] += item[1]
+        }
+
+        // Add all items from items2
+        for item in items2 {
+            map[item[0], default: 0] += item[1]
+        }
+
+        // Convert to array of [value, weight] and sort by value as per question ret should be returned in ascending order by value.
+        let result = map.map { [$0.key, $0.value] }.sorted { $0[0] < $1[0] }
+        
+        return result
+    }
+}
+
