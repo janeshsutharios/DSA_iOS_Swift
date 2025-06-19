@@ -107,3 +107,41 @@ class Solution {
         return num1 + num2
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/sort-even-and-odd-indices-independently/
+// https://leetcode.com/problems/sort-even-and-odd-indices-independently/description/
+
+class Solution {
+    func sortEvenOdd(_ nums: [Int]) -> [Int] {
+        var evens = [Int]()
+        var odds = [Int]()
+        
+        // Separate values at even and odd indices
+        for (i, v) in nums.enumerated() {
+            if i % 2 == 0 {
+                evens.append(v)
+            } else {
+                odds.append(v)
+            }
+        }
+        
+        // Sort even-index values in ascending order
+        evens.sort()
+        // Sort odd-index values in descending order
+        odds.sort(by: >)
+        
+        var result = [Int]()
+        // Rebuild the array by picking from respective sorted lists
+        var e = 0, o = 0
+        for i in 0..<nums.count {
+            if i % 2 == 0 {
+                result.append(evens[e])
+                e += 1
+            } else {
+                result.append(odds[o])
+                o += 1
+            }
+        }
+        
+        return result
+    }
+}
