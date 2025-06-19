@@ -73,4 +73,37 @@ class Solution {
         return result
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/split-with-minimum-sum/
+// https://leetcode.com/problems/split-with-minimum-sum/description/
+class Solution {
+    func splitNum(_ num: Int) -> Int {
+        var digits = [Int]()
+        var number = num
 
+        // Step 1: Extract each digit from the number (in reverse order)
+        while number > 0 {
+            digits.append(number % 10) // Get last digit
+            number /= 10               // Remove last digit
+        }
+
+        // Step 2: Sort the digits in ascending order
+        digits.sort()
+
+        // Step 3: Distribute digits alternately to two numbers
+        var num1 = 0
+        var num2 = 0
+
+        for (i, digit) in digits.enumerated() {
+            if i % 2 == 0 {
+                // Even index → add to num1
+                num1 = num1 * 10 + digit
+            } else {
+                // Odd index → add to num2
+                num2 = num2 * 10 + digit
+            }
+        }
+
+        // Step 4: Return the sum of the two constructed numbers
+        return num1 + num2
+    }
+}
