@@ -5,14 +5,14 @@ class Solution {
         guard s.count % 2 == 0 else { return false }
         
         var stack: [Character] = []
-        //Here we are maintaing stack . adding element with close bracket & removing values from stack if the braces not matched.
+        // Here we are maintaing stack . adding element with close bracket & removing values from stack if the braces not matched.
         for ch in s {
             switch ch {
             case "(": stack.append(")")
             case "[": stack.append("]")
             case "{": stack.append("}")
             default:
-              // Here it's or condition hence stack.removeLast() can execute first & & make state.isEmpty true
+                // Return false for unbalanced stack
                 if stack.isEmpty || stack.removeLast() != ch {
                     return false
                 }
