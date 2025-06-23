@@ -232,4 +232,49 @@ class MinStack {
         return minStack.last ?? -1
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/largest-rectangle-in-histogram/
+// https://leetcode.com/problems/largest-rectangle-in-histogram/
+class Solution {
+    // ALGO: Monotonically Increasing Stack
+    // TIME Complexity: O(N)
+    // TIME Complexity: O(N)
+    func largestRectangleArea(_ heights: [Int]) -> Int {
+        // Initialize a stack to store indices of heights, and add -1 as a sentinel value.
+        var stack: [Int] = [-1]
+        let length = heights.count
+        var maxArea = 0
+
+        // Iterate through the heights array.
+        for i in 0..<length {
+            // While the stack is not empty (except for the sentinel) and the current height is less than or equal to the height at the top of the stack,
+            while stack.last != -1 && heights[stack.last!] >= heights[i] {
+
+                // Calculate the area of the rectangle formed by the height at the top of the stack.
+                let currentHeight = heights[stack.removeLast()]
+
+                // The width is the difference between the current index and the index of the previous smaller height (or -1 if none).
+                let currentWidth = i - stack.last! - 1
+
+                // Update the maximum area.
+                maxArea = max(maxArea, currentHeight * currentWidth)
+            }
+            stack.append(i)
+        }
+
+        // Process any remaining heights in the stack.
+        while stack.last != -1 {
+            // Calculate the area of the rectangle formed by the height at the top of the stack.
+            let currentHeight = heights[stack.removeLast()]
+
+            // The width is the difference between the end of the array and the index of the previous smaller height (or -1 if none).
+            let currentWidth = length - stack.last! - 1
+
+            // Update the maximum area.
+            maxArea = max(maxArea, currentHeight * currentWidth)
+        }
+
+        // Return the maximum area.
+        return maxArea
+    }
+}
 
