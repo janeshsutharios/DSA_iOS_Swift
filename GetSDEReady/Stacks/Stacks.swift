@@ -65,3 +65,26 @@ class Solution {
         return result
     }
 }
+// Soution 2 using Stacks 
+class Solution {
+    func nextGreaterElement(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        var stack: [Int] = []
+        var nextGreater: [Int: Int] = [:]
+
+        for num in nums2 {
+            // Maintain decreasing stack
+            while let last = stack.last, num > last {
+                nextGreater[stack.removeLast()] = num
+            }
+            stack.append(num)
+        }
+
+        // For remaining elements in stack, no next greater
+        for num in stack {
+            nextGreater[num] = -1
+        }
+
+        // Build result for nums1
+        return nums1.map { nextGreater[$0] ?? -1 }
+    }
+}
