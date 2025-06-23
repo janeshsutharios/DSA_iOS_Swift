@@ -111,7 +111,7 @@ class Solution {
         }
         return studentPreferences[0] + studentPreferences[1]
     }
-    
+}  
     /* Approach 2 
 func countStudents(_ students: [Int], _ sandwiches: [Int]) -> Int {
     var students = students
@@ -135,4 +135,21 @@ func countStudents(_ students: [Int], _ sandwiches: [Int]) -> Int {
     return students.count // remaining students who couldn’t eat
 }
 */
+// https://getsdeready.com/courses/dsa/lesson/remove-all-adjacent-duplicates-in-string/
+// https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/description/
+func removeDuplicates(_ s: String) -> String {
+    var stack = [Character]() // Use a stack to keep characters that are not removed
+
+    for char in s {
+        // If the top of the stack is the same as current char, it's a duplicate → remove it
+        if stack.last == char {
+            stack.removeLast()
+        } else {
+            // Else, push the current char to the stack
+            stack.append(char)
+        }
+    }
+
+    // Convert final character array (stack) back to a string and return
+    return String(stack)
 }
