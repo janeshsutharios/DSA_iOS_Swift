@@ -42,4 +42,26 @@ func removeDuplicates(_ s: String) -> String {
     return String(stack)
 }
 
+// https://getsdeready.com/courses/dsa/lesson/next-greater-element-i/
+// https://leetcode.com/problems/next-greater-element-i/description/
+class Solution {
+    func nextGreaterElement(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        var result: [Int] = []
 
+        for num in nums1 {
+            var found = -1
+            // Find index of num in nums2
+            if let index = nums2.firstIndex(of: num) {
+                // Scan to the right to find the next greater element
+                for i in (index + 1)..<nums2.count {
+                    if nums2[i] > num {
+                        found = nums2[i]
+                        break
+                    }
+                }
+            }
+            result.append(found)
+        }
+        return result
+    }
+}
