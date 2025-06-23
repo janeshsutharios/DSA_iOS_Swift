@@ -153,3 +153,42 @@ func removeDuplicates(_ s: String) -> String {
     // Convert final character array (stack) back to a string and return
     return String(stack)
 }
+
+// https://getsdeready.com/courses/dsa/lesson/evaluate-expression/
+class Solution {
+    func evalRPN(_ tokens: inout [String]) -> Int {
+        var stack = [Int]()  // Stack to store operands
+        
+        for token in tokens {
+            // If the token is a number, push it to the stack
+            if let number = Int(token) {
+                stack.append(number)
+            } else {
+                // Token is an operator, pop two operands from stack
+                let rightOperand = stack.removeLast()
+                let leftOperand = stack.removeLast()
+                
+                // Apply the operation and push result back to stack
+                let result: Int
+                switch token {
+                case "+":
+                    result = leftOperand + rightOperand
+                case "-":
+                    result = leftOperand - rightOperand
+                case "*":
+                    result = leftOperand * rightOperand
+                case "/":
+                    result = leftOperand / rightOperand  // Integer division
+                default:
+                    fatalError("Unsupported operator: \(token)")
+                }
+                
+                stack.append(result)
+            }
+        }
+        
+        // The final result is the only item left in the stack
+        return stack.last!
+    }
+}
+
