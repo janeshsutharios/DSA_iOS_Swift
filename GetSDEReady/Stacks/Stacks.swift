@@ -88,3 +88,51 @@ class Solution {
         return nums1.map { nextGreater[$0] ?? -1 }
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/number-of-students-unable-to-eat-lunch/
+// https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/description/
+class Solution {
+    func countStudents(_ students: [Int], _ sandwiches: [Int]) -> Int {
+        // 0th index who prefers circular sandwich & 1st index prefers square sandwich
+        var studentPreferences: [Int] = [0,0]
+        // Now insert count of circular & square sandwiches
+        for student in students {
+            studentPreferences[student] += 1
+        }
+
+        // Iterate over sandwiches which students can eat 
+
+        for sandwitch in sandwiches {
+            // If no student prefer to eat partcular sandwitch 
+            /* Test case students =    [1,1,1,0,0] sandwiches =  [0,0,0,1,1] */
+            if studentPreferences[sandwitch] == 0 {
+                break
+            }
+            studentPreferences[sandwitch] -= 1
+        }
+        return studentPreferences[0] + studentPreferences[1]
+    }
+    
+    /* Approach 2 
+func countStudents(_ students: [Int], _ sandwiches: [Int]) -> Int {
+    var students = students
+    var sandwiches = sandwiches
+    var count = 0 // tracks how many students rotated without eating
+
+    while !students.isEmpty && count < students.count {
+        if students[0] == sandwiches[0] {
+            // student takes sandwich
+            students.removeFirst()
+            sandwiches.removeFirst()
+            count = 0
+        } else {
+            // student goes to end
+            let student = students.removeFirst()
+            students.append(student)
+            count += 1
+        }
+    }
+
+    return students.count // remaining students who couldn’t eat
+}
+*/
+}
