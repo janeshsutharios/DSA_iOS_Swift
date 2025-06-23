@@ -191,4 +191,45 @@ class Solution {
         return stack.last!
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/min-stack/
+// https://leetcode.com/problems/min-stack/description/
+class MinStack {
+    // Two stacks: one for all elements, one for tracking the minimum element
+    private var stack: [Int]
+    private var minStack: [Int]
+
+    // Initializer to set up the stacks
+    init() {
+        stack = []
+        minStack = []
+    }
+
+    // Push element x onto stack
+    func push(_ x: Int) {
+        stack.append(x)
+        // If minStack is empty or x is less than or equal to the current minimum, push it onto minStack
+        if minStack.isEmpty || x <= minStack.last! {
+            minStack.append(x)
+        }
+    }
+
+    // Remove the element on top of the stack
+    func pop() {
+        // If the top element is the same as the top of minStack, pop from minStack as well
+        if stack.last == minStack.last {
+            minStack.removeLast()
+        }
+        stack.removeLast()
+    }
+
+    // Get the top element
+    func top() -> Int {
+        return stack.last ?? -1
+    }
+
+    // Retrieve the minimum element in the stack
+    func getMin() -> Int {
+        return minStack.last ?? -1
+    }
+}
 
