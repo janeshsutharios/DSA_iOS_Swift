@@ -1,3 +1,33 @@
+// https://getsdeready.com/courses/dsa/lesson/implement-stack-using-queues/
+// https://leetcode.com/problems/implement-stack-using-queues/
+class MyStack {
+    private var queue: [Int] = []
+
+    // Push element x onto stack.
+    func push(_ x: Int) {
+        queue.append(x)
+        // Rotate: move all elements before x to the back
+        for _ in 0..<queue.count - 1 {
+            queue.append(queue.removeFirst())
+        }
+    }
+
+    // Removes the element on top of the stack and returns it.
+    func pop() -> Int {
+        return queue.removeFirst()
+    }
+
+    // Get the top element.
+    func top() -> Int {
+        return queue.first!
+    }
+
+    // Returns whether the stack is empty.
+    func empty() -> Bool {
+        return queue.isEmpty
+    }
+}
+
 // https://getsdeready.com/courses/dsa/lesson/first-unique-character-in-a-string/
 // https://leetcode.com/problems/first-unique-character-in-a-string/
 class Solution {
