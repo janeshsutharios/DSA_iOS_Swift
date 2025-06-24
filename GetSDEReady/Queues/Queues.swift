@@ -50,6 +50,56 @@ class Solution {
         return -1
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/implement-queue-using-stacks/
+// https://leetcode.com/problems/implement-queue-using-stacks/
+// Note # It only works if it's executed in order as per given in the question.
+class MyQueue {
+    private var inStack: [Int] = []
+    private var outStack: [Int] = []
+
+    // Push element x to the back of queue
+    func push(_ x: Int) {
+        inStack.append(x)
+    }
+
+    // Removes the element from in front of queue and returns it
+    func pop() -> Int {
+        if outStack.isEmpty {
+            transfer()
+        }
+        return outStack.removeLast()
+    }
+
+    // Get the front element
+    func peek() -> Int {
+        if outStack.isEmpty {
+            transfer()
+        }
+        return outStack.last!
+    }
+
+    // Returns whether the queue is empty
+    func empty() -> Bool {
+        return inStack.isEmpty && outStack.isEmpty
+    }
+
+    // Transfer elements from inStack to outStack
+    private func transfer() {
+        while let value = inStack.popLast() {
+            outStack.append(value)
+        }
+    }
+}
+
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * let obj = MyQueue()
+ * obj.push(x)
+ * let ret_2: Int = obj.pop()
+ * let ret_3: Int = obj.peek()
+ * let ret_4: Bool = obj.empty()
+ */
 // https://getsdeready.com/courses/dsa/lesson/time-needed-to-buy-tickets/
 // https://leetcode.com/problems/time-needed-to-buy-tickets/
 class Solution {
