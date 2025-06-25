@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repeated Substring Pattern Algorithm</title>
+    <style>
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .input-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'SF Mono', Monaco, monospace;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .algorithm-steps {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .visualization {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .string-display {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            letter-spacing: 4px;
+        }
+        
+        .char-box {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            margin: 2px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .char-box.pattern {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .char-box.comparing {
+            background: #ffd93d;
+            border-color: #ffc107;
+            animation: pulse 1s infinite;
+        }
+        
+        .char-box.match {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        
+        .char-box.mismatch {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .iteration-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .result {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .result.failure {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .control-btn {
+            background: #6c757d;
+            margin: 0 5px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .pattern-length-info {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Repeated Substring Pattern Algorithm</h1>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <input type="text" id="stringInput" placeholder="Enter a string (e.g., 'abcabcabc')" value="abcabcabc">
+                <button onclick="startVisualization()">🚀 Visualize Algorithm</button>
+            </div>
+        </div>
+        
+        <div class="algorithm-steps">
+            <h3>📋 Algorithm Steps:</h3>
+            <div class="step">
+                <div class="step-title">Step 1: Initialize</div>
+                <div>Get string length (n) and convert to character array for easy indexing</div>
+            </div>
+            <div class="step">
+                <div class="step-title">Step 2: Try Pattern Lengths</div>
+                <div>Loop through possible substring lengths from 1 to n/2 (can't be longer than half)</div>
+            </div>
+            <div class="step">
+                <div class="step-title">Step 3: Check Divisibility</div>
+                <div>Skip lengths where n % length ≠ 0 (string can't be evenly divided)</div>
+            </div>
+            <div class="step">
+                <div class="step-title">Step 4: Compare Characters</div>
+                <div>For each valid length, compare chars[i] with chars[i % length] for all positions</div>
+            </div>
+            <div class="step">
+                <div class="step-title">Step 5: Return Result</div>
+                <div>Return true if any pattern length works, false otherwise</div>
+            </div>
+        </div>
+        
+        <div class="visualization" id="visualization" style="display: none;">
+            <h3>📊 Step-by-Step Visualization</h3>
+            <div id="stringDisplay" class="string-display"></div>
+            <div id="iterationInfo" class="iteration-info"></div>
+            <div id="patternInfo" class="pattern-length-info"></div>
+            <div class="controls">
+                <button class="control-btn" id="prevBtn" onclick="previousStep()" disabled>⬅️ Previous</button>
+                <button class="control-btn" id="nextBtn" onclick="nextStep()">➡️ Next</button>
+                <button class="control-btn" onclick="resetVisualization()">🔄 Reset</button>
+            </div>
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentString = '';
+        let steps = [];
+        let currentStepIndex = 0;
+        
+        function startVisualization() {
+            currentString = document.getElementById('stringInput').value.trim();
+            if (!currentString) {
+                alert('Please enter a string!');
+                return;
+            }
+            
+            generateSteps();
+            document.getElementById('visualization').style.display = 'block';
+            currentStepIndex = 0;
+            showStep(0);
+        }
+        
+        function generateSteps() {
+            steps = [];
+            const n = currentString.length;
+            const chars = currentString.split('');
+            
+            // Initial step
+            steps.push({
+                type: 'init',
+                message: `Analyzing string: "${currentString}" (length: ${n})`,
+                string: currentString,
+                highlight: []
+            });
+            
+            // Try each possible pattern length
+            for (let patternLength = 1; patternLength <= Math.floor(n / 2); patternLength++) {
+                steps.push({
+                    type: 'pattern-start',
+                    message: `Trying pattern length: ${patternLength}`,
+                    patternLength: patternLength,
+                    string: currentString,
+                    highlight: []
+                });
+                
+                // Check if divisible
+                if (n % patternLength !== 0) {
+                    steps.push({
+                        type: 'skip',
+                        message: `Skipping length ${patternLength}: ${n} % ${patternLength} = ${n % patternLength} ≠ 0`,
+                        patternLength: patternLength,
+                        string: currentString,
+                        highlight: []
+                    });
+                    continue;
+                }
+                
+                // Show the pattern
+                steps.push({
+                    type: 'pattern-show',
+                    message: `Pattern: "${currentString.substring(0, patternLength)}" (repeats ${n / patternLength} times)`,
+                    patternLength: patternLength,
+                    string: currentString,
+                    highlight: Array.from({length: patternLength}, (_, i) => i)
+                });
+                
+                let match = true;
+                // Compare characters
+                for (let i = patternLength; i < n; i++) {
+                    steps.push({
+                        type: 'compare',
+                        message: `Comparing chars[${i}] = '${chars[i]}' with chars[${i % patternLength}] = '${chars[i % patternLength]}'`,
+                        patternLength: patternLength,
+                        string: currentString,
+                        highlight: [i, i % patternLength],
+                        comparing: i,
+                        compareWith: i % patternLength
+                    });
+                    
+                    if (chars[i] !== chars[i % patternLength]) {
+                        match = false;
+                        steps.push({
+                            type: 'mismatch',
+                            message: `Mismatch found! '${chars[i]}' ≠ '${chars[i % patternLength]}'. Pattern length ${patternLength} doesn't work.`,
+                            patternLength: patternLength,
+                            string: currentString,
+                            highlight: [i, i % patternLength],
+                            mismatch: true
+                        });
+                        break;
+                    } else {
+                        steps.push({
+                            type: 'match',
+                            message: `Match! '${chars[i]}' = '${chars[i % patternLength]}'`,
+                            patternLength: patternLength,
+                            string: currentString,
+                            highlight: [i, i % patternLength],
+                            match: true
+                        });
+                    }
+                }
+                
+                if (match) {
+                    steps.push({
+                        type: 'success',
+                        message: `✅ Found valid pattern! Length ${patternLength} works.`,
+                        patternLength: patternLength,
+                        string: currentString,
+                        highlight: Array.from({length: n}, (_, i) => i),
+                        success: true
+                    });
+                    break;
+                }
+            }
+            
+            // Final result
+            const hasPattern = steps.some(step => step.type === 'success');
+            steps.push({
+                type: 'final',
+                message: hasPattern ? '🎉 String can be formed by repeating a substring!' : '❌ String cannot be formed by repeating a substring.',
+                string: currentString,
+                highlight: [],
+                result: hasPattern
+            });
+        }
+        
+        function showStep(index) {
+            if (index < 0 || index >= steps.length) return;
+            
+            const step = steps[index];
+            const stringDisplay = document.getElementById('stringDisplay');
+            const iterationInfo = document.getElementById('iterationInfo');
+            const patternInfo = document.getElementById('patternInfo');
+            const result = document.getElementById('result');
+            
+            // Update string display
+            stringDisplay.innerHTML = '';
+            for (let i = 0; i < step.string.length; i++) {
+                const charBox = document.createElement('span');
+                charBox.className = 'char-box';
+                charBox.textContent = step.string[i];
+                
+                if (step.highlight && step.highlight.includes(i)) {
+                    if (step.type === 'pattern-show' || (step.patternLength && i < step.patternLength)) {
+                        charBox.classList.add('pattern');
+                    } else if (step.comparing === i || step.compareWith === i) {
+                        charBox.classList.add('comparing');
+                    } else if (step.match) {
+                        charBox.classList.add('match');
+                    } else if (step.mismatch) {
+                        charBox.classList.add('mismatch');
+                    }
+                }
+                
+                stringDisplay.appendChild(charBox);
+            }
+            
+            // Update iteration info
+            iterationInfo.textContent = step.message;
+            
+            // Update pattern info
+            if (step.patternLength) {
+                patternInfo.innerHTML = `<strong>Current pattern length:</strong> ${step.patternLength} | <strong>Pattern:</strong> "${step.string.substring(0, step.patternLength)}"`;
+                patternInfo.style.display = 'block';
+            } else {
+                patternInfo.style.display = 'none';
+            }
+            
+            // Update result
+            if (step.type === 'final') {
+                result.style.display = 'block';
+                result.className = `result ${step.result ? 'success' : 'failure'}`;
+                result.textContent = step.message;
+            } else {
+                result.style.display = 'none';
+            }
+            
+            // Update buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === steps.length - 1;
+        }
+        
+        function nextStep() {
+            if (currentStepIndex < steps.length - 1) {
+                currentStepIndex++;
+                showStep(currentStepIndex);
+            }
+        }
+        
+        function previousStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                showStep(currentStepIndex);
+            }
+        }
+        
+        function resetVisualization() {
+            currentStepIndex = 0;
+            showStep(0);
+        }
+        
+        // Auto-start with default example
+        window.onload = function() {
+            startVisualization();
+        };
+    </script>
+</body>
+</html>
