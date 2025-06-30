@@ -60,4 +60,38 @@ class Solution {
         return sum
     }
 }
-// 
+// https://getsdeready.com/courses/dsa/lesson/decode-the-message/
+// https://leetcode.com/problems/decode-the-message/description/
+class Solution {
+    func decodeMessage(_ key: String, _ message: String) -> String {
+        var map = [Character: Character]()  // Dictionary to hold the substitution mapping
+        var currentChar: Character = "a"    // Start mapping with 'a'
+        var decoded = ""  // Result string to store the decoded message
+
+        // Step 1: Build the substitution cipher from the key
+        for char in key {
+            if char != " " && map[char] == nil {
+                // If the character is not a space and not already mapped,
+                // assign it the next available character in the alphabet
+                map[char] = currentChar
+                
+                // Move to the next character in the alphabet
+                currentChar = Character(UnicodeScalar(currentChar.asciiValue! + 1)!)
+            }
+        }
+        
+        // Step 2: Decode the message using the constructed map
+        for char in message {
+            if char == " " {
+                // Preserve spaces as-is
+                decoded.append(" ")
+            } else {
+                // Replace the character using the mapping
+                decoded.append(map[char]!)
+            }
+        }
+        
+        return decoded  // Return the final decoded message
+    }
+}
+
