@@ -15,3 +15,31 @@ class Solution {
         return false
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/how-many-numbers-are-smaller-than-the-current-number-2/
+// https://leetcode.com/problems/how-many-numbers-are-smaller-than-the-current-number/description/
+class Solution {
+    func smallerNumbersThanCurrent(_ nums: [Int]) -> [Int] {
+        // Step 1: Count the frequency of each number
+        var count = [Int](repeating: 0, count: 101)
+        for num in nums {
+            count[num] += 1
+        }
+
+        // Step 2: Build prefix sum to know how many numbers are less than a given number
+        for i in 1..<101 {
+            count[i] += count[i - 1]
+        }
+
+        // Step 3: Generate result using prefix sums
+        var result = [Int]()
+        for num in nums {
+            if num == 0 {
+                result.append(0)
+            } else {
+                result.append(count[num - 1])
+            }
+        }
+
+        return result
+    }
+}
