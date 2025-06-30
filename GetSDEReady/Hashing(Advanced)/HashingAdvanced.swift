@@ -190,3 +190,29 @@ class Solution {
 | `["lls", "s"]`     | `isPalindrome(right)` | right = `"s"`        |
 | `["sssll", "lls"]` | `isPalindrome(left)`  | left = `"sss"`       |
 
+
+// https://getsdeready.com/courses/dsa/lesson/longest-substring-without-repeat/
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/description/ 
+
+class Solution {
+    func lengthOfLongestSubstring(_ s: String) -> Int {
+        var lastIndex = [Character: Int]()  // stores the last seen index for each character
+        let chars = Array(s)
+        var longest = 0
+        var start = 0
+
+        for (i, c) in chars.enumerated() {
+            if let prev = lastIndex[c], prev >= start {
+                // If current char was seen in the current window, move start
+                start = prev + 1
+            }
+            lastIndex[c] = i
+            longest = max(longest, i - start + 1)
+        }
+
+        return longest
+    }
+}
+
+
+
