@@ -43,3 +43,21 @@ class Solution {
         return result
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/sum-of-unique-elements/
+// https://leetcode.com/problems/sum-of-unique-elements/description/
+class Solution {
+    func sumOfUnique(_ nums: [Int]) -> Int {
+        var dict:[Int: Int] = [:]
+        var sum = 0
+        for num in nums {
+            dict[num, default: 0] += 1
+        }
+        for (index, element) in dict.enumerated() {
+            if element.value == 1 {
+                sum += element.key
+            }
+        }
+        return sum
+    }
+}
+// 
