@@ -214,5 +214,56 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/random-pick-with-blacklist/ 
+// https://leetcode.com/problems/random-pick-with-blacklist/
+class Solution {
+    let size: Int                  // Total allowed picks
+    var mapping = [Int: Int]()     // Map blacklisted numbers in [0, size) to valid numbers ≥ size
 
+    init(_ n: Int, _ blacklist: [Int]) {
+        // Calculate size of the allowed pool
+        self.size = n - blacklist.count
+
+        // Put all blacklisted numbers in a set for fast lookup
+        let blacklistSet = Set(blacklist)
+
+        // Create a set of blacklisted numbers that are ≥ size
+        var blackInTail = Set<Int>()
+        for b in blacklist {
+            if b >= size {
+                blackInTail.insert(b)
+            }
+        }
+
+        // Pointer to look for a valid number ≥ size to map to
+        var last = size
+
+        // Map each blacklisted number < size to a safe number ≥ size
+        for b in blacklist {
+            if b < size {
+                // Find next non-blacklisted number ≥ size
+                while blackInTail.contains(last) {
+                    last += 1
+                }
+                mapping[b] = last
+                last += 1
+            }
+        }
+    }
+    
+    func pick() -> Int {
+        // Randomly pick in range [0, size)
+        let r = Int.random(in: 0..<size)
+
+        // If r is blacklisted, return its mapped value
+        return mapping[r] ?? r
+    }
+}
+
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * let obj = Solution(n, blacklist)
+ * let ret_1: Int = obj.pick()
+ */
 
