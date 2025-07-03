@@ -43,3 +43,24 @@ let target = 14
 let ans = twoSum(arr: &twoSumArr, target: target)
 print("two sum index found-->", ans, twoSumArr[ans[0]], twoSumArr[ans[1]])
 */
+// https://getsdeready.com/courses/dsa/lesson/find-the-difference/
+// https://leetcode.com/problems/find-the-difference/description/
+
+class Solution {
+    func findTheDifference(_ s: String, _ t: String) -> Character {
+        var dict: [Character: Int] = [:]
+
+        for char in s {
+            dict[char, default: 0] += 1
+        }
+        for char in t {
+            if let value = dict[char], value != 0 {
+                dict[char]! -= 1
+            } else {
+                return char
+           }
+
+        }
+        return Character(" ")
+    }
+}
