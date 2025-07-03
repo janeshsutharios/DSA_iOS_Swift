@@ -157,3 +157,35 @@ Bob: 4 - 2 + 1 = 3
 
 So the answer is [1, 2].
 */
+// https://getsdeready.com/courses/dsa/lesson/maximum-number-of-balloons/
+// https://leetcode.com/problems/maximum-number-of-balloons/description/
+class Solution {
+    func maxNumberOfBalloons(_ text: String) -> Int {
+        var characters = Array(text)
+        var bCounts = 0
+        var aCounts = 0
+        var lCounts = 0
+        var oCounts = 0
+        var nCounts = 0
+
+        for char in characters {
+            switch (char) {
+                case "b":
+                    bCounts = bCounts + 1
+                case "a":
+                    aCounts = aCounts + 1
+                case "l":
+                    lCounts = lCounts + 1
+                case "o":
+                    oCounts = oCounts + 1
+                case "n":
+                    nCounts = nCounts + 1
+                default:
+                    continue
+            }
+        }
+
+        var ans = min(bCounts,aCounts,lCounts/2,oCounts/2,nCounts)
+        return ans
+    }
+}
