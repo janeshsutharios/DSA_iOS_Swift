@@ -161,14 +161,13 @@ So the answer is [1, 2].
 // https://leetcode.com/problems/maximum-number-of-balloons/description/
 class Solution {
     func maxNumberOfBalloons(_ text: String) -> Int {
-        var characters = Array(text)
         var bCounts = 0
         var aCounts = 0
         var lCounts = 0
         var oCounts = 0
         var nCounts = 0
 
-        for char in characters {
+        for (_, char) in text.enumerated() {
             switch (char) {
                 case "b":
                     bCounts = bCounts + 1
@@ -185,7 +184,7 @@ class Solution {
             }
         }
 
-        var ans = min(bCounts,aCounts,lCounts/2,oCounts/2,nCounts)
+        let ans = min(bCounts,aCounts,lCounts/2,oCounts/2,nCounts)
         return ans
     }
 }
