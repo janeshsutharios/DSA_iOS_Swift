@@ -240,7 +240,7 @@ class Solution
         return nil  // No subarray with sum 0 found
     }
 }
-
+// https://getsdeready.com/courses/dsa/lesson/subarray-sum-equals-k/
 // https://leetcode.com/problems/subarray-sum-equals-k/description/
 class Solution {
     func subarraySum(_ nums: [Int], _ k: Int) -> Int {
