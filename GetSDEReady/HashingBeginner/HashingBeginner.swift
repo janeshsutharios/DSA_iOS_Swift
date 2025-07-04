@@ -261,3 +261,31 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/largest-continuous-sequence-zero-sum/
+// https://youtu.be/xmguZ6GbatA?t=415 
+|-sum 3--| |--0--|
+ 0   1   2   3   4
+|-----sum 3------|
+
+func longestZeroSumSubarray(_ arr: [Int]) -> Int {
+    // Map from prefixSum to first index where it appeared
+    var firstSeen: [Int: Int] = [0: -1]
+    var prefixSum = 0
+    var maxLength = 0
+
+    for (i, num) in arr.enumerated() {
+        prefixSum += num
+
+        if let firstIndex = firstSeen[prefixSum] {
+            // We've seen this prefixSum before, so between firstIndex+1...i sums to zero
+            let length = i - firstIndex
+            maxLength = max(maxLength, length)
+        } else {
+            // Store the index of first occurrence of this prefixSum
+            firstSeen[prefixSum] = i
+        }
+    }
+
+    return maxLength
+}
+
