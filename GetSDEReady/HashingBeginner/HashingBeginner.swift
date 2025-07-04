@@ -1,3 +1,33 @@
+// Prefix sum explained... 
+
+let arr = [2, 4, 5, 7]
+var prefix = [Int](repeating: 0, count: arr.count)
+prefix[0] = arr[0]
+
+for i in 1..<arr.count {
+    prefix[i] = prefix[i - 1] + arr[i]
+}
+
+// Now, get sum from index 1 to 3:
+let l = 1
+let r = 3
+let sum = l == 0 ? prefix[r] : prefix[r] - prefix[l - 1]
+print(sum)  // Output: 16
+💡 Why use Prefix Sum?
+Imagine you want to find the sum from index 1 to 3 in arr:
+
+# Without prefix sum: arr[1] + arr[2] + arr[3] = 4 + 5 + 7 = 16 (O(k) time)
+
+# With prefix sum:
+prefix[3] - prefix[0] = 18 - 2 = 16  ✅ (O(1) time)
+So, sum of elements from index L to R is:
+
+if L == 0:
+    sum = prefix[R]
+else:
+    sum = prefix[R] - prefix[L - 1]
+
+
 // https://getsdeready.com/courses/dsa/lesson/two-sum/
 // https://leetcode.com/problems/two-sum/description/
 class Solution {
