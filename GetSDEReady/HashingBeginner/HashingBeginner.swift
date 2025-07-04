@@ -218,3 +218,46 @@ class Solution {
         return ans
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/subarray-with-0-sum/ 
+class Solution
+    func zeroSumSubarrayIndices(_ nums: [Int]) -> (start: Int, end: Int)? {
+        var sum = 0
+        var sumIndexMap: [Int: Int] = [0: -1]  // sum → index, 0 at -1 to catch subarray from 0
+
+        for (i, num) in nums.enumerated() {
+            sum += num
+
+            if let startIndex = sumIndexMap[sum] {
+                // Found a subarray with sum = 0
+                return (startIndex + 1, i)
+            }
+
+            // Store sum and its index
+            sumIndexMap[sum] = i
+        }
+
+        return nil  // No subarray with sum 0 found
+    }
+}
+
+// https://leetcode.com/problems/subarray-sum-equals-k/description/
+class Solution {
+    func subarraySum(_ nums: [Int], _ k: Int) -> Int {
+        var count = 0
+        var sum = 0
+        var dict = [Int: Int]()  // prefixSum → frequency
+        dict[0] = 1  // base case to handle sum == k directly
+
+        for num in nums {
+            sum += num
+            if let freq = dict[sum - k] {
+                count += freq
+            }
+            dict[sum, default: 0] += 1
+        }
+
+        return count
+    }
+}
+
