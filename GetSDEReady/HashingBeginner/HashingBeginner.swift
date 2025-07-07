@@ -289,3 +289,17 @@ func longestZeroSumSubarray(_ arr: [Int]) -> Int {
     return maxLength
 }
 
+// https://getsdeready.com/courses/dsa/lesson/anagrams/
+// https://leetcode.com/problems/group-anagrams/
+func groupAnagrams(_ strs: [String]) -> [[String]] {
+    var anagramMap: [String: [String]] = [:]
+
+    // Dictionary mens key will be unique hence for input like eat & tea it will append [aet: [eat]] [aet:[eat, tea]]
+    for str in strs {
+        let sortedStr = String(str.sorted())
+        anagramMap[sortedStr, default: []].append(str)
+    }
+
+    return Array(anagramMap.values)
+}
+
