@@ -303,3 +303,37 @@ func groupAnagrams(_ strs: [String]) -> [[String]] {
     return Array(anagramMap.values)
 }
 
+// https://getsdeready.com/courses/dsa/lesson/set-matrix-zeros/
+// https://leetcode.com/problems/set-matrix-zeroes/
+class Solution {
+    func setZeroes(_ matrix: inout [[Int]]) {
+        let rows = matrix.count
+        let cols = matrix[0].count
+        var col0 = 1  // Flag to track if the first column needs to be zeroed
+
+        // First pass: mark rows and columns that need to be zeroed
+        for i in 0..<rows {
+            if matrix[i][0] == 0 {
+                col0 = 0  // First column needs to be zeroed
+            }
+            for j in 1..<cols {
+                if matrix[i][j] == 0 {
+                    matrix[i][0] = 0  // Set the first row as zero
+                    matrix[0][j] = 0  // Set the first column as zero
+                }
+            }
+        }
+
+        // Second pass (in reverse): apply the zeroing based on markers
+        for i in stride(from: rows - 1, through: 0, by: -1) {
+            for j in stride(from: cols - 1, through: 1, by: -1) {
+                if matrix[i][0] == 0 || matrix[0][j] == 0 {
+                    matrix[i][j] = 0  // Zero the cell if its row or column is marked
+                }
+            }
+            if col0 == 0 {
+                matrix[i][0] = 0  // Zero the first column if needed
+            }
+        }
+    }
+}
