@@ -20,8 +20,8 @@ class Solution {
 
             // Start comparing from index 'index' up to 'n-1'
             for i in index..<n {
-                // Compare each character with its corresponding character in the repeating pattern
-                // i % index maps the index back to the start of the substring pattern
+                  // ✅ Can you cut 12 meters into 3-meter pieces? Yes! (12 % 3 == 0)
+                //❌ Can you cut it into 5-meter pieces? No! (12 % 5 == 2)
                 if chars[i] != chars[i % index] {
                     match = false          // Mismatch found
                     break                  // No need to continue this pattern length
