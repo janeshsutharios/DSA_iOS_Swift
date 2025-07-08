@@ -46,3 +46,102 @@ class Solution {
     }
 }
 */
+
+// 
+// https://leetcode.com/problems/valid-palindrome-ii/description/
+class Solution {
+    func validPalindrome(_ s: String) -> Bool {
+        let chars = Array(s)
+        var left = 0
+        var right = chars.count - 1
+
+        // Helper function to check if a substring is palindrome
+        func isPalindrome(_ l: Int, _ r: Int) -> Bool {
+            var i = l, j = r
+            while i < j {
+                if chars[i] != chars[j] {
+                    return false
+                }
+                i += 1
+                j -= 1
+            }
+            return true
+        }
+
+        while left < right {
+            if chars[left] != chars[right] {
+                // Try skipping either left or right character
+                return isPalindrome(left + 1, right) || isPalindrome(left, right - 1)
+            }
+            left += 1
+            right -= 1
+        }
+
+        return true
+    }
+}
+
+class Solution {
+    func validPalindrome(_ s: String) -> Bool {
+        let chars = Array(s)
+        var left = 0
+        var right = chars.count - 1
+
+        // Helper function to check if a substring is palindrome
+        func isPalindrome(_ l: Int, _ r: Int) -> Bool {
+            var i = l, j = r
+            while i < j {
+                if chars[i] != chars[j] {
+                    return false
+                }
+                i += 1
+                j -= 1
+            }
+            return true
+        }
+
+        while left < right {
+            if chars[left] != chars[right] {
+                // Try skipping either left or right character
+                return isPalindrome(left + 1, right) || isPalindrome(left, right - 1)
+            }
+            left += 1
+            right -= 1
+        }
+
+        return true
+    }
+}
+
+
+// In this way we can find the dropped characer 
+func validPalindrome(_ s: String) -> Bool {
+    let chars = Array(s)
+    var left = 0
+    var right = chars.count - 1
+    
+    // Helper function to check if a substring is palindrome
+    func isPalindrome(_ l: Int, _ r: Int, dropped: Character) -> Bool {
+        var i = l, j = r
+        while i < j {
+            if chars[i] != chars[j] {
+                return false
+            }
+            i += 1
+            j -= 1
+        }
+        print("Found by dropping ", dropped)
+        return true
+    }
+    
+    while left < right {
+        if chars[left] != chars[right] {
+            // Try skipping either left or right character
+            return isPalindrome(left + 1, right, dropped: chars[left]) || isPalindrome(left, right - 1, dropped: chars[right])
+        }
+        left += 1
+        right -= 1
+    }
+    
+    return true
+}
