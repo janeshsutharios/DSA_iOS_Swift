@@ -145,3 +145,50 @@ func validPalindrome(_ s: String) -> Bool {
     
     return true
 }
+
+// https://getsdeready.com/courses/dsa/lesson/find-common-characters/
+// https://leetcode.com/problems/find-common-characters/
+class Solution {
+    func commonChars(_ words: [String]) -> [String] {
+        // Initialize a frequency array with max values for 26 lowercase letters
+        var minFreq = [Int](repeating: Int.max, count: 26)
+
+        // For each word, calculate the frequency of each character
+        for word in words {
+            var freq = [Int](repeating: 0, count: 26)
+
+            // Count frequency of each character in current word
+            for char in word {
+                let index = Int(char.asciiValue! - Character("a").asciiValue!)
+                freq[index] += 1
+            }
+            print("   freq", freq)
+            // Update the global minFreq with minimum count for each character
+            for i in 0..<26 {
+                minFreq[i] = min(minFreq[i], freq[i])
+            }
+            print("minFreq", minFreq)
+        }
+
+        // Build the result using characters that have frequency > 0 in all words
+        var result = [String]()
+        for i in 0..<26 {
+            // Append the character as many times as it appears commonly
+            for _ in 0..<minFreq[i] {// will only executes for 1,2 i.e. e & l,l
+                let char = Character(UnicodeScalar(i + Int(Character("a").asciiValue!))!)
+                result.append(String(char))// Adds ["e", "l", "l"]
+            }
+        }
+        return result
+    }
+}
+print(Solution().commonChars(["bella","label","roller"]))
+prints -
+   freq [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+minFreq [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+   freq [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+minFreq [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+   freq [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0]
+minFreq [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+["e", "l", "l"]
+
