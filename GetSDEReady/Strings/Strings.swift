@@ -192,3 +192,23 @@ minFreq [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 minFreq [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ["e", "l", "l"]
 
+// https://getsdeready.com/courses/dsa/lesson/check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence/
+// https://leetcode.com/problems/check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence/description/
+class Solution {
+    func isPrefixOfWord(_ sentence: String, _ searchWord: String) -> Int {
+        // Split the sentence into words
+        let words = sentence.split(separator: " ")
+
+        // Iterate over the words with their index
+        for (index, word) in words.enumerated() {
+            // Check if the word starts with the searchWord
+            if word.hasPrefix(searchWord) {
+                // Return 1-based index
+                return index + 1
+            }
+        }
+
+        // If no prefix match found
+        return -1
+    }
+}
