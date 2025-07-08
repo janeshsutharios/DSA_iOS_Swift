@@ -2,4 +2,3 @@
 #2 Int to Char conversion - let char = Character(UnicodeScalar(i + Int(Character("a").asciiValue!))!)
 #3 Char to Int conversion - let index = Int(char.asciiValue! - Character("a").asciiValue!)
 
-
