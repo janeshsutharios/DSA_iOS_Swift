@@ -218,7 +218,12 @@ class Solution {
     func dayOfYear(_ date: String) -> Int {
         let parts = date.split(separator: "-").map { Int($0)! }
         let year = parts[0], month = parts[1], day = parts[2]
-
+        /* Or 
+        // Extract substrings using ranges
+        let year = Int(date.prefix(4))! // "YYYY"
+        let month = Int(date[date.index(date.startIndex, offsetBy: 5)...date.index(date.startIndex, offsetBy: 6)])! // "MM"
+        let day = Int(date.suffix(2))! // "DD"
+        */
         // Days in each month. February is 28 or 29 depending on leap year.
         let monthDays = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
