@@ -357,3 +357,13 @@ class Solution {
         }
     }
 }
+// Solution 2 using tuple 
+/*
+class Solution {
+    func reverseString(_ s: inout [Character]) {
+        for i in 0..<s.count/2 {
+            (s[i],s[s.count - i - 1])  = (s[s.count - i - 1],s[i])
+        }
+    }
+}
+*/
