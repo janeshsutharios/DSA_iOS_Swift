@@ -212,3 +212,34 @@ class Solution {
         return -1
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/day-of-the-year-2/ 
+// https://leetcode.com/problems/day-of-the-year/description/
+class Solution {
+    func dayOfYear(_ date: String) -> Int {
+        let parts = date.split(separator: "-").map { Int($0)! }
+        let year = parts[0], month = parts[1], day = parts[2]
+
+        // Days in each month. February is 28 or 29 depending on leap year.
+        let monthDays = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+        var total = 0
+        for i in 0..<month - 1 {
+            total += monthDays[i]
+        }
+
+        return total + day
+    }
+
+    func isLeapYear(_ year: Int) -> Bool {
+        // ✅ Rule 1: Divisible by 4 (e.g., 2004)
+        // ❌ Rule 2: Not divisible by 100 (e.g., 1900 is NOT a leap year)
+        // ✅ Rule 3: If divisible by 400, then leap year (e.g., 2000)
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
+        
+        // Explanation with real years:
+        // year = 2004 → true (divisible by 4, not by 100)
+        // year = 1900 → false (divisible by 100 but not by 400)
+        // year = 2000 → true (divisible by 400)
+    }
+}
+
