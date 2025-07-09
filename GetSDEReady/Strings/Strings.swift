@@ -248,3 +248,35 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/longest-common-prefix/
+// https://leetcode.com/problems/longest-common-prefix/
+// Solution #1 Horizontal scaling. 
+class Solution {
+    func longestCommonPrefix(_ strs: [String]) -> String {
+        // Return early if the array is empty
+        guard !strs.isEmpty else {
+            return ""
+        }
+
+        // Start with the first string as the initial common prefix
+        var commonPrefix = strs[0]
+
+        // Iterate over the remaining strings
+        for currentString in strs.dropFirst() {
+            // Shorten the prefix until the current string starts with it
+            while !currentString.hasPrefix(commonPrefix) {
+                // Remove the last character from the common prefix
+                commonPrefix = String(commonPrefix.dropLast())
+
+                // If the prefix becomes empty, no common prefix exists
+                if commonPrefix.isEmpty {
+                    return ""
+                }
+            }
+        }
+
+        return commonPrefix
+    }
+}
+// Solution #2 verticle scanning
+
