@@ -279,4 +279,67 @@ class Solution {
     }
 }
 // Solution #2 verticle scanning
+class Solution {
+    func longestCommonPrefix(_ words: [String]) -> String {
+        // Return early if input is empty
+        guard let firstWord = words.first else {
+            return ""
+        }
+
+        // Iterate over characters in the first word
+        for characterIndex in firstWord.indices {
+            let currentCharacter = firstWord[characterIndex]
+
+            for word in words.dropFirst() {
+                // If index is out of bounds or character mismatch
+                if characterIndex >= word.endIndex || word[characterIndex] != currentCharacter {
+                    return String(firstWord[..<characterIndex])
+                }
+            }
+        }
+
+        // All characters matched
+        return firstWord
+    }
+}
+/*
+ | Index | `flower` | `flow` | `flight` | Match? | Common Prefix |
+ | ----- | -------- | ------ | -------- | ------ | ------------- |
+ | 0     | **f**    | **f**  | **f**    | ✅      | "f"           |
+ | 1     | **l**    | **l**  | **l**    | ✅      | "fl"          |
+ | 2     | **o**    | **o**  | **i**    | ❌      | **Stop here** |
+
+ */
+
+// https://getsdeready.com/courses/dsa/lesson/compare-version-numbers/
+// https://leetcode.com/problems/compare-version-numbers/
+
+class Solution {
+    func compareVersion(_ version1: String, _ version2: String) -> Int {
+        // ✅ Step 1: Split both version strings by '.' and convert components to integers
+        let parts1 = version1.split(separator: ".").map { Int($0)! }
+        let parts2 = version2.split(separator: ".").map { Int($0)! }
+
+        // ✅ Step 2: Determine how many total components we need to compare
+        let maxLength = max(parts1.count, parts2.count)
+
+        // ✅ Step 3: Loop through each corresponding version component
+        for i in 0..<maxLength {
+            // Use 0 for missing components if one version has fewer parts
+            let component1 = i < parts1.count ? parts1[i] : 0
+            let component2 = i < parts2.count ? parts2[i] : 0
+
+            // ✅ Step 4: Compare the two components
+            if component1 > component2 {
+                return 1  // version1 is greater
+            } else if component1 < component2 {
+                return -1 // version2 is greater
+            }
+            // If equal, continue to next component
+        }
+
+        // ✅ Step 5: All components are equal
+        return 0
+    }
+}
 
