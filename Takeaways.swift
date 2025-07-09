@@ -6,3 +6,6 @@
 let name = "Janesh"
 print("second char", name[name.index(name.startIndex, offsetBy: 1)])
 print("third last char", name[name.index(name.endIndex, offsetBy: -3)])
+
+// MARK: indices on loop
+  for characterIndex in firstWord.indices {
