@@ -343,3 +343,17 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/reverse-the-string/
+// https://leetcode.com/problems/reverse-string/
+class Solution {
+    func reverseString(_ s: inout [Character]) {
+        var right = Int(s.indices.first!)
+        var left = Int(s.indices.last!)
+        
+        while right < left {
+            s.swapAt(right, left)
+            right += 1
+            left -= 1
+        }
+    }
+}
