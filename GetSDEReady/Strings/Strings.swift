@@ -488,3 +488,48 @@ class Solution {
     }
 }
 */
+// https://leetcode.com/problems/roman-to-integer/
+class Solution {
+    func romanToInt(_ s: String) -> Int {
+        var ans = 0, num = 0;
+        
+        for i in stride(from: s.count - 1, to: -1, by: -1) {
+            switch String(s[s.index(s.startIndex, offsetBy: i)]) {
+                case "I": num = 1;
+                case "V": num = 5;
+                case "X": num = 10;
+                case "L": num = 50;
+                case "C": num = 100;
+                case "D": num = 500;
+                case "M": num = 1000;
+                default: num = 1
+            }
+            if ans > 4 * num {
+                ans -= num
+            } else {
+                ans += num
+            }
+        }
+        return ans
+        // Approach 2 using Hashmap.
+        /*
+          func romanToInt(_ s: String) -> Int {
+        var prev = 0, out = 0
+         let dict: [Character:Int] = ["I":1,"V":5,"X":10,"L":50,"C":100,"D":500,"M":1000]
+
+       for i in s {
+           let val = dict[i] ?? 0
+           let calculation = (val <= prev) ? prev : -prev
+           print("prevv--->", prev)
+           print("current--->", val, (val <= prev))
+           out += calculation
+           prev = val
+       }
+       print("Out-->", out)
+       print("prev-->", prev)
+       out += prev
+       return out 
+    }
+        */
+    }
+}
