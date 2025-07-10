@@ -433,5 +433,57 @@ class Solution {
         return -1
     }
 }
-
 // print(Solution().strStr("lecleetcode", "leet"))
+
+
+// https://getsdeready.com/courses/dsa/lesson/integer-to-roman/
+// https://leetcode.com/problems/integer-to-roman/submissions/1692734096/
+class Solution {
+    func intToRoman(_ num: Int) -> String {
+        // No, Roman numerals officially only go up to 3999.
+        var m = ["", "M", "MM", "MMM"]
+        var c = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"]
+        var x = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
+        var i = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+        // It's like 1,2,3,4,5,6,7,8,9 
+        // 10,20,30,40,50,60,70,80,90
+        // example job of c[(num%1000)/100] --> 1987 % 1000 = 987 further 987 / 100 = 9 = c[9] which is CM
+        // which is Roman numeral for 900
+        return m[num/1000] + c[(num%1000)/100] + x[(num%100)/10] + i[num%10]
+    }
+}
+/*
+class Solution {
+    func intToRoman(_ num: Int) -> String {
+        // Define Roman numerals and their integer values in descending order
+        let romanMap: [(value: Int, symbol: String)] = [
+            (1000, "M"),
+            (900,  "CM"),
+            (500,  "D"),
+            (400,  "CD"),
+            (100,  "C"),
+            (90,   "XC"),
+            (50,   "L"),
+            (40,   "XL"),
+            (10,   "X"),
+            (9,    "IX"),
+            (5,    "V"),
+            (4,    "IV"),
+            (1,    "I")
+        ]
+
+        var result = ""
+        var number = num
+
+        // Greedy approach: subtract the largest possible value repeatedly
+        for (value, symbol) in romanMap {
+            while number >= value {
+                result += symbol       // Append the Roman symbol
+                number -= value        // Subtract the value
+            }
+        }
+
+        return result
+    }
+}
+*/
