@@ -367,3 +367,71 @@ class Solution {
     }
 }
 */
+
+// https://getsdeready.com/courses/dsa/lesson/implement-strstr/
+class Solution {
+    
+    // Step 1: Preprocess the pattern (needle) to create the LPS array
+    func computeLPS(_ pattern: [Character]) -> [Int] {
+        var lps = [Int](repeating: 0, count: pattern.count)
+        var length = 0 // length of the previous longest prefix suffix
+        var i = 1
+
+        while i < pattern.count {
+            if pattern[i] == pattern[length] {
+                length += 1
+                lps[i] = length
+                i += 1
+            } else {
+                if length != 0 {
+                    // Try the previous longest prefix suffix
+                    length = lps[length - 1]
+                } else {
+                    // No prefix suffix found, move to next
+                    lps[i] = 0
+                    i += 1
+                }
+            }
+        }
+        return lps
+    }
+
+    // Step 2: Use KMP to search for needle in haystack
+    func strStr(_ haystack: String, _ needle: String) -> Int {
+        if needle.isEmpty { return 0 }
+
+        let h = Array(haystack)
+        let n = Array(needle)
+
+        let lps = computeLPS(n)
+
+        var i = 0 // index for haystack
+        var j = 0 // index for needle
+
+        while i < h.count {
+            if h[i] == n[j] {
+                // Characters match, move both pointers
+                i += 1
+                j += 1
+            }
+
+            if j == n.count {
+                // Full match of needle found
+                return i - j
+            } else if i < h.count && h[i] != n[j] {
+                if j != 0 {
+                    // Mismatch after j matches, jump using LPS
+                    j = lps[j - 1]
+                } else {
+                    // Mismatch at start, just move i
+                    i += 1
+                }
+            }
+        }
+
+        // Needle not found in haystack
+        return -1
+    }
+}
+
+// print(Solution().strStr("lecleetcode", "leet"))
