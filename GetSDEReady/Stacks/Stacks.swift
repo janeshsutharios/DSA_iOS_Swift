@@ -277,4 +277,38 @@ class Solution {
         return maxArea
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/trapping-rain-water-2/
+// https://leetcode.com/problems/trapping-rain-water/
+/*
+At each step, we compare the left and right bar heights.
+We always process the shorter side, because water trapped depends on the shorter boundary.
+We maintain the maximum height seen so far from each side.
+If the current bar is shorter than the max seen, it can trap water (maxSoFar - currentHeight).
+We move the pointer inward and keep adding trapped water.
+*/
+class Solution {
+    func trap(_ height: [Int]) -> Int {
+        var leftIndex = 0
+        var rightIndex = height.count - 1
+        var maxLeftHeight = height[leftIndex]
+        var maxRightHeight = height[rightIndex]
+        var totalTrappedWater = 0
+        
+        while leftIndex < rightIndex {
+            if height[leftIndex] < height[rightIndex] {
+                maxLeftHeight = max(maxLeftHeight, height[leftIndex])
+                totalTrappedWater += maxLeftHeight - height[leftIndex]
+                leftIndex += 1
+            } else {
+                maxRightHeight = max(maxRightHeight, height[rightIndex])
+                totalTrappedWater += maxRightHeight - height[rightIndex]
+                rightIndex -= 1
+            }
+        }
+        
+        return totalTrappedWater
+    }
+}
+
+
 
