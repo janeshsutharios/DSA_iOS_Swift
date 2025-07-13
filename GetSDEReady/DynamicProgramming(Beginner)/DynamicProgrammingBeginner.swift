@@ -30,11 +30,19 @@ class Solution {
     func maxProfit(_ prices: [Int]) -> Int {
         var buyPrice = Int.max
         var maxProfit = 0
-        
-        for i in prices.indices {
-            buyPrice = min(prices[i], buyPrice)
-            maxProfit = max(prices[i] - buyPrice, maxProfit)
+
+        for price in prices {
+            if price < minPrice {
+                minPrice = price      // new best buy day
+            } else {
+                maxProfit = max(maxProfit, price - minPrice) // possible sell today
+            }
         }
+        
+        // for i in prices.indices {
+        //     buyPrice = min(prices[i], buyPrice)
+        //     maxProfit = max(prices[i] - buyPrice, maxProfit)
+        // }
         return maxProfit
     }
 }
