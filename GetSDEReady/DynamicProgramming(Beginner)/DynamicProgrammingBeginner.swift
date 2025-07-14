@@ -46,5 +46,17 @@ class Solution {
         return maxProfit
     }
 }
-// Multi buy/sell (122)	✅ Yes	DP required	Must use DP
 // Cooldown/Fee (309/714)	✅ Yes	DP required	Complex transaction rules
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+class Solution {
+    func maxProfit(_ prices: [Int]) -> Int {
+        var sum = 0
+        for i in 0..<prices.count - 1{
+            if prices[i] < prices[i+1] {
+                sum += prices[i+1] - prices[i]
+            }
+
+        }
+        return sum
+    }
+}
