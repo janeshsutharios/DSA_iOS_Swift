@@ -63,25 +63,29 @@ class Solution {
 
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
 class Solution {
-    // - Complexity:
-    //   - time: O(n), where n is the length of the prices.
-    //   - space: O(1), only constant space is used.
-
     func maxProfit(_ prices: [Int]) -> Int {
-        var buy1 = Int.max
-        var buy2 = Int.max
-        var sell1 = 0
-        var sell2 = 0
+        // Track lowest prices and best profits for two transactions
+        var firstBuyCost = Int.max        // Min cost of first stock
+        var firstSellProfit = 0           // Max profit after first sell
+
+        var secondBuyEffectiveCost = Int.max  // Min cost after first profit used
+        var secondSellTotalProfit = 0         // Max total profit after second sell
 
         for price in prices {
-            buy1 = min(buy1, price)
-            sell1 = max(sell1, price - buy1)
+            // Minimize the cost of first buy
+            firstBuyCost = min(firstBuyCost, price)
 
-            buy2 = min(buy2, price - sell1)
-            sell2 = max(sell2, price - buy2)
+            // Maximize profit from first transaction
+            firstSellProfit = max(firstSellProfit, price - firstBuyCost)
+
+            // Minimize the effective cost of second buy (adjusted using firstSellProfit)
+            secondBuyEffectiveCost = min(secondBuyEffectiveCost, price - firstSellProfit)
+
+            // Maximize total profit after second sell
+            secondSellTotalProfit = max(secondSellTotalProfit, price - secondBuyEffectiveCost)
         }
 
-        return sell2
+        return secondSellTotalProfit
     }
-
 }
+
