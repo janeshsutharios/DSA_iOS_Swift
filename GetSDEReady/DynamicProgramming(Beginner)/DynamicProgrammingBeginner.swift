@@ -89,3 +89,20 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/fibbonacci-number/
+// https://leetcode.com/problems/fibonacci-number/description/
+class Solution {
+    // Best // TC: O(n)+O(1)
+    // SC: O(1) It uses dynamic programming with storing values of prev2 & prev1
+    func fib(_ n: Int) -> Int {
+     if n <= 1 {return n}
+    var prev2 = 0
+    var prev1 = 1
+    for _ in 2...n {
+        let curr = prev1 + prev2
+        prev2 = prev1
+        prev1 = curr
+    }
+    return prev1
+    }
+}
