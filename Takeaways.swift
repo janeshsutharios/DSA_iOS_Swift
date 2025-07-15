@@ -10,5 +10,14 @@ print("third last char", name[name.index(name.endIndex, offsetBy: -3)])
 // MARK: indices on loop
   for characterIndex in firstWord.indices {
 
-    arr.contains(curr) is O(n)//Every time you call arr.contains(...), Swift has to linearly search the array.
-    set.contains(curr) is O(1)//Sets in Swift use hashing, so lookup is constant time.
+// MARK: Time complexity of various Array, Dictionary & Set Operations. 
+arr.contains(curr) is O(n)  //Every time you call arr.contains(...), Swift has to linearly search the array.
+set.contains(curr) is O(1)  //Sets in Swift use hashing, so lookup is constant time.
+arr.append(x)               // O(1)   // Appending at end is fast
+arr.insert(x, at: i)        // O(n)   // Inserting in middle/front shifts elements
+set.insert(x)               // O(1)   // Constant time insert
+dict[key] = value           // O(1)   // Constant time insert/update
+
+arr.count                   // O(1)   // Stored internally
+set.count                   // O(1)   // Stored internally
+dict.count                  // O(1)   // Stored internally
