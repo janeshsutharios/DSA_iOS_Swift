@@ -200,3 +200,36 @@ class Solution {
     }
 }
 */
+
+// https://getsdeready.com/courses/dsa/lesson/length-of-longest-fibonacci-subsequence/
+// https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/description/
+class Solution {
+    func lenLongestFibSubseq(_ arr: [Int]) -> Int {
+        var n = arr.count
+        var numSet: Set<Int> = []
+        for num in arr {
+            numSet.insert(num)
+        }
+        
+        var maxLen = 0
+       // Try all possible first two numbers of sequence
+        for i in 0..<n {
+            for j in i+1..<n {
+              // Start with first two numbers
+                var currentNum = arr[j]
+                var nextFiboNum = arr[i] + arr[j]
+                var len = 2
+                // Keep finding next Fibonacci number
+                while numSet.contains(nextFiboNum) {// O(1) lookup
+                // Update values for next iteration
+                    var temp = nextFiboNum
+                    nextFiboNum += currentNum
+                    currentNum = temp
+                    len += 1
+                    maxLen = max(maxLen, len)
+                }
+            }
+        }
+        return maxLen
+    }
+}
