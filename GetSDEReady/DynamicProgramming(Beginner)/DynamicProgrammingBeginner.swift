@@ -203,6 +203,7 @@ class Solution {
 
 // https://getsdeready.com/courses/dsa/lesson/length-of-longest-fibonacci-subsequence/
 // https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/description/
+// https://github.com/janeshsutharios/DSA_Swift/blob/main/GetSDEReady/Images/873.%20Length%20of%20Longest%20Fibonacci%20Subsequence.jpeg
 class Solution {
     func lenLongestFibSubseq(_ arr: [Int]) -> Int {
         var n = arr.count
