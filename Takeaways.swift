@@ -9,3 +9,6 @@ print("third last char", name[name.index(name.endIndex, offsetBy: -3)])
 
 // MARK: indices on loop
   for characterIndex in firstWord.indices {
+
+    arr.contains(curr) is O(n)//Every time you call arr.contains(...), Swift has to linearly search the array.
+    set.contains(curr) is O(1)//Sets in Swift use hashing, so lookup is constant time.
