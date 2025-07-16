@@ -249,3 +249,25 @@ class Solution {
         return true
     }
 }
+// 
+// https://leetcode.com/problems/jump-game-ii/description/
+class Solution {
+    func jump(_ nums: [Int]) -> Int {
+        var jumps = 0               // Count of jumps made so far
+        var curEnd = 0              // The end index of the current jump window
+        var curFarthest = 0         // The farthest index we can reach in the current window
+        
+        // We loop until the second last index, because once we reach the last index, we don't need to jump further
+        for i in 0..<nums.count - 1 {
+            // Update the farthest we can reach from this position
+            curFarthest = max(curFarthest, i + nums[i])
+            
+            // If we have reached the end of the current jump window
+            if i == curEnd {
+                jumps += 1               // Make a jump
+                curEnd = curFarthest     // Update the end of the next jump window
+            }
+        }
+        return jumps     // Return the total jumps needed to reach the end
+    }
+}
