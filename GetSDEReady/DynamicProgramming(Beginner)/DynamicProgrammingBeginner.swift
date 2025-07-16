@@ -271,3 +271,27 @@ class Solution {
         return jumps     // Return the total jumps needed to reach the end
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/longest-increasing-subsequence/
+// https://leetcode.com/problems/longest-increasing-subsequence/
+class Solution {
+    // Intution just keep an array which have shorter number then this & return max of number
+    func lengthOfLIS(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        // Array to store the length of the LIS ending at each index
+        var dp = [Int](repeating: 1, count: nums.count)
+        
+        for i in 1..<nums.count {
+            // Check all previous elements to find the longest subsequence ending at i
+            for j in 0..<i {
+                if nums[i] > nums[j] {
+                    dp[i] = max(dp[i], dp[j] + 1)
+                }
+            }
+        }
+        // The length of the longest increasing subsequence will be the maximum value in dp array
+        return dp.max() ?? 0
+    }
+}
+
