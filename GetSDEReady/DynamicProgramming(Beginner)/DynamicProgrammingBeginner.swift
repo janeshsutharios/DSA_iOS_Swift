@@ -234,3 +234,18 @@ class Solution {
         return maxLen
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/min-jumps-array/
+// https://leetcode.com/problems/jump-game/
+class Solution {
+    func canJump(_ nums: [Int]) -> Bool {
+        var m = 0
+        for (index, item) in nums.enumerated() {
+            // If index is greater means frong has jumped beyond the array
+            if index > m  {
+                return false
+            }
+            m = max(m, index + item)
+        }
+        return true
+    }
+}
