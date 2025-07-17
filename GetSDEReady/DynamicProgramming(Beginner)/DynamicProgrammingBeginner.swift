@@ -294,4 +294,38 @@ class Solution {
         return dp.max() ?? 0
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/pascals-triangle-ii/
+// https://leetcode.com/problems/pascals-triangle-ii/
+class Solution {
+    func getRow(_ rowIndex: Int) -> [Int] {
+        if rowIndex == 0 { return [1] }
+        var row = Array(repeating: 0, count: rowIndex + 1)
+        row[0] = 1
 
+        for currentRow in 1...rowIndex {
+            for position in stride(from: currentRow, through: 1, by: -1) {
+                row[position] += row[position - 1]
+            }
+        }
+        return row
+    }
+}
+// Brute force or all values.
+/*class Solution {
+    func getRow(_ rowIndex: Int) -> [Int] {
+        var pascalObject = [[Int]](repeating: [Int](), count: rowIndex+1)
+
+        for i in 0..<rowIndex+1 {
+            pascalObject[i] = [Int](repeating: 0, count: i+1)
+
+            for j in 0..<i+1 {
+                if j == 0 || j == i {
+                    pascalObject[i][j] = 1
+                } else {
+                    pascalObject[i][j] = pascalObject[i-1][j-1] + pascalObject[i-1][j]
+                }
+            }
+        }
+        return pascalObject.last ?? []
+    }
+}*/
