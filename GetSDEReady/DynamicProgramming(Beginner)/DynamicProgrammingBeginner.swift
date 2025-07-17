@@ -329,3 +329,63 @@ class Solution {
         return pascalObject.last ?? []
     }
 }*/
+
+
+// https://getsdeready.com/courses/dsa/lesson/counting-bits/
+// https://leetcode.com/problems/counting-bits/description/
+// Solution #2 Using bitwise 
+class Solution {
+
+    func countBits(_ n: Int) -> [Int] {
+        var output: [Int] = []
+        for i in 0...n {
+            output.append(nonZeroBits(i))
+        }
+        return output
+    }
+    
+    func nonZeroBits(_ n: Int) -> Int  {
+        var n = n
+        var nonZeroBits = 0
+        while n > 0 {
+            nonZeroBits += n & 1// this will get how many bits have 1 in number
+            n = n >> 1
+        }
+        return nonZeroBits
+    }
+} 
+
+// Solution#1 Brute force
+/*
+class Solution {
+
+    func countBits(_ n: Int) -> [Int] {
+        var output: [Int] = []
+        for i in 0...n {
+            output.append(nonZeroBits(i))
+        }
+        return output
+    }
+    
+    func nonZeroBits(_ n: Int) -> Int  {
+        var n = n
+        var nonZeroBits = 0
+        while n > 0 {
+            let reminder = n%2
+            if reminder == 1 { nonZeroBits += 1}
+            n = n/2
+        }
+        return nonZeroBits
+    }
+}*/
+
+/* Solution 3 bitwise 
+class Solution {
+    func countBits(_ n: Int) -> [Int] {
+        var result: [Int] = []
+        for i in 0...n {
+            result.append(i.nonzeroBitCount) // use built-in
+        }
+        return result
+    }
+*/
