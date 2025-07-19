@@ -113,3 +113,30 @@ class Solution {
         return slowNode
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/remove-nth-node-from-end-of-list/
+// https://leetcode.com/problems/remove-nth-node-from-end-of-list/description/
+class Solution {
+    func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
+        let dummy = ListNode(0)
+        dummy.next = head
+        
+        var fast: ListNode? = dummy
+        var slow: ListNode? = dummy
+
+        // Move fast pointer n+1 steps ahead
+        for _ in 0...n {
+            fast = fast?.next
+        }
+
+        // Move both pointers one step at a time
+        while fast != nil {
+            fast = fast?.next
+            slow = slow?.next
+        }
+
+        // Skip the target node
+        slow?.next = slow?.next?.next
+
+        return dummy.next
+    }
+}
