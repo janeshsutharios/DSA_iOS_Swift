@@ -40,3 +40,43 @@ class Solution {
     }
 }
 */
+
+
+// https://getsdeready.com/courses/dsa/lesson/palindrome-linked-list/
+// https://leetcode.com/problems/palindrome-linked-list/description/
+class Solution {
+    func isPalindrome(_ head: ListNode?) -> Bool {
+        var slow = head
+        var fast = head
+        
+        // Step 1: Find the midpoint using slow and fast pointers
+        while fast != nil && fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+
+        // Step 2: Reverse the second half of the list
+        var prev: ListNode? = nil
+        var current = slow
+        while current != nil {
+            let nextNode = current?.next
+            current?.next = prev
+            prev = current
+            current = nextNode
+        }
+
+        // Step 3: Compare the first and the reversed second half
+        var firstHalf = head
+        var secondHalf = prev
+        while secondHalf != nil {
+            if firstHalf?.val != secondHalf?.val {
+                return false
+            }
+            firstHalf = firstHalf?.next
+            secondHalf = secondHalf?.next
+        }
+
+        return true
+    }
+}
+
