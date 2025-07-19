@@ -80,3 +80,21 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/intersection-of-two-linked-lists/
+// https://leetcode.com/problems/intersection-of-two-linked-lists/
+class Solution {
+    func getIntersectionNode(_ headA: ListNode?, _ headB: ListNode?) -> ListNode? {
+        var pointerA = headA
+        var pointerB = headB
+        
+        // Traverse both lists
+        while pointerA !== pointerB {
+            pointerA = pointerA == nil ? headB : pointerA?.next
+            pointerB = pointerB == nil ? headA : pointerB?.next
+        }
+        
+        // Either both are nil (no intersection) or both meet at intersection
+        return pointerA
+    }
+}
+
