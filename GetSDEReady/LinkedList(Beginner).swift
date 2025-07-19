@@ -1,0 +1,42 @@
+// https://getsdeready.com/courses/dsa/lesson/merge-two-sorted-lists-2/
+// https://leetcode.com/problems/merge-two-sorted-lists/description/
+// Solution #1 Using Loop
+class Solution {
+    
+    func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+        var list1 = list1
+        var list2 = list2
+        let preHead = ListNode()
+        var tail = preHead
+        while list1 != nil && list2 != nil {
+            if list1!.val < list2!.val {
+                tail.next = list1
+                list1 = list1?.next
+            } else {
+                tail.next = list2
+                list2 = list2?.next
+            }
+            tail = tail.next!
+        }
+        tail.next = list1 == nil ? list2 : list1
+        return preHead.next
+    }
+}
+// Solution #1 Using Recursion
+/*
+class Solution {
+    func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {
+        // Base cases
+        guard let list1 = list1 else { return list2 }
+        guard let list2 = list2 else { return list1 }
+        
+        if list1.val < list2.val {
+            list1.next = mergeTwoLists(list1.next, list2)
+            return list1
+        } else {
+            list2.next = mergeTwoLists(list1, list2.next)
+            return list2
+        }
+    }
+}
+*/
