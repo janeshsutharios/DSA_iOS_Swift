@@ -98,3 +98,18 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/middle-of-the-linked-list/
+// https://leetcode.com/problems/middle-of-the-linked-list/description/
+class Solution {
+    func middleNode(_ head: ListNode?) -> ListNode? {
+        var fastNode = head
+        var slowNode = head
+
+        while fastNode != nil && fastNode?.next != nil {
+            fastNode = fastNode?.next?.next
+            slowNode = slowNode?.next
+        }
+
+        return slowNode
+    }
+}
