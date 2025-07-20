@@ -50,3 +50,20 @@ class MyHashMap {
  * let ret_2: Int = obj.get(key)
  * obj.remove(key)
  */
+
+// https://getsdeready.com/courses/dsa/lesson/remove-duplicates-from-sorted-list/
+// https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/
+class Solution {
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        var node = head
+        while let next = node?.next {
+            if node!.val == next.val {
+                node!.next = next.next
+            } else {
+                node = next
+            }
+        }
+        return head
+    }
+}
+
