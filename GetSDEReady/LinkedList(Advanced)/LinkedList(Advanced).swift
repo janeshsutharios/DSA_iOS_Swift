@@ -216,3 +216,62 @@ class Solution {
     }
 }
 // https://getsdeready.com/courses/dsa/lesson/linked-list-cycle/ already solved check in Beginner..
+
+
+ 
+// https://getsdeready.com/courses/dsa/lesson/design-a-text-editor/
+// https://leetcode.com/problems/design-a-text-editor/description/
+class TextEditor {
+    private var left: [Character]
+    private var right: [Character]
+
+    init() {
+        left = []
+        right = []
+    }
+
+    func addText(_ text: String) {
+        for char in text {
+            left.append(char)
+        }
+    }
+
+    func deleteText(_ k: Int) -> Int {
+        let count = min(k, left.count)
+        for _ in 0..<count {
+            left.removeLast()
+        }
+        return count
+    }
+
+    func cursorLeft(_ k: Int) -> String {
+        let steps = min(k, left.count)
+        for _ in 0..<steps {
+            right.append(left.removeLast())
+        }
+        return last10()
+    }
+
+    func cursorRight(_ k: Int) -> String {
+        let steps = min(k, right.count)
+        for _ in 0..<steps {
+            left.append(right.removeLast())
+        }
+        return last10()
+    }
+
+    private func last10() -> String {
+        let last10Chars = left.suffix(10)
+        return String(last10Chars)
+    }
+}
+
+
+/**
+ * Your TextEditor object will be instantiated and called as such:
+ * let obj = TextEditor()
+ * obj.addText(text)
+ * let ret_2: Int = obj.deleteText(k)
+ * let ret_3: String = obj.cursorLeft(k)
+ * let ret_4: String = obj.cursorRight(k)
+ */
