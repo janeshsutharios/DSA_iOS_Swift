@@ -218,6 +218,58 @@ class Solution {
 // https://getsdeready.com/courses/dsa/lesson/linked-list-cycle/ already solved check in Beginner..
 
 
+
+// https://getsdeready.com/courses/dsa/lesson/flatten-a-multilevel-doubly-linked-list/
+// https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
+/**
+ * Definition for a Node.
+ * public class Node {
+ *     public var val: Int
+ *     public var prev: Node?
+ *     public var next: Node?
+ *     public var child: Node?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.prev = nil
+ *         self.next = nil
+ *         self.child  = nil
+ *     }
+ * }
+ */
+
+class Solution {
+    func flatten(_ head: Node?) -> Node? {
+        guard let head = head else { return nil }
+
+        var stack: [Node] = [head]
+        var prev: Node? = nil
+
+        while !stack.isEmpty {
+            let curr = stack.removeLast()
+
+            // Link prev and curr
+            if let prev = prev {
+                prev.next = curr
+                curr.prev = prev
+            }
+
+            // Push next and child to stack (next goes first, so child is processed first)
+            if let next = curr.next {
+                stack.append(next)
+            }
+
+            if let child = curr.child {
+                stack.append(child)
+                curr.child = nil  // Important: remove child after flattening
+            }
+
+            // Move prev to curr
+            prev = curr
+        }
+
+        return head
+    }
+}
  
 // https://getsdeready.com/courses/dsa/lesson/design-a-text-editor/
 // https://leetcode.com/problems/design-a-text-editor/description/
