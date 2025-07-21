@@ -345,6 +345,14 @@ class Node {
 }
 // https://getsdeready.com/courses/dsa/lesson/length-longest-palindrome-list-linked-list-using-o1-extra-space/
 // https://www.geeksforgeeks.org/problems/length-of-longest-palindrome-in-linked-list/0
+// Visualization-- 
+Input = 2 -> 3 -> 7 -> 3 -> 2 -> 1.
+
+2 <- 3 <- 7 -> 3 -> 2 -> 1
+ < - p -  c -  n -> traverse from both sides and compare elements.
+3 == 3 ✅
+2 == 2 ✅ → count = 2
+⇒ Odd-length palindrome = 2 * 2 + 1 = 5
 class Solution {
     func maxPalindrome(_ head: Node?) -> Int {
         var prev: Node? = nil
