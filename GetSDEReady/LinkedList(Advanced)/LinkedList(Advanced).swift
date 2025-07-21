@@ -200,78 +200,6 @@ class MyHashMap {
  * obj.remove(key)
  */
 
-
-// https://getsdeready.com/courses/dsa/lesson/remove-duplicates-from-sorted-list-ii/
-// https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
-class Solution {
-    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
-        // Create a dummy node to handle edge cases easily.
-        let dummy = ListNode(0)
-        dummy.next = head
-        // `prev` will point to the last node before the sequence of duplicates.
-        var prev = dummy
-        // `current` is used to traverse the linked list.
-        var current = head
-        
-        while current != nil {
-            // Check if the current node has a duplicate.
-            if current?.next != nil && current?.val == current?.next?.val {
-                // Move current until the end of duplicates sequence.
-                while current?.next != nil && current?.val == current?.next?.val {
-                    current = current?.next
-                }
-                // Skip all duplicates.
-                prev.next = current?.next
-            } else {
-                // No duplicates detected, move prev to the next node.
-                prev = current!
-            }
-            // Move current to the next node.
-            current = current?.next
-        }
-        
-        // Return the next of dummy node, which is the head of the modified list.
-        return dummy.next
-    }
-}
-/*
-public class ListNode {
-    public var val: Int
-    public var next: ListNode?
-    public init() { self.val = 0; self.next = nil }
-    public init(_ val: Int) { self.val = val; self.next = nil }
-    public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next }
-}
-
-class Solution {
-    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
-        let dummy = ListNode(0, head)
-        var prev: ListNode? = dummy
-        var curr = head
-
-        while curr != nil {
-            var hasDuplicate = false
-
-            while curr?.next != nil && curr?.val == curr?.next?.val {
-                hasDuplicate = true
-                curr = curr?.next
-            }
-
-            if hasDuplicate {
-                // skip all duplicates
-                prev?.next = curr?.next
-            } else {
-                prev = curr
-            }
-
-            curr = curr?.next
-        }
-
-        return dummy.next
-    }
-}
-*/
-
 // https://getsdeready.com/courses/dsa/lesson/remove-duplicates-from-sorted-list/
 // https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/
 class Solution {
@@ -342,7 +270,69 @@ class Solution {
         return head
     }
 }
- 
+
+// https://getsdeready.com/courses/dsa/lesson/remove-duplicates-from-sorted-list-ii/
+// https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+class Solution {
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        // Create a dummy node to handle edge cases easily.
+        let dummy = ListNode(0)
+        dummy.next = head
+        // `prev` will point to the last node before the sequence of duplicates.
+        var prev = dummy
+        // `current` is used to traverse the linked list.
+        var current = head
+        
+        while current != nil {
+            // Check if the current node has a duplicate.
+            if current?.next != nil && current?.val == current?.next?.val {
+                // Move current until the end of duplicates sequence.
+                while current?.next != nil && current?.val == current?.next?.val {
+                    current = current?.next
+                }
+                // Skip all duplicates.
+                prev.next = current?.next
+            } else {
+                // No duplicates detected, move prev to the next node.
+                prev = current!
+            }
+            // Move current to the next node.
+            current = current?.next
+        }
+        
+        // Return the next of dummy node, which is the head of the modified list.
+        return dummy.next
+    }
+}
+/*
+class Solution {
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        let dummy = ListNode(0, head)
+        var prev: ListNode? = dummy
+        var curr = head
+
+        while curr != nil {
+            var hasDuplicate = false
+
+            while curr?.next != nil && curr?.val == curr?.next?.val {
+                hasDuplicate = true
+                curr = curr?.next
+            }
+
+            if hasDuplicate {
+                // skip all duplicates
+                prev?.next = curr?.next
+            } else {
+                prev = curr
+            }
+
+            curr = curr?.next
+        }
+
+        return dummy.next
+    }
+}
+*/
 // https://getsdeready.com/courses/dsa/lesson/design-a-text-editor/
 // https://leetcode.com/problems/design-a-text-editor/description/
 class TextEditor {
