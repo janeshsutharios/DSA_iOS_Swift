@@ -333,6 +333,60 @@ class Solution {
     }
 }
 */
+
+class Node {
+    var val: Int
+    var next: Node?
+
+    init(_ val: Int) {
+        self.val = val
+        self.next = nil
+    }
+}
+// https://getsdeready.com/courses/dsa/lesson/length-longest-palindrome-list-linked-list-using-o1-extra-space/
+// https://www.geeksforgeeks.org/problems/length-of-longest-palindrome-in-linked-list/0
+class Solution {
+    func maxPalindrome(_ head: Node?) -> Int {
+        var prev: Node? = nil
+        var curr = head
+        var maxLen = 0
+
+        while curr != nil {
+            let next = curr?.next
+            // Reverse current node's link
+            curr?.next = prev
+
+            // Odd length palindrome (center at curr)
+            maxLen = max(maxLen, 2 * countCommon(prev, next) + 1)
+
+            // Even length palindrome (center between prev and curr)
+            maxLen = max(maxLen, 2 * countCommon(curr, next))
+
+            // Move forward
+            prev = curr
+            curr = next
+        }
+
+        return maxLen
+    }
+
+    private func countCommon(_ a: Node?, _ b: Node?) -> Int {
+        var count = 0
+        var left = a
+        var right = b
+        while left != nil && right != nil {
+            if left!.val == right!.val {
+                count += 1
+                left = left?.next
+                right = right?.next
+            } else {
+                break
+            }
+        }
+        return count
+    }
+}
+
 // https://getsdeready.com/courses/dsa/lesson/design-a-text-editor/
 // https://leetcode.com/problems/design-a-text-editor/description/
 class TextEditor {
