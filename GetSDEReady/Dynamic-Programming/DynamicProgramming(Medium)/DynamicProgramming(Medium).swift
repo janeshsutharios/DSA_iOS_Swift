@@ -131,3 +131,28 @@ class Solution {
     }
 }
 */
+// https://getsdeready.com/courses/dsa/lesson/perfect-squares/
+// https://leetcode.com/problems/perfect-squares/description/
+
+class Solution {
+    func numSquares(_ n: Int) -> Int {
+        var dp = Array(repeating: Int.max, count: n + 1)
+        dp[0] = 0  // Base case: 0 needs 0 numbers
+        
+        for i in 1...n {
+            var j = 1
+            // j * j is to find square
+            while j * j <= i {
+                // Here if number is perfect square than it will give the min number
+                // Example# i = 4
+                // Try 1² and 2²:
+                // 1²: dp[4] = min(∞, dp[3] + 1) = min(∞, 3 + 1) = 4
+                // 2²: dp[4] = min(4, dp[0] + 1) = min(4, 0 + 1) =
+                dp[i] = min(dp[i], dp[i - j * j] + 1)
+                j += 1
+            }
+        }
+        
+        return dp[n]
+    }
+}
