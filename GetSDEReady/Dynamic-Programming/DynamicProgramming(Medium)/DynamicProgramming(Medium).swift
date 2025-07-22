@@ -156,3 +156,42 @@ class Solution {
         return dp[n]
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/minimum-cost-for-tickets/
+// https://leetcode.com/problems/minimum-cost-for-tickets/description/
+class Solution {
+    func mincostTickets(_ days: [Int], _ costs: [Int]) -> Int {
+        // Use a Set for O(1) lookup to check if a day is a travel day
+        var travelDays = Set(days)
+        
+        // Last day of travel — we only need to calculate up to this day
+        let lastDay = days.last!
+        
+        // dp[i] = minimum cost to travel up to day i
+        var dp = Array(repeating: 0, count: lastDay + 1)
+        
+        // Iterate through each day up to the last travel day
+        for day in 1...lastDay {
+            // If it's not a travel day, just copy the previous cost
+            if !travelDays.contains(day) {
+                dp[day] = dp[day - 1]
+            } else {
+                // If it is a travel day, compute the min cost among three options:
+                
+                // 1-day pass: add cost[0] to cost until previous day
+                let cost1 = dp[max(0, day - 1)] + costs[0]
+                
+                // 7-day pass: add cost[1] to cost until 7 days ago
+                let cost7 = dp[max(0, day - 7)] + costs[1]
+                
+                // 30-day pass: add cost[2] to cost until 30 days ago
+                let cost30 = dp[max(0, day - 30)] + costs[2]
+                
+                // Take the minimum among the three
+                dp[day] = min(cost1, cost7, cost30)
+            }
+        }
+        
+        // The answer is the minimum cost to cover all travel up to lastDay
+        return dp[lastDay]
+    }
+}
