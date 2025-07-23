@@ -195,3 +195,63 @@ class Solution {
         return dp[lastDay]
     }
 }
+// https://leetcode.com/problems/minimum-path-sum/description/
+// https://getsdeready.com/courses/dsa/lesson/min-sum-path-in-matrix/
+// Intution # maintain dp which consist of min either down or right
+class Solution {
+    func minPathSum(_ grid: [[Int]]) -> Int {
+        let rows = grid.count
+        let cols = grid[0].count
+        var dp = grid  // We'll reuse the grid itself to save space
+        
+                
+        // Fill first column
+        for i in 1..<rows {
+            dp[i][0] += dp[i - 1][0]
+        }
+        // Fill first row
+        for j in 1..<cols {
+            dp[0][j] += dp[0][j - 1]
+        }
+
+        // Fill the rest of the grid
+        for i in 1..<rows {
+            for j in 1..<cols {
+                dp[i][j] += min(dp[i - 1][j], dp[i][j - 1])
+            }
+        }
+        
+        return dp[rows - 1][cols - 1]
+    }
+}
+/*
+// Space optimised Solition
+class Solution {
+    func minPathSum(_ grid: [[Int]]) -> Int {
+        let m = grid.count               // Number of rows
+        let n = grid[0].count            // Number of columns
+        var dp = Array(repeating: 0, count: n)  // 1D DP array to store min path sums for the current row
+
+        for i in 0..<m {
+            for j in 0..<n {
+                if i == 0 && j == 0 {
+                    // Starting cell (top-left), just take grid value
+                    dp[j] = grid[0][0]
+                } else if i == 0 {
+                    // First row, can only come from the left
+                    dp[j] = dp[j - 1] + grid[i][j]
+                } else if j == 0 {
+                    // First column, can only come from the top (same column in previous row)
+                    dp[j] = dp[j] + grid[i][j]
+                } else {
+                    // In the middle of the grid, choose min of top or left
+                    dp[j] = min(dp[j], dp[j - 1]) + grid[i][j]
+                }
+            }
+        }
+
+        return dp[n - 1]  // Bottom-right value is the answer
+    }
+}
+
+*/
