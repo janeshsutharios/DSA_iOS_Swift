@@ -312,3 +312,190 @@ class Solution {
         return dp[0][n - 1]  // Result is for the entire string
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/longest-common-subsequence/
+// https://claude.ai/public/artifacts/3e37b750-ca75-4285-bb46-d40cc03a7469
+// https://leetcode.com/problems/longest-common-subsequence/description/
+// Time Complexity: O(m × n)
+// Space Complexity: O(n)
+
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        let chars1 = Array(text1)
+        let chars2 = Array(text2)
+        let m = chars1.count
+        let n = chars2.count
+        
+        // Create a 2D DP table with (m+1) x (n+1)
+        var dp = Array(repeating: Array(repeating: 0, count: n + 1), count: m + 1)
+
+        for i in 1...m {
+            for j in 1...n {
+                if chars1[i - 1] == chars2[j - 1] {
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                }
+            }
+        }
+        
+        return dp[m][n]
+    }
+}
+
+/*
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        let t1 = Array(text1)
+        let t2 = Array(text2)
+        let m = t1.count
+        let n = t2.count
+
+        var previous = Array(repeating: 0, count: n + 1)
+        var current = Array(repeating: 0, count: n + 1)
+
+        for i in 1...m {
+            for j in 1...n {
+                if t1[i - 1] == t2[j - 1] {
+                    current[j] = 1 + previous[j - 1]
+                } else {
+                    current[j] = max(previous[j], current[j - 1])
+                }
+            }
+            swap(&previous, &current)
+        }
+
+        return previous[n]
+    }
+}
+*/
+/*
+class Solution {
+    private func lcsHelper(_ i: Int, _ j: Int, _ t1: [Character], _ t2: [Character], _ memo: inout [[Int?]]) -> Int {
+        // Base case: reached the end of either string
+        if i == t1.count || j == t2.count {
+            return 0
+        }
+
+        // Return memoized value if available
+        if let mem = memo[i][j] {
+            return mem
+        }
+
+        let result: Int
+        if t1[i] == t2[j] {
+            // Characters match: move both pointers forward
+            result = 1 + lcsHelper(i + 1, j + 1, t1, t2, &memo)
+        } else {
+            // Characters don't match: take max of skipping one from either string
+            result = max(
+                lcsHelper(i + 1, j, t1, t2, &memo),
+                lcsHelper(i, j + 1, t1, t2, &memo)
+            )
+        }
+
+        // Memoize the result
+        memo[i][j] = result
+        return result
+    }
+
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        let t1 = Array(text1)
+        let t2 = Array(text2)
+        
+        // Create memo table initialized with nil
+        var memo: [[Int?]] = Array(repeating: Array(repeating: nil, count: t2.count), count: t1.count)
+
+        return lcsHelper(0, 0, t1, t2, &memo)
+    }
+}
+*/
+// Sotion using string index
+/*
+class Solution {
+    private func dp(_ ind1: String.Index,_ ind2: String.Index,_ text1: String,_ text2: String,_ memo: inout [String.Index: [String.Index: Int]]) -> Int {
+        // Base case: if we reach the end of either string
+        guard ind1 != text1.endIndex && ind2 != text2.endIndex else {
+            return 0
+        }
+
+        // Return memoized result if available
+        if let mem = memo[ind1]?[ind2] {
+            return mem
+        }
+
+        let result: Int
+        // If characters match, move both indices
+        if text1[ind1] == text2[ind2] {
+            result = 1 + dp(text1.index(after: ind1),text2.index(after: ind2),text1,text2,&memo)
+        } else {
+            // Otherwise, explore both possibilities
+            result = max(
+                dp(ind1, text2.index(after: ind2), text1, text2, &memo),
+                dp(text1.index(after: ind1), ind2, text1, text2, &memo)
+            )
+        }
+
+        // Store the result in the memoization dictionary
+        memo[ind1, default: [:]][ind2] = result
+        return result
+    }
+
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        var memo = [String.Index: [String.Index: Int]]()
+        return dp(text1.startIndex, text2.startIndex, text1, text2, &memo)
+    }
+}
+*/
+
+// https://getsdeready.com/courses/dsa/lesson/longest-increasing-subsequence-2/
+// https://leetcode.com/problems/longest-increasing-subsequence/
+// 
+class Solution {
+    // Intution just keep an array which have shorter number then this & return max of number
+    // DP Solution
+    func lengthOfLIS(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        // Array to store the length of the LIS ending at each index
+        var dp = [Int](repeating: 1, count: nums.count)
+        
+        for i in 1..<nums.count {
+            // Check all previous elements to find the longest subsequence ending at i
+            for j in 0..<i {
+                if nums[i] > nums[j] {
+                    dp[i] = max(dp[i], dp[j] + 1)
+                }
+            }
+        }
+        // The length of the longest increasing subsequence will be the maximum value in dp array
+        return dp.max() ?? 0
+    }
+    /*
+    // Binary search
+    func lengthOfLIS(_ nums: [Int]) -> Int {
+    var tails = [Int]()
+
+    for num in nums {
+        var left = 0, right = tails.count
+        while left < right {
+            let mid = (left + right) / 2
+            if tails[mid] < num {
+                left = mid + 1
+            } else {
+                right = mid
+            }
+        }
+
+        if left == tails.count {
+            tails.append(num)
+        } else {
+            tails[left] = num
+        }
+    }
+
+    return tails.count
+}
+*/
+
+
