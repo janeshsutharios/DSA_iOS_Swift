@@ -253,5 +253,62 @@ class Solution {
         return dp[n - 1]  // Bottom-right value is the answer
     }
 }
-
+// https://getsdeready.com/courses/dsa/lesson/longest-palindromic-subsequence/
+// https://leetcode.com/problems/longest-palindromic-subsequence/
+// https://claude.ai/public/artifacts/c76aee2e-8620-4be8-b35c-501ad7a65cec
 */
+// Optimised solution 
+// class Solution {
+//     func longestPalindromeSubseq(_ s: String) -> Int {
+//         let s = Array(s)
+//         let n = s.count
+//         var dp = Array(repeating: 0, count: n)
+//         var dpPrev = Array(repeating: 0, count: n)
+
+//         for i in stride(from: n - 1, through: 0, by: -1) {
+//             dp[i] = 1  // A single character is always a palindrome of length 1
+//             for j in i + 1..<n {
+//                 if s[i] == s[j] {
+//                     dp[j] = dpPrev[j - 1] + 2
+//                 } else {
+//                     dp[j] = max(dpPrev[j], dp[j - 1])
+//                 }
+//             }
+//             dpPrev = dp  // Move current row to previous row for next iteration
+//         }
+//         return dp[n - 1]
+//     }
+// }
+class Solution {
+    func longestPalindromeSubseq(_ s: String) -> Int {
+        let chars = Array(s)
+        let n = chars.count
+        var dp = Array(repeating: Array(repeating: 0, count: n), count: n)
+
+        // Base case: every single character is a palindrome of length 1
+        for i in 0..<n {
+            dp[i][i] = 1
+        }
+
+        // Build up from substrings of length 2 to n
+        for length in 2...n {
+            for i in 0...(n - length) {
+                let j = i + length - 1
+
+                if chars[i] == chars[j] {
+                    // Characters match: extend the inner palindrome
+                    if length == 2 {
+                        dp[i][j] = 2  // e.g., "aa"
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1] + 2
+                    }
+                } else {
+                    // Characters don't match: take max of removing one end
+                    dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
+                }
+            }
+        }
+
+        return dp[0][n - 1]  // Result is for the entire string
+    }
+}
