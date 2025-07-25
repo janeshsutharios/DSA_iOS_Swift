@@ -40,3 +40,22 @@ class Solution {
         return result
     }
 }*/
+
+// https://getsdeready.com/courses/dsa/lesson/maximum-length-of-pair-chain/
+// https://leetcode.com/problems/maximum-length-of-pair-chain/description/
+class Solution {
+    func findLongestChain(_ pairs: [[Int]]) -> Int {
+        let sortedPairs = pairs.sorted { $0[1] < $1[1] }  // Sort by end value
+        var currentEnd = Int.min
+        var count = 0
+
+        for pair in sortedPairs {
+            if pair[0] > currentEnd {
+                count += 1
+                currentEnd = pair[1]
+            }
+        }
+
+        return count
+    }
+}
