@@ -59,3 +59,25 @@ class Solution {
         return count
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/minimum-time-to-make-rope-colorful/
+// https://leetcode.com/problems/minimum-time-to-make-rope-colorful/
+class Solution {
+    func minCost(_ colors: String, _ neededTime: [Int]) -> Int {
+        let chars = Array(colors)
+        var totalCost = 0
+        var maxTime = neededTime[0]
+
+        for i in 1..<chars.count {
+            if chars[i] == chars[i - 1] {
+                totalCost += min(maxTime, neededTime[i])
+                maxTime = max(maxTime, neededTime[i])
+            } else {
+                maxTime = neededTime[i]
+            }
+        }
+
+        return totalCost
+    }
+}
+
