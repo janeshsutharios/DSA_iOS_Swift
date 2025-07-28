@@ -12,8 +12,9 @@ We'll use the following tree for demonstration:
         1
        / \
       2   3
-     / \   \
-    4   5   6
+     / \  /
+    4  5 6
+
 ```
 
 ### TreeNode Definition in Swift
