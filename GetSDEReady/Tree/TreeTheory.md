@@ -6,7 +6,7 @@ This guide explains **DFS** (Depth-First Search) and **BFS** (Breadth-First Sear
 
 ## 🔰 Example Binary Tree
 
-We'll use the following tree for demonstration:
+We'll use the following tree for demonstration:[1, 2, 3, 4, 5, 6]
 
 ```
         1
