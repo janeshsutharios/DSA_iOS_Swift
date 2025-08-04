@@ -106,3 +106,69 @@ class Solution {
         return result
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/kth-largest-element-in-an-array/
+// https://leetcode.com/problems/kth-largest-element-in-an-array/
+struct MinHeap<T: Comparable> {
+    var elements: [T] = []
+
+    var isEmpty: Bool { elements.isEmpty }
+    var count: Int { elements.count }
+    var peek: T? { elements.first }
+
+    mutating func insert(_ value: T) {
+        elements.append(value)
+        siftUp(from: elements.count - 1)
+    }
+
+    @discardableResult
+    mutating func remove() -> T? {
+        guard !elements.isEmpty else { return nil }
+        elements.swapAt(0, elements.count - 1)
+        let value = elements.removeLast()
+        siftDown(from: 0)
+        return value
+    }
+
+    private mutating func siftUp(from index: Int) {
+        var child = index
+        var parent = (child - 1) / 2
+        while child > 0 && elements[child] < elements[parent] {
+            elements.swapAt(child, parent)
+            child = parent
+            parent = (child - 1) / 2
+        }
+    }
+
+    private mutating func siftDown(from index: Int) {
+        var parent = index
+        while true {
+            let left = 2 * parent + 1
+            let right = 2 * parent + 2
+            var candidate = parent
+            if left < elements.count && elements[left] < elements[candidate] {
+                candidate = left
+            }
+            if right < elements.count && elements[right] < elements[candidate] {
+                candidate = right
+            }
+            if candidate == parent { break }
+            elements.swapAt(parent, candidate)
+            parent = candidate
+        }
+    }
+}
+class Solution {
+    func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+        var heap = MinHeap<Int>()
+        for num in nums {
+            heap.insert(num)
+            
+            if heap.count > k {
+                heap.remove()
+            }
+        }
+        return heap.peek!
+        
+    }
+}
