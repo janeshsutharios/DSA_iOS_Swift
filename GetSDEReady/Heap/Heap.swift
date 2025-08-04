@@ -83,3 +83,22 @@ class Solution {
         return unique.count
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/minimum-amount-of-time-to-fill-cups/
+// https://leetcode.com/problems/minimum-amount-of-time-to-fill-cups/
+//  heap.popMax() Optional type
+//  heap.removeMax() NON_Optional type
+class Solution {
+    func fillCups(_ amount: [Int]) -> Int {
+        var heap = Heap(amount)
+        var result = 0
+        
+        while let cup1 = heap.popMax(), cup1 > 0 {
+            let cup2 = heap.popMax()! - 1
+            heap.insert(cup1 - 1)
+            heap.insert(cup2)
+            result += 1
+        }
+        return result
+    }
+}
