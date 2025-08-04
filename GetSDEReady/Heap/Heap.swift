@@ -67,3 +67,19 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/make-array-zero-by-subtracting-equal-amounts/
+// https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/description/
+class Solution {
+    
+    func minimumOperations(_ nums: [Int]) -> Int {
+        // Simple: as we have to chose number from array from low to high hence Set is perfectly store non - dup values.
+        var unique = Set<Int>()
+        
+        for num in nums {
+            if num != 0 {
+                unique.insert(num)
+            }
+        }
+        return unique.count
+    }
+}
