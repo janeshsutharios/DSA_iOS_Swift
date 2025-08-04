@@ -53,3 +53,39 @@ class Solution {
         return false
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/squares-of-a-sorted-array/
+// https://leetcode.com/problems/squares-of-a-sorted-array/
+class Solution {
+    func sortedSquares(_ nums: [Int]) -> [Int] {
+        // Initialize result array with same length as nums, filled with 0s
+        var result = Array(repeating: 0, count: nums.count)
+        
+        // Two pointers: start and end of the array
+        var left = 0
+        var right = nums.count - 1
+        
+        // Position to insert next largest square (from end to start)
+        var pos = nums.count - 1
+
+        // Loop while left <= right
+        while left <= right {
+            // Square both ends
+            let leftSq = nums[left] * nums[left]
+            let rightSq = nums[right] * nums[right]
+            
+            if leftSq > rightSq {
+                // Place the larger square at the current position
+                result[pos] = leftSq
+                left += 1  // Move left pointer forward
+            } else {
+                result[pos] = rightSq
+                right -= 1  // Move right pointer backward
+            }
+            pos -= 1  // Move position backward
+        }
+
+        return result  // Return the sorted squares
+    }
+}
+
