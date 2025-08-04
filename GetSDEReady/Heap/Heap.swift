@@ -91,8 +91,7 @@ class Solution {
 
 // https://getsdeready.com/courses/dsa/lesson/minimum-amount-of-time-to-fill-cups/
 // https://leetcode.com/problems/minimum-amount-of-time-to-fill-cups/
-//  heap.popMax() Optional type
-//  heap.removeMax() NON_Optional type
+
 class Solution {
     func fillCups(_ amount: [Int]) -> Int {
         var heap = Heap(amount)
