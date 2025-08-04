@@ -42,3 +42,28 @@ class Solution {
     }
 }
 */
+
+// https://getsdeready.com/courses/dsa/lesson/delete-greatest-value-in-each-row/
+// https://leetcode.com/problems/delete-greatest-value-in-each-row/description/
+class Solution {
+    func deleteGreatestValue(_ grid: [[Int]]) -> Int {
+        var sortedGrid = grid.map { $0.sorted() }  // Sort each row
+        let m = sortedGrid.count       // number of rows
+        let n = sortedGrid[0].count    // number of columns (assumed same length)
+        
+        var result = 0
+        
+        // Traverse column-wise (since rows are sorted ascending)
+        // Think about verticle scanning.
+        for col in 0..<n {
+            var maxVal = 0
+            for row in 0..<m {
+                maxVal = max(maxVal, sortedGrid[row][col])
+            }
+            result += maxVal
+        }
+        
+        return result
+    }
+}
+
