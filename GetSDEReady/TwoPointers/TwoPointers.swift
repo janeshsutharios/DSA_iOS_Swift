@@ -88,4 +88,51 @@ class Solution {
         return result  // Return the sorted squares
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/count-of-pairs-with-the-given-sum/
+// https://leetcode.com/problems/finding-pairs-with-a-certain-sum/
+class FindSumPairs {
+    var nums1: [Int]
+    var nums2: [Int]
+    var freqMap: [Int: Int]  // Maps each number in nums2 to its frequency (count)
+
+    init(_ nums1: [Int], _ nums2: [Int]) {
+        self.nums1 = nums1
+        self.nums2 = nums2
+        self.freqMap = [:]
+
+        // Initialize frequency map with values from nums2
+        for num in nums2 {
+            freqMap[num, default: 0] += 1
+        }
+    }
+
+    func add(_ index: Int, _ val: Int) {
+        let oldVal = nums2[index]              // Value currently at the index
+        let newVal = oldVal + val              // New value after adding
+
+        nums2[index] = newVal                  // Update the value in nums2
+
+        // Update frequency map: decrement old value's count
+        freqMap[oldVal]! -= 1                  // Safe to force unwrap because oldVal must exist
+
+        // If old value's frequency becomes zero, remove it for cleanliness
+        if freqMap[oldVal]! == 0 {
+            freqMap.removeValue(forKey: oldVal)
+        }
+
+        // Increment new value's frequency
+        freqMap[newVal, default: 0] += 1
+    }
+
+    func count(_ tot: Int) -> Int {
+        var result = 0
+
+        // For each number in nums1, find how many numbers in nums2 can form tot
+        for num in nums1 {
+            let complement = tot - num        // What value we need from nums2
+            result += freqMap[complement, default: 0] // Add its count (0 if not present)
+        }
+        return result
+    }
+}
 
