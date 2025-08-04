@@ -136,3 +136,27 @@ class FindSumPairs {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/minimum-size-subarray-sum-2/
+// https://leetcode.com/problems/minimum-size-subarray-sum/
+class Solution {
+    func minSubArrayLen(_ target: Int, _ nums: [Int]) -> Int {
+        var minLength = Int.max  // Stores the minimum length found
+        var windowStart = 0      // Start index of the sliding window
+        var currentSum = 0       // Sum of elements in the current window
+        
+        for (windowEnd, value) in nums.enumerated() {
+            currentSum += value  // Expand the window by adding the current value
+            
+            // Shrink the window from the left while the sum is sufficient
+            while currentSum >= target, windowStart <= windowEnd {
+                minLength = min(minLength, windowEnd - windowStart + 1)
+                currentSum -= nums[windowStart]  // Remove value at window start
+                windowStart += 1  // Move start forward
+            }
+        }
+
+        // If minLength was never updated, return 0
+        return minLength == .max ? 0 : minLength
+    }
+}
+
