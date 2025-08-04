@@ -172,3 +172,61 @@ class Solution {
         
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/merge-k-sorted-lists/
+// https://leetcode.com/problems/merge-k-sorted-lists/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+import Foundation
+import Collections
+
+extension ListNode: Comparable {
+    public static func < (lhs: ListNode, rhs: ListNode) -> Bool {
+        lhs.val < rhs.val
+    }
+
+    public static func > (lhs: ListNode, rhs: ListNode) -> Bool {
+        lhs.val > rhs.val
+    }
+
+    public static func == (lhs: ListNode, rhs: ListNode) -> Bool {
+        lhs === rhs
+    }   
+}
+
+class Solution {
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        guard !lists.isEmpty else { return nil }
+
+        var heap = Heap<ListNode>()
+
+        for list in lists {
+            if let head = list {
+                heap.insert(head)
+            }
+        }
+
+        let dummy = ListNode(0)
+        var current: ListNode? = dummy
+
+        while let minimum = heap.popMin() {
+            current?.next = minimum
+            current = current?.next
+
+            if let next = minimum.next {
+                heap.insert(next)
+            }
+        }
+
+        return dummy.next
+    }
+}
