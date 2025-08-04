@@ -1,7 +1,12 @@
-// https://getsdeready.com/courses/dsa/lesson/take-gifts-from-the-richest-pile/
-// https://leetcode.com/problems/take-gifts-from-the-richest-pile/
 import Collections // This is Apple DSA package
 
+//  heap.popMax() Optional type
+//  heap.removeMax() NON_Optional type
+
+-----------
+
+// https://getsdeready.com/courses/dsa/lesson/take-gifts-from-the-richest-pile/
+// https://leetcode.com/problems/take-gifts-from-the-richest-pile/
 class Solution {
     func pickGifts(_ gifts: [Int], _ k: Int) -> Int {
         var heap = Heap<Int>(), totalGifts = 0
