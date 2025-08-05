@@ -182,3 +182,30 @@ class Solution {
         return result
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/container-with-most-water/
+// https://leetcode.com/problems/container-with-most-water/
+class Solution {
+    func maxArea(_ height: [Int]) -> Int {
+        var left = 0
+        var right = height.count - 1
+        var maxArea = 0
+
+        while left < right {
+            let minHeight = min(height[left], height[right])
+            let width = right - left
+            let area = minHeight * width
+            maxArea = max(maxArea, area)
+
+            // Move the pointer with the smaller height
+            if height[left] < height[right] {
+                left += 1
+            } else {
+                right -= 1
+            }
+        }
+
+        return maxArea
+    }
+}
+
