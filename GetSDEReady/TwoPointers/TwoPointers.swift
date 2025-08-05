@@ -236,6 +236,31 @@ class Solution {
         return result
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/trapping-rain-water/
+// https://leetcode.com/problems/trapping-rain-water/description/
+class Solution {
+    func trap(_ elevationMap: [Int]) -> Int {
+        var leftIndex = 0
+        var rightIndex = elevationMap.count - 1
+        var maxLeftHeight = elevationMap[leftIndex]
+        var maxRightHeight = elevationMap[rightIndex]
+        var totalTrappedWater = 0
+        
+        while leftIndex < rightIndex {
+            if elevationMap[leftIndex] < elevationMap[rightIndex] {
+                maxLeftHeight = max(maxLeftHeight, elevationMap[leftIndex])
+                totalTrappedWater += maxLeftHeight - elevationMap[leftIndex]
+                leftIndex += 1
+            } else {
+                maxRightHeight = max(maxRightHeight, elevationMap[rightIndex])
+                totalTrappedWater += maxRightHeight - elevationMap[rightIndex]
+                rightIndex -= 1
+            }
+        }
+        
+        return totalTrappedWater
+    }
+}
 
 // https://getsdeready.com/courses/dsa/lesson/longest-chunked-palindrome-decomposition/
 // https://leetcode.com/problems/longest-chunked-palindrome-decomposition/description/
