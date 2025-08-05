@@ -159,4 +159,26 @@ class Solution {
         return minLength == .max ? 0 : minLength
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/minimize-the-absolute-difference/
+// https://leetcode.com/problems/minimum-absolute-difference/description/
 
+class Solution {
+    func minimumAbsDifference(_ arr: [Int]) -> [[Int]] {
+        let sorted = arr.sorted()
+        var minDiff = Int.max
+        var result = [[Int]]()
+
+        for i in 1..<sorted.count {
+            let diff = sorted[i] - sorted[i - 1]
+            
+            if diff < minDiff {
+                minDiff = diff
+                result = [[sorted[i - 1], sorted[i]]]
+            } else if diff == minDiff {
+                result.append([sorted[i - 1], sorted[i]])
+            }
+        }
+
+        return result
+    }
+}
