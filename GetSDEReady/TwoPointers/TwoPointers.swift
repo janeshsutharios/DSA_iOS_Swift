@@ -208,4 +208,32 @@ class Solution {
         return maxArea
     }
 }
+// https://leetcode.com/discuss/post/241808/google-onsite-two-sum-closest-to-target-qmjzs/
+// https://getsdeready.com/courses/dsa/lesson/given-two-sorted-arrays-number-x-find-pair-whose-sum-closest-x/
+class Solution {
+    func twoSumClosest(_ nums: [Int], _ target: Int) -> [Int] {
+        let sorted = nums.sorted()
+        var left = 0, right = sorted.count - 1
+        var closestSum = Int.max
+        var result: [Int] = []
+
+        while left < right {
+            let sum = sorted[left] + sorted[right]
+            let diff = abs(sum - target)
+
+            if diff < abs(closestSum - target) {
+                closestSum = sum
+                result = [sorted[left], sorted[right]]
+            }
+
+            if sum < target {
+                left += 1
+            } else {
+                right -= 1
+            }
+        }
+
+        return result
+    }
+}
 
