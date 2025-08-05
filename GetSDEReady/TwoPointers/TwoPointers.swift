@@ -237,3 +237,57 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/longest-chunked-palindrome-decomposition/
+// https://leetcode.com/problems/longest-chunked-palindrome-decomposition/description/
+class Solution {
+    func longestDecomposition(_ text: String) -> Int {
+        // Initialize the result counter
+        var res = 0
+        
+        // Convert the input string to an array for easier indexing
+        let textArray = Array(text)
+        let n = textArray.count
+        
+        // Initialize pointers for the left and right ends of the string
+        var left = 0
+        var right = n - 1
+        
+        // Strings to build segments from left and right
+        var lStr = ""
+        var rStr = ""
+
+        // Process the string from both ends towards the center
+        while left <= right {
+            // Build the left segment by appending characters from the left pointer
+            lStr.append(textArray[left])
+            
+            // Build the right segment by prepending characters from the right pointer
+            // (This maintains the correct order for comparison)
+            rStr = String(textArray[right]) + rStr
+            
+            // When the left and right segments match
+            if lStr == rStr {
+                // If pointers meet at the same character, count as 1 segment
+                // Otherwise count as 2 segments (one from left, one from right)
+                res += left == right ? 1 : 2
+                
+                // Reset the segments for new comparisons
+                lStr = ""
+                rStr = ""
+            }
+            
+            // Move the pointers towards the center
+            left += 1
+            right -= 1
+        }
+        
+        // If there are any remaining characters that didn't form matching pairs
+        // (This counts as one additional segment in the middle)
+        if !lStr.isEmpty || !rStr.isEmpty {
+            res += 1
+        }
+        
+        // Return the total count of segments
+        return res
+    }
+}
