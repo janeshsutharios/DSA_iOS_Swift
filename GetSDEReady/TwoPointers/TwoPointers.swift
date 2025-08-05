@@ -316,3 +316,42 @@ class Solution {
         return res
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/trapping-rain-water/
+// https://leetcode.com/problems/trapping-rain-water/submissions/1724038068/
+class Solution {
+    func trap(_ ip: [Int]) -> Int {
+        // Initialize two pointers at the start and end of the array
+        var leftIndex = 0
+        var rightIndex = ip.count - 1
+        
+        // Track the maximum heights encountered so far from left and right
+        var maxLeftHeight = ip[leftIndex]
+        var maxRightHeight = ip[rightIndex]
+        
+        // Variable to accumulate the total trapped water
+        var totalTrappedWater = 0
+        
+        // Loop until the two pointers meet
+        while leftIndex < rightIndex {
+            // Determine which side has the smaller current height
+            if ip[leftIndex] < ip[rightIndex] {
+                // Update the max left height if the current height is greater
+                maxLeftHeight = max(maxLeftHeight, ip[leftIndex])
+                // Calculate trapped water at the current position and add to total
+                totalTrappedWater += maxLeftHeight - ip[leftIndex]
+                // Move the left pointer to the right
+                leftIndex += 1
+            } else {
+                // Update the max right height if the current height is greater
+                maxRightHeight = max(maxRightHeight, ip[rightIndex])
+                // Calculate trapped water at the current position and add to total
+                totalTrappedWater += maxRightHeight - ip[rightIndex]
+                // Move the right pointer to the left
+                rightIndex -= 1
+            }
+        }
+        
+        // Return the total trapped water
+        return totalTrappedWater
+    }
+}
