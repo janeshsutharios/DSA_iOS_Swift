@@ -90,3 +90,30 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/maximize-sum-of-array-after-k-negations/
+// https://leetcode.com/problems/maximize-sum-of-array-after-k-negations/description/
+class Solution {
+    func largestSumAfterKNegations(_ nums: [Int], _ k: Int) -> Int {
+        var nums = nums.sorted()
+        var remaining = k
+
+        // Step 1: Negate negative values as much as possible
+        for i in 0..<nums.count {
+            if remaining > 0 && nums[i] < 0 {
+                nums[i] = -nums[i]
+                remaining -= 1
+            }
+        }
+
+        // Step 2: If remaining is odd, flip the smallest absolute number
+        if remaining % 2 == 1 {
+            // We'll flip the minimum element in the array
+            nums.sort()
+            nums[0] = -nums[0]
+        }
+
+        // Step 3: Return the total sum
+        return nums.reduce(0, +)
+    }
+}
+
