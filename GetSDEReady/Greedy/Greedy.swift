@@ -69,3 +69,24 @@ class Solution {
 //     }
 // }
 
+// https://getsdeready.com/courses/dsa/lesson/minimum-moves-to-convert-string/
+// https://leetcode.com/problems/minimum-moves-to-convert-string/
+class Solution {
+    func minimumMoves(_ s: String) -> Int {
+        let chars = Array(s)
+        var moves = 0
+        var index = 0
+        let n = chars.count
+        
+        while index < n {
+            if chars[index] == "X" {
+                moves += 1
+                index += 3  // Skip next two characters
+            } else {
+                index += 1
+            }
+        }
+        return moves
+    }
+}
+
