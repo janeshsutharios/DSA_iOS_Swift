@@ -39,3 +39,33 @@ class Solution {
         return length
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/maximum-sum-with-exactly-k-elements/
+// https://leetcode.com/problems/maximum-sum-with-exactly-k-elements/description/
+class Solution {
+
+    func maximizeSum(_ nums: [Int], _ k: Int) -> Int {
+        guard k > 0, !nums.isEmpty else { return 0 }
+        let max = nums.max()!
+         // Apply formula: k*x + (k * (k - 1)) / 2
+         let total = k*max + (k * (k - 1)) / 2
+         return total
+    }
+}
+
+// Brute force
+// class Solution {
+//     func maximizeSum(_ nums: [Int], _ k: Int) -> Int {
+//        var nums = nums
+//        var sum = nums.max()! 
+//        var numMax = nums.max()!
+//        var k = k
+//        while k > 1 {
+//         numMax += 1
+//         sum += numMax
+//         k -= 1
+//        }
+//        return sum
+//     }
+// }
+
