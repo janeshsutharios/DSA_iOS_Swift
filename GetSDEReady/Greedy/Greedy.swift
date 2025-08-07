@@ -117,3 +117,25 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/assign-mice-to-holes/?course=573
+// https://www.geeksforgeeks.org/problems/assign-mice-holes3053/0
+Step-by-Step Greedy Matching (Sorted Pairing)
+Sort Mice & Holes
+Mice  = [2, 4]
+Holes = [1, 7]
+Pair them in sorted order
+Mouse at 2 → Hole at 1 → Distance = |2 - 1| = 1
+Mouse at 4 → Hole at 7 → Distance = |4 - 7| = 3
+Max time any mouse takes = max(1, 3) = 3
+func assignMiceToHoles(_ mice: [Int], _ holes: [Int]) -> Int {
+    let sortedMice = mice.sorted()
+    let sortedHoles = holes.sorted()
+
+    var maxTime = 0
+    for (mouse, hole) in zip(sortedMice, sortedHoles) {
+        let distance = abs(mouse - hole)
+        maxTime = max(maxTime, distance)
+    }
+
+    return maxTime
+}
