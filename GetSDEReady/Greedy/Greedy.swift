@@ -139,3 +139,78 @@ func assignMiceToHoles(_ mice: [Int], _ holes: [Int]) -> Int {
 
     return maxTime
 }
+
+// https://getsdeready.com/courses/dsa/lesson/seats/
+//https://getsdeready.com/courses/dsa/lesson/seats/
+Step 1
+Index:   0 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+String:  . . . . x . . x x .  .  .  x  .  .
+
+Step 2
+// Occupied seats (x) are at indices:
+positions = [4, 7, 8, 12]
+
+Step 3
+midIndex = 2
+median = positions[2] = 8
+midIndex = 2
+median = positions[2] = 8
+
+Step 4: Move all x’s to consecutive positions around median
+We calculate new target positions for all x’s by placing them from median - midIndex to median + (count - midIndex - 1).
+That range:
+start = 8 - 2 = 6
+targets = [6, 7, 8, 9]
+| i | original pos | target | moves |
+| - | ------------ | ------ | ----- |
+| 0 | 4            | 6      | 2     |
+| 1 | 7            | 7      | 0     |
+| 2 | 8            | 8      | 0     |
+| 3 | 12           | 9      | 3     |
+Sum = 2 + 0 + 0 + 3 = 5
+Visualization of Moves:
+Initial:
+....x..xx...x..
+
+Target:
+......xxxx.....
+We moved:
+    x at index 4 → index 6 (2 moves)
+
+    x at index 7 → index 7 (0 moves)
+
+    x at index 8 → index 8 (0 moves)
+
+    x at index 12 → index 9 (3 moves)
+
+Efficiently centered the group around index 8. ✅
+class Solution {
+    func seats(_ A: inout String) -> Int {
+        let mod = 10000003
+        let chars = Array(A)
+        var positions = [Int]()
+
+        // Step 1: Collect indices of all occupied seats
+        for (i, char) in chars.enumerated() {
+            if char == "x" {
+                positions.append(i)
+            }
+        }
+
+        // Step 2: Edge case - no occupied seat
+        if positions.isEmpty { return 0 }
+
+        // Step 3: Median logic
+        let midIndex = positions.count / 2
+        let median = positions[midIndex]
+
+        // Step 4: Calculate total moves
+        var totalMoves = 0
+        for (i, pos) in positions.enumerated() {
+            let target = median - midIndex + i
+            totalMoves = (totalMoves + abs(pos - target)) % mod
+        }
+
+        return totalMoves
+    }
+}
