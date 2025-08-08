@@ -214,3 +214,34 @@ class Solution {
         return totalMoves
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/meeting-rooms/?course=573
+// https://www.interviewbit.com/problems/meeting-rooms/
+class Solution {
+    func minMeetingRooms(_ A: [[Int]]) -> Int {
+        // If there are no meetings, no rooms are needed
+        if A.isEmpty { return 0 }
+
+        // Extract start times and end times into separate arrays and sort them
+        let starts = A.map { $0[0] }.sorted()  // Sorted list of all start times
+        let ends = A.map { $0[1] }.sorted()    // Sorted list of all end times
+
+        var roomsNeeded = 0       // Minimum number of meeting rooms required
+        var endPointer = 0        // Pointer to track the earliest ending meeting
+
+        // Iterate through all meetings by their start time
+        for start in starts {
+            if start < ends[endPointer] {
+                // Current meeting starts before the earliest one ends
+                // → Need a new room
+                roomsNeeded += 1
+            } else {
+                // Current meeting can reuse a room that has just been freed
+                endPointer += 1
+            }
+        }
+
+        return roomsNeeded
+    }
+}
+
