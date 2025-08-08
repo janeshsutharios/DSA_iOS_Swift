@@ -217,6 +217,8 @@ class Solution {
 
 // https://getsdeready.com/courses/dsa/lesson/meeting-rooms/?course=573
 // https://www.interviewbit.com/problems/meeting-rooms/
+// Dry run starts [0,5,15] & ends is [10,20,30] 
+// 0 vs 10(+1), 5 vs 10(+1) & 15 vs 10(+0) == OP = 2
 class Solution {
     func minMeetingRooms(_ A: [[Int]]) -> Int {
         // If there are no meetings, no rooms are needed
