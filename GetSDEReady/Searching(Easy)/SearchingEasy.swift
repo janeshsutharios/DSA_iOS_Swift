@@ -61,3 +61,28 @@ func findElementUsingBinarySearchUsingRecursion(nums: [Int], target: Int, low: i
     return findElementUsingBinarySearchUsingRecursion(nums: nums, target: target, low: &low, high: &high)
 }
 */
+// https://getsdeready.com/courses/dsa/lesson/intersection-of-two-array-ii/
+// https://leetcode.com/problems/intersection-of-two-arrays-ii/
+class Solution {
+    func intersect(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        var counts = [Int: Int]()   // Dictionary to store frequency of elements in nums1
+        var result = [Int]()        // Stores the intersection result
+        
+        // Step 1: Count frequency of each number in nums1
+        for num in nums1 {
+            counts[num, default: 0] += 1
+        }
+        
+        // Step 2: Iterate through nums2 and check if the number exists in counts
+        for num in nums2 {
+            if let cnt = counts[num], cnt > 0 {
+                result.append(num)   // Common element found, add to result
+                counts[num]! -= 1    // Decrement count to avoid reusing element
+            }
+        }
+        
+        // Step 3: Return intersection array
+        return result
+    }
+}
+
