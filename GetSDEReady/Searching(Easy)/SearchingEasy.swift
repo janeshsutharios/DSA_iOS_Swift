@@ -25,3 +25,39 @@ class Solution {
         // return i-1
     }
 }
+
+// https://getsdeready.com/courses/dsa/lesson/binary-search/
+// https://leetcode.com/problems/binary-search/
+class Solution {
+    func search(_ nums: [Int], _ target: Int) -> Int {
+        var low = 0
+        var high = nums.count - 1
+        // Divide the array until we got mid element as target element.
+        while low <= high {
+            let mid = (low + high) / 2
+            if nums[mid] == target {
+                return mid
+            } else if target > nums[mid] {// If target is greater increase low pointer
+                low = mid + 1
+            } else {// If target is lesser decrease high pointer
+                high = mid - 1
+            }
+        }
+        return -1
+    }
+}
+/**
+func findElementUsingBinarySearchUsingRecursion(nums: [Int], target: Int, low: inout Int, high: inout Int) -> Int {
+    if low > high { return -1 }// Base case.
+    var mid = (low + high) / 2
+    if nums[mid] == target {
+        return mid
+    } else if target > nums[mid] {// If target is greater increase low pointer
+        low = mid + 1
+    } else {// If target is lesser decrease high pointer
+        high = mid - 1
+    }
+    // Divide the array until we got mid element as target element.
+    return findElementUsingBinarySearchUsingRecursion(nums: nums, target: target, low: &low, high: &high)
+}
+*/
