@@ -86,3 +86,39 @@ class Solution {
     }
 }
 
+// https://getsdeready.com/courses/dsa/lesson/count-negative-numbers-in-a-sorted-matrix/
+// https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix/
+class Solution {
+    func countNegatives(_ grid: [[Int]]) -> Int {
+        var totalCount = 0
+        
+        for row in grid {
+            totalCount += countNegativesInRow(row)
+        }
+        
+        return totalCount
+    }
+    
+    // Counts how many negative numbers are in a single sorted row
+    private func countNegativesInRow(_ arr: [Int]) -> Int {
+        var low = 0
+        var high = arr.count - 1
+        
+        // Binary search to find the first negative number
+        while low <= high {
+            let mid = low + (high - low) / 2
+            
+            if arr[mid] < 0 {
+                // Might be the first negative — search left
+                high = mid - 1
+            } else {
+                // Still non-negative — search right
+                low = mid + 1
+            }
+        }
+        
+        // 'low' is now the index of the first negative element
+        // If low == arr.count → no negatives in this row
+        return arr.count - low
+    }
+}
