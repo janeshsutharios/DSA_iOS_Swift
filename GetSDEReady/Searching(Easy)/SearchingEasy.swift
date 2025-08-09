@@ -122,3 +122,64 @@ class Solution {
         return arr.count - low
     }
 }
+// https://getsdeready.com/courses/dsa/lesson/check-if-array-is-sorted-and-rotated/
+// https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/
+class Solution {
+    func check(_ nums: [Int]) -> Bool {
+        let count = nums.count
+        var rotationBreaks = 0
+
+        // Check for places where the array is not in non-decreasing order.
+        for index in 0..<count {
+            let nextIndex = (index + 1) % count  // next index but it will give 0 for last index
+            // 
+            if nums[index] > nums[nextIndex] {
+                rotationBreaks += 1
+            }
+        }
+
+        // Valid only if there's at most one break in the sorted order
+        return rotationBreaks <= 1
+    }
+}
+
+class Solution {
+    func check(_ nums: [Int]) -> Bool {
+        let n = nums.count
+        
+        // Special cases
+        if n <= 2 { return true }
+        
+        // Step 1: Find pivot index (smallest element)
+        let pivot = findPivot(nums)
+        
+        // Step 2: Check if array is sorted from pivot to end
+        for i in 1..<n {
+            let prev = (pivot + i - 1) % n
+            let curr = (pivot + i) % n
+            if nums[prev] > nums[curr] {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    // Binary search to find index of smallest element (rotation pivot)
+    private func findPivot(_ nums: [Int]) -> Int {
+        var low = 0
+        var high = nums.count - 1
+        
+        while low < high {
+            let mid = low + (high - low) / 2
+            if nums[mid] > nums[high] {
+                // Pivot is in right half
+                low = mid + 1
+            } else {
+                // Pivot is in left half (including mid)
+                high = mid
+            }
+        }
+        return low
+    }
+}
